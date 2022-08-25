@@ -9,7 +9,7 @@ class RequestSerializationTest {
         requestId = "12345",
         debug = SubscriptionDebug(
             mode = SubscriptionRequestDebugMode.STUB,
-            stub = SubscriptionRequestDebugStubs.BAD_DESCRIPTION
+            stub = SubscriptionRequestDebugStubs.BAD_TITLE
         ),
         subscription = SubscriptionCreateObject(
             title = "3 month subscription",
@@ -25,7 +25,7 @@ class RequestSerializationTest {
 
         assertContains(json, Regex("\"title\":\\s*\"3 month subscription\""))
         assertContains(json, Regex("\"mode\":\\s*\"stub\""))
-        assertContains(json, Regex("\"stub\":\\s*\"badDescription\""))
+        assertContains(json, Regex("\"stub\":\\s*\"badTitle\""))
         assertContains(json, Regex("\"duration\":\\s*3"))
         assertContains(json, Regex("\"requestType\":\\s*\"create\""))
     }
