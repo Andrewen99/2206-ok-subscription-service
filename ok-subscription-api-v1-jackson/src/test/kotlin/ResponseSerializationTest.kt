@@ -5,14 +5,14 @@ import kotlin.test.assertEquals
 
 //TODO: подключить kotest и полноценно сравнить json
 class ResponseSerializationTest {
-    private val response = SubscriptionCreateResponse(
+    private val response = PlanCreateResponse(
         requestId = "12345",
         result = ResponseResult.SUCCESS,
-        subscription = SubscriptionResponseObject(
+        plan = PlanResponseObject(
             title = "3 month subscription",
             duration = 3,
             price = "10000",
-            visibility = SubscriptionVisibility.PUBLIC
+            visibility = PlanVisibility.PUBLIC
         )
     )
 
@@ -30,7 +30,7 @@ class ResponseSerializationTest {
     @Test
     fun `test deserialization`() {
         val json = apiV1Mapper.writeValueAsString(response)
-        val obj = apiV1Mapper.readValue(json, IResponse::class.java) as SubscriptionCreateResponse
+        val obj = apiV1Mapper.readValue(json, IResponse::class.java) as PlanCreateResponse
 
         assertEquals(response, obj)
     }

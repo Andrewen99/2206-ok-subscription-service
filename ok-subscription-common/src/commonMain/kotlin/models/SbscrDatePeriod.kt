@@ -1,7 +1,6 @@
 package models
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 /**
  * Класс хранящий период

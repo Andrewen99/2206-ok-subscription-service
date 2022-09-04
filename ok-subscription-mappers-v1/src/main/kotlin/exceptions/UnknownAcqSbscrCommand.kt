@@ -1,5 +1,5 @@
 package exceptions
 
-import models.AcqSbscrCommand
+import models.subscription.SubscriptionCommand
 
-class UnknownAcqSbscrCommand(cmd: AcqSbscrCommand) : Throwable("Wrong command $cmd at mapping toTransport stage")
+class UnknownAcqSbscrCommand(cmd: SubscriptionCommand) : Throwable("Wrong command $cmd at mapping toTransport stage")

@@ -5,15 +5,15 @@ import kotlinx.datetime.Instant
 import models.*
 
 /**
- * Базовый контекст, объединяющий общие свойства.
+ * Интерфейс базового контекста, хранящий общие свойства дочерних контекстов.
  */
-abstract class BaseContext(
-    var state: SbscrState = SbscrState.NONE,
-    var errors: MutableList<SbscrError> = mutableListOf(),
+interface BaseContext{
+    var state: SbscrState
+    var errors: MutableList<SbscrError>
 
-    var workMode: SbscrWorkMode = SbscrWorkMode.PROD,
-    var stubCase: SbscrStubs = SbscrStubs.NONE,
+    var workMode: SbscrWorkMode
+    var stubCase: SbscrStubs
 
-    var requestId: SbscrRequestId = SbscrRequestId.NONE,
-    var timeStart: Instant = Instant.NONE //пока нигде не используется
-)
+    var requestId: SbscrRequestId
+    var timeStart: Instant //пока нигде не используется
+}

@@ -1,52 +1,56 @@
-import contexts.SbscrContext
+import contexts.PlanContext
 import models.*
+import models.plan.Plan
+import models.plan.PlanCommand
+import models.plan.SbscrPlanVisibility
 import org.junit.Test
 import ru.otuskotlin.subscription.api.v1.models.*
+import toTransport.toTransportPlan
 import toTransport.toTransportSubscription
 import kotlin.test.assertEquals
 
-class SbscrMapperTest {
+class PlanMapperTest {
     @Test
     fun fromTransport() {
-        val req = SubscriptionCreateRequest(
+        val req = PlanCreateRequest(
             requestId = "1234",
-            debug = SubscriptionDebug(
-                mode = SubscriptionRequestDebugMode.STUB,
-                stub = SubscriptionRequestDebugStubs.SUCCESS
+            debug = Debug(
+                mode = RequestDebugMode.STUB,
+                stub = RequestDebugStubs.SUCCESS
             ),
-            subscription = SubscriptionCreateObject(
+            plan = PlanCreateObject(
                 title = "title",
                 conditions = setOf("condition #1", "condition #2"),
                 duration = 5,
                 price = "950",
-                visibility = SubscriptionVisibility.PUBLIC
+                visibility = PlanVisibility.PUBLIC
             )
         )
-        val context = SbscrContext()
+        val context = PlanContext()
         context.fromTransport(req)
 
         assertEquals(SbscrStubs.SUCCESS, context.stubCase)
         assertEquals(SbscrWorkMode.STUB, context.workMode)
 
-        assertEquals("title", context.sbscrRequest.title)
-        assertEquals(setOf("condition #1", "condition #2"), context.sbscrRequest.conditions)
-        assertEquals(5, context.sbscrRequest.duration)
-        assertEquals("950", context.sbscrRequest.price)
-        assertEquals(SbscrVisibility.PUBLIC, context.sbscrRequest.visibility)
+        assertEquals("title", context.planRequest.title)
+        assertEquals(setOf("condition #1", "condition #2"), context.planRequest.conditions)
+        assertEquals(5, context.planRequest.duration)
+        assertEquals("950", context.planRequest.price)
+        assertEquals(SbscrPlanVisibility.PUBLIC, context.planRequest.visibility)
     }
 
     @Test
     fun toTransport() {
-        val context = SbscrContext().apply {
-            requestId = SbscrRequestId("1234")
-            command = SbscrCommand.CREATE
-            sbscrResponse = Subscription(
+        val context = PlanContext(
+            requestId = SbscrRequestId("1234"),
+            command = PlanCommand.CREATE,
+            planResponse = Plan(
                 title = "title",
                 conditions = mutableSetOf("condition #1", "condition #2"),
                 duration = 5,
                 price = "950",
-                visibility = SbscrVisibility.PUBLIC
-            )
+                visibility = SbscrPlanVisibility.PUBLIC
+            ),
             errors = mutableListOf(
                 SbscrError(
                     code = "err",
@@ -54,19 +58,19 @@ class SbscrMapperTest {
                     field = "title",
                     message = "wrong title",
                 )
-            )
+            ),
             state = SbscrState.RUNNING
-        }
+        )
 
-        val req = context.toTransportSubscription() as SubscriptionCreateResponse
+        val req = context.toTransportPlan() as PlanCreateResponse
 
         assertEquals("1234", req.requestId)
 
-        assertEquals("title", req.subscription?.title)
-        assertEquals(setOf("condition #1", "condition #2"), req.subscription?.conditions)
-        assertEquals(5, req.subscription?.duration)
-        assertEquals("950", req.subscription?.price)
-        assertEquals(SubscriptionVisibility.PUBLIC, req.subscription?.visibility)
+        assertEquals("title", req.plan?.title)
+        assertEquals(setOf("condition #1", "condition #2"), req.plan?.conditions)
+        assertEquals(5, req.plan?.duration)
+        assertEquals("950", req.plan?.price)
+        assertEquals(PlanVisibility.PUBLIC, req.plan?.visibility)
 
         assertEquals(1, req.errors?.size)
         assertEquals("err", req.errors?.firstOrNull()?.code)

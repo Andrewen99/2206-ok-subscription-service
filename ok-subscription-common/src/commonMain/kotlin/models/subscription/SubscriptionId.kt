@@ -1,13 +1,13 @@
-package models
+package models.subscription
 
 /**
  * Id приобретенной подписки
  */
 @JvmInline
-value class AcqSbscrId(private val id: String) {
+value class SubscriptionId(private val id: String) {
     fun asString() = id
 
     companion object {
-        val NONE = AcqSbscrId("")
+        val NONE = SubscriptionId("")
     }
 }

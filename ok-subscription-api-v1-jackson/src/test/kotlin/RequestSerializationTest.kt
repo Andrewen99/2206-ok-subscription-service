@@ -5,17 +5,17 @@ import kotlin.test.assertEquals
 
 //TODO: подключить kotest и полноценно сравнить json
 class RequestSerializationTest {
-    private val request = SubscriptionCreateRequest(
+    private val request = PlanCreateRequest(
         requestId = "12345",
-        debug = SubscriptionDebug(
-            mode = SubscriptionRequestDebugMode.STUB,
-            stub = SubscriptionRequestDebugStubs.BAD_TITLE
+        debug = Debug(
+            mode = RequestDebugMode.STUB,
+            stub = RequestDebugStubs.BAD_TITLE
         ),
-        subscription = SubscriptionCreateObject(
+        plan = PlanCreateObject(
             title = "3 month subscription",
             duration = 3,
             price = "10000",
-            visibility = SubscriptionVisibility.PUBLIC
+            visibility = PlanVisibility.PUBLIC
         )
     )
 
@@ -27,13 +27,13 @@ class RequestSerializationTest {
         assertContains(json, Regex("\"mode\":\\s*\"stub\""))
         assertContains(json, Regex("\"stub\":\\s*\"badTitle\""))
         assertContains(json, Regex("\"duration\":\\s*3"))
-        assertContains(json, Regex("\"requestType\":\\s*\"create\""))
+        assertContains(json, Regex("\"requestType\":\\s*\"planCreate\""))
     }
 
     @Test
     fun `test deserialization`() {
         val json = apiV1Mapper.writeValueAsString(request)
-        val obj = apiV1Mapper.readValue(json, IRequest::class.java) as SubscriptionCreateRequest
+        val obj = apiV1Mapper.readValue(json, IRequest::class.java) as PlanCreateRequest
 
         assertEquals(request, obj)
     }

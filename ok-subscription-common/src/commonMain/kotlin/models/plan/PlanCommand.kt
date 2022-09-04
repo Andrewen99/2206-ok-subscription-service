@@ -1,9 +1,9 @@
-package models
+package models.plan
 
 /**
  * Типы запросов для взаимодействия с подписками
  */
-enum class SbscrCommand {
+enum class PlanCommand {
     NONE,
     CREATE,
     UPDATE,

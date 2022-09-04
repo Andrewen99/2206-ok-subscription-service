@@ -1,8 +1,12 @@
 package toTransport
 
-import contexts.SbscrContext
+import contexts.PlanContext
 import exceptions.UnknownSbscrCommand
 import models.*
+import models.plan.Plan
+import models.plan.PlanCommand
+import models.plan.PlanId
+import models.plan.SbscrPlanVisibility
 import ru.otuskotlin.subscription.api.v1.models.*
 import toTrasportErrors
 
@@ -11,52 +15,52 @@ import toTrasportErrors
  * для  подписки
  * Общие методы мапперов вынесены в [TransportUtil.kt]
  */
-fun SbscrContext.toTransportSubscription(): IResponse = when (val cmd = command) {
-    SbscrCommand.CREATE -> toTransportCreate()
-    SbscrCommand.UPDATE -> toTransportUpdate()
-    SbscrCommand.READ -> toTransportRead()
-    SbscrCommand.READ_ALL -> toTransportReadAll()
-    SbscrCommand.DELETE -> toTransportDelete()
-    SbscrCommand.NONE -> throw UnknownSbscrCommand(cmd)
+fun PlanContext.toTransportPlan(): IResponse = when (val cmd = command) {
+    PlanCommand.CREATE -> toTransportCreate()
+    PlanCommand.UPDATE -> toTransportUpdate()
+    PlanCommand.READ -> toTransportRead()
+    PlanCommand.READ_ALL -> toTransportReadAll()
+    PlanCommand.DELETE -> toTransportDelete()
+    PlanCommand.NONE -> throw UnknownSbscrCommand(cmd)
 }
 
-fun SbscrContext.toTransportCreate() = SubscriptionCreateResponse(
+private fun PlanContext.toTransportCreate() = PlanCreateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
-    subscription = sbscrResponse.toTransportSubscription()
+    plan = planResponse.toTransportPlan()
 )
 
-fun SbscrContext.toTransportUpdate() = SubscriptionUpdateResponse(
+private fun PlanContext.toTransportUpdate() = PlanUpdateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
-    subscription = sbscrResponse.toTransportSubscription()
+    plan = planResponse.toTransportPlan()
 )
 
-fun SbscrContext.toTransportRead() = SubscriptionReadResponse(
+private fun PlanContext.toTransportRead() = PlanReadResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
-    subscription = sbscrResponse.toTransportSubscription()
+    plan = planResponse.toTransportPlan()
 )
 
-fun SbscrContext.toTransportReadAll() = SubscriptionReadAllResponse(
+private fun PlanContext.toTransportReadAll() = PlanReadAllResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
-    subscriptions = sbscrResponses.toTransportSubscription()
+    plans = planResponses.toTransportPlan()
 )
 
-fun SbscrContext.toTransportDelete() = SubscriptionDeleteResponse(
+private fun PlanContext.toTransportDelete() = PlanDeleteResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
-    subscription = sbscrResponse.toTransportSubscription()
+    plan = planResponse.toTransportPlan()
 )
 
-private fun Subscription.toTransportSubscription(): SubscriptionResponseObject = SubscriptionResponseObject(
-    id = id.takeIf { it != SbscrId.NONE }?.asString(),
+private fun Plan.toTransportPlan(): PlanResponseObject = PlanResponseObject(
+    id = id.takeIf { it != PlanId.NONE }?.asString(),
     title = title.takeIf { it.isNotBlank() },
     duration = duration,
     price = price,
@@ -66,13 +70,13 @@ private fun Subscription.toTransportSubscription(): SubscriptionResponseObject =
 
 
 
-private fun List<Subscription>.toTransportSubscription() = this
-    .map { it.toTransportSubscription() }
+private fun List<Plan>.toTransportPlan() = this
+    .map { it.toTransportPlan() }
     .toList()
     .takeIf { it.isNotEmpty() }
 
-private fun SbscrVisibility.toTransportVisibility(): SubscriptionVisibility? = when (this) {
-    SbscrVisibility.PUBLIC -> SubscriptionVisibility.PUBLIC
-    SbscrVisibility.ADMIN_ONLY -> SubscriptionVisibility.ADMIN_ONLY
-    SbscrVisibility.NONE -> null
+private fun SbscrPlanVisibility.toTransportVisibility(): PlanVisibility? = when (this) {
+    SbscrPlanVisibility.PUBLIC -> PlanVisibility.PUBLIC
+    SbscrPlanVisibility.ADMIN_ONLY -> PlanVisibility.ADMIN_ONLY
+    SbscrPlanVisibility.NONE -> null
 }

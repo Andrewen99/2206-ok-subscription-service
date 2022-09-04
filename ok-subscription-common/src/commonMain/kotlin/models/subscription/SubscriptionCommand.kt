@@ -1,10 +1,12 @@
-package models
+package models.subscription
 
 /**
  * Типы запросов для приобретенных/приобретаемых подписок
  */
-enum class AcqSbscrCommand {
+enum class SubscriptionCommand {
     BUY, //приобретение
-    SEARCH_ACQUIRED, //поиск приобретенных подписок
+    SEARCH, //поиск приобретенных подписок
+    READ,
+    PAY,
     NONE
 }

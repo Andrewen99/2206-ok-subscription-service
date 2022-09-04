@@ -1,38 +1,40 @@
 import models.*
-import ru.otuskotlin.subscription.api.v1.models.Error
-import ru.otuskotlin.subscription.api.v1.models.IRequest
-import ru.otuskotlin.subscription.api.v1.models.SubscriptionDebug
-import ru.otuskotlin.subscription.api.v1.models.SubscriptionRequestDebugMode
-import ru.otuskotlin.subscription.api.v1.models.SubscriptionRequestDebugStubs
+import models.plan.Plan
+import models.plan.PlanId
+import models.subscription.Subscription
+import models.subscription.SubscriptionId
+import ru.otuskotlin.subscription.api.v1.models.*
 import java.time.format.DateTimeFormatter
 
 /**
  * Общие методы для мапперов
  */
-internal fun String?.toSbscrId() = this?.let { SbscrId(it) } ?: SbscrId.NONE
+internal fun String?.toPlanId() = this?.let { PlanId(it) } ?: PlanId.NONE
 internal fun String?.toSbscrUserId() = this?.let { SbscrUserId(it) } ?: SbscrUserId.NONE
-internal fun String?.toSbscrWithId() = Subscription(id = this.toSbscrId())
+internal fun String?.toSubscriptionId() = this?.let { SubscriptionId(it) } ?: SubscriptionId.NONE
+internal fun String?.toPlanWithId() = Plan(id = this.toPlanId())
+internal fun String?.toSubscriptionWithId() = Subscription(id =this.toSubscriptionId())
 internal fun IRequest?.requestId() = this?.requestId?.let { SbscrRequestId(it) } ?: SbscrRequestId.NONE
 
 internal const val DATE_FORMAT: String = "dd.MM.yyyy"
 internal val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
 
-internal fun SubscriptionDebug?.transportToWorkMode(): SbscrWorkMode = when (this?.mode) {
-    SubscriptionRequestDebugMode.PROD -> SbscrWorkMode.PROD
-    SubscriptionRequestDebugMode.TEST -> SbscrWorkMode.TEST
-    SubscriptionRequestDebugMode.STUB -> SbscrWorkMode.STUB
+internal fun Debug?.transportToWorkMode(): SbscrWorkMode = when (this?.mode) {
+    RequestDebugMode.PROD -> SbscrWorkMode.PROD
+    RequestDebugMode.TEST -> SbscrWorkMode.TEST
+    RequestDebugMode.STUB -> SbscrWorkMode.STUB
     null -> SbscrWorkMode.PROD
 }
 
-internal fun SubscriptionDebug?.transportToStubCase(): SbscrStubs = when (this?.stub) {
-    SubscriptionRequestDebugStubs.SUCCESS -> SbscrStubs.SUCCESS
-    SubscriptionRequestDebugStubs.NOT_FOUND -> SbscrStubs.NOT_FOUND
-    SubscriptionRequestDebugStubs.BAD_ID -> SbscrStubs.BAD_ID
-    SubscriptionRequestDebugStubs.BAD_TITLE -> SbscrStubs.BAD_TITLE
-    SubscriptionRequestDebugStubs.BAD_VISIBILITY -> SbscrStubs.BAD_VISIBILITY
-    SubscriptionRequestDebugStubs.CANNOT_DELETE -> SbscrStubs.CANNOT_DELETE
-    SubscriptionRequestDebugStubs.CANNOT_BUY -> SbscrStubs.CANNOT_BUY
-    SubscriptionRequestDebugStubs.BAD_SEARCH_STRING -> SbscrStubs.BAD_SEARCH_STRING
+internal fun Debug?.transportToStubCase(): SbscrStubs = when (this?.stub) {
+    RequestDebugStubs.SUCCESS -> SbscrStubs.SUCCESS
+    RequestDebugStubs.NOT_FOUND -> SbscrStubs.NOT_FOUND
+    RequestDebugStubs.BAD_ID -> SbscrStubs.BAD_ID
+    RequestDebugStubs.BAD_TITLE -> SbscrStubs.BAD_TITLE
+    RequestDebugStubs.BAD_VISIBILITY -> SbscrStubs.BAD_VISIBILITY
+    RequestDebugStubs.CANNOT_DELETE -> SbscrStubs.CANNOT_DELETE
+    RequestDebugStubs.CANNOT_BUY -> SbscrStubs.CANNOT_BUY
+    RequestDebugStubs.BAD_SEARCH_STRING -> SbscrStubs.BAD_SEARCH_STRING
     null -> SbscrStubs.NONE
 }
 
