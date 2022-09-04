@@ -1,0 +1,627 @@
+openapi: 3.0.3
+info:
+  title: Subscription-service api
+  description: Subscription-api
+  version: 1.0.0
+servers:
+  - url: 'http://localhost/v1'
+tags:
+  - name: plan
+    description: Тариф
+  - name: subscription
+    description: Приобретенная подписка
+paths:
+  /plan/create:
+    post:
+      tags:
+        - plan
+      summary: Create Plan
+      operationId: planCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanCreateResponse'
+  /plan/update:
+    post:
+      tags:
+        - plan
+      summary: update plan
+      operationId: planUpdate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanUpdateResponse'
+  /plan/read:
+    post:
+      tags:
+        - plan
+      summary: read plan
+      operationId: planRead
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanReadResponse'
+  /plan/readAll:
+    post:
+      tags:
+        - plan
+      summary: read all plans
+      operationId: planReadAll
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanReadAllRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanReadAllResponse'
+  /plan/delete:
+    post:
+      tags:
+        - plan
+      summary: delete plan
+      operationId: planDelete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanDeleteResponse'
+  /plan/buy:
+    post:
+      tags:
+        - plan
+      summary: buy plan
+      operationId: planBuy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanBuyRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanBuyResponse'
+  /subscription/read:
+    post:
+      tags:
+        - subscription
+      summary: read subscription
+      operationId: subscriptionRead
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionReadResponse'
+  /subscription/search:
+    post:
+      tags:
+        - subscription
+      summary: search subscription
+      operationId: subSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionSearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSearchResponse'
+  /subscription/pay:
+    post:
+      tags:
+        - subscription
+      summary: pay for bought subscription
+      operationId: subPay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionPayRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionPayResponse'
+
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          planCreate: '#/components/schemas/PlanCreateRequest'
+          planUpdate: '#/components/schemas/PlanUpdateRequest'
+          planRead: '#/components/schemas/PlanReadRequest'
+          planReadAll: '#/components/schemas/PlanReadAllRequest'
+          planDelete: '#/components/schemas/PlanDeleteRequest'
+          planBuy: '#/components/schemas/PlanBuyRequest'
+          subscriptionRead: '#/components/schemas/SubscriptionReadRequest'
+          subscriptionSearch: '#/components/schemas/SubscriptionSearchRequest'
+          subscriptionPay: '#/components/schemas/SubscriptionPayRequest'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          planCreate: '#/components/schemas/PlanCreateResponse'
+          planUpdate: '#/components/schemas/PlanUpdateResponse'
+          planRead: '#/components/schemas/PlanReadResponse'
+          planReadAll: '#/components/schemas/PlanReadAllResponse'
+          planDelete: '#/components/schemas/PlanDeleteResponse'
+          planBuy: '#/components/schemas/PlanBuyResponse'
+          subscriptionRead: '#/components/schemas/SubscriptionReadResponse'
+          subscriptionSearch: '#/components/schemas/SubscriptionSearchResponse'
+          subscriptionPay: '#/components/schemas/SubscriptionPayResponse'
+
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    PlanId:
+      type: string
+      description: Идентификатор плана
+    PlanLock:
+      type: string
+      description: Версия оптимистичной блокировки
+    SubscriptionId:
+      type: string
+      description: Идентификатор приобретенной подписки
+    SubscriptionLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    FromToDateObject:
+      type: object
+      description: Объект хранящий 2 даты from и to
+      properties:
+        from:
+          description: Дата начала периода в формате дд.мм.гггг
+          #pattern: '^((0[1-9])|([1-2]\d)|(3[0-1]))\.((0[1-9])|(1[0-2]))\.2\d{3}$'
+          type: string
+        to:
+          description: Дата окончания периода в формате дд.мм.гггг
+          #pattern: '^((0[1-9])|([1-2]\d)|(3[0-1]))\.((0[1-9])|(1[0-2]))\.2\d{3}$'
+          type: string
+
+    BasePlan:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        title:
+          type: string
+          description: Название подписки
+        conditions:
+          type: array
+          uniqueItems: true
+          description: Условия подписки
+          items:
+            type: string
+        duration:
+          type: integer
+          description: Продолжительность подписки (в месяцах)
+        price:
+          type: string
+          description: Цена подписки в ₽
+          #pattern: '^\d+(,\d{1,2})?$'
+        visibility:
+          $ref: '#/components/schemas/PlanVisibility'
+
+
+    PlanVisibility:
+      type: string
+      description: 'Тип видимости подписки. Возможные значения: видит только администратор, видимо всем'
+      enum:
+        - adminOnly
+        - public
+
+
+    ### Requests
+
+
+    PlanCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BasePlan'
+
+    PlanCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            plan:
+              $ref: '#/components/schemas/PlanCreateObject'
+
+    PlanUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BasePlan'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/PlanId'
+            lock:
+              $ref: '#/components/schemas/PlanLock'
+
+    PlanUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            plan:
+              $ref: '#/components/schemas/PlanUpdateObject'
+
+    PlanReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/PlanId'
+
+    PlanReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            plan:
+              $ref: '#/components/schemas/PlanReadObject'
+
+    PlanReadAllRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+
+    PlanDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/PlanId'
+
+    PlanDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            plan:
+              $ref: '#/components/schemas/PlanDeleteObject'
+
+    PlanBuyObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/PlanId'
+
+    PlanBuyRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            plan:
+              $ref: '#/components/schemas/PlanBuyObject'
+
+    SubscriptionReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/SubscriptionId'
+
+    SubscriptionReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            subscription:
+              $ref: '#/components/schemas/SubscriptionReadObject'
+
+
+    SubscriptionPayObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/SubscriptionId'
+
+    SubscriptionPayRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            subscription:
+              $ref: '#/components/schemas/SubscriptionPayObject'
+
+
+    SubscriptionSearchFilter:
+      type: object
+      description: Набор фильтров для поиска
+      properties:
+        ownerId:
+          $ref: '#/components/schemas/UserId'
+        boughtPeriod:
+          $ref: '#/components/schemas/FromToDateObject'
+        expirationPeriod:
+          $ref: '#/components/schemas/FromToDateObject'
+        isActive:
+          type: boolean
+          description: Флаг активности подписки
+
+    SubscriptionSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            subscriptionFilter:
+              $ref: '#/components/schemas/SubscriptionSearchFilter'
+
+    ### Responses
+
+    PlanResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BasePlan'
+        - type: object
+          description: Объект, возвращаемый в ответе от бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/PlanId'
+            lock:
+              $ref: '#/components/schemas/PlanLock'
+
+    SubscriptionResponseObject:
+      type: object
+      description: Объект приобретенной подписки
+      properties:
+        id:
+          $ref: '#/components/schemas/SubscriptionId'
+        planId:
+          $ref: '#/components/schemas/PlanId'
+        startDate:
+          description: Дата приобретения/включения подписки в формате дд.мм.гггг
+          type: string
+          #pattern: '^((0[1-9])|([1-2]\d)|(3[0-1]))\.((0[1-9])|(1[0-2]))\.2\d{3}$'
+        endDate:
+          description: Дата окончания подписки (включительно) в формате дд.мм.гггг
+          type: string
+          #pattern: '^((0[1-9])|([1-2]\d)|(3[0-1]))\.((0[1-9])|(1[0-2]))\.2\d{3}$'
+        isActive:
+          description: Флаг активности подписки
+          type: boolean
+        paymentStatus:
+          description: Статус оплаты
+          type: string
+          enum:
+            - notPaid
+            - paymentInProgress
+            - Paid
+
+
+    PlanResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            plan:
+              $ref: '#/components/schemas/PlanResponseObject'
+
+    PlanResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            plans:
+              type: array
+              items:
+                $ref: '#/components/schemas/PlanResponseObject'
+
+    SubscriptionResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            subscription:
+              $ref: '#/components/schemas/SubscriptionResponseObject'
+
+    SubscriptionResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            subscriptions:
+              type: array
+              items:
+                $ref: '#/components/schemas/SubscriptionResponseObject'
+
+    PlanCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/PlanResponseSingle'
+
+    PlanUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/PlanResponseSingle'
+
+    PlanReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/PlanResponseSingle'
+
+    PlanReadAllResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/PlanResponseMulti'
+
+    PlanDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/PlanResponseSingle'
+
+    PlanBuyResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/SubscriptionResponseSingle'
+
+    SubscriptionReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/SubscriptionResponseSingle'
+
+    SubscriptionSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/SubscriptionResponseMulti'
+
+    SubscriptionPayResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/SubscriptionResponseSingle'
+
+
+    ### STUBS AND DEBUG
+
+
+    RequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    RequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/Debug'
+
+    Debug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/RequestDebugStubs'
+
+    RequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badTitle
+        - badVisibility
+        - cannotDelete
+        - cannotBuy
+        - badSearchString
