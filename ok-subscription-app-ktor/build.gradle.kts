@@ -3,9 +3,8 @@ val kotlinVersion: String by project
 val logbackVersion: String by project
 
 plugins {
-    application
     kotlin("jvm")
-    id("io.ktor.plugin") version "2.1.0"
+    id("io.ktor.plugin")
 }
 
 group = rootProject.group
@@ -34,4 +33,5 @@ dependencies {
     implementation(project(":ok-subscription-api-v1-jackson"))
     implementation(project(":ok-subscription-common"))
     implementation(project(":ok-subscription-mappers-v1"))
+    implementation(project(":ok-subscription-stubs"))
 }

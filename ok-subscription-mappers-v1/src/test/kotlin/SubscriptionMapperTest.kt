@@ -40,7 +40,7 @@ class SubscriptionMapperTest {
             command = SubscriptionCommand.BUY,
             subscriptionResponse = Subscription(
                 id = SubscriptionId("subscriptionId789"),
-                subscriptionId = PlanId("planId123"),
+                planId = PlanId("planId123"),
                 startDate = startDate,
                 endDate = endDate,
                 isActive = true

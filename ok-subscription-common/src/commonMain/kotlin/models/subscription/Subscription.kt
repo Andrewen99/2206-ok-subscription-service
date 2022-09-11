@@ -8,8 +8,9 @@ import java.time.LocalDate
  */
 data class Subscription(
     var id: SubscriptionId = SubscriptionId.NONE,
-    var subscriptionId: PlanId = PlanId.NONE,
+    var planId: PlanId = PlanId.NONE,
     var startDate: LocalDate = LocalDate.MIN,
     var endDate: LocalDate = LocalDate.MIN,
-    var isActive: Boolean = false
+    var isActive: Boolean = false,
+    var paymentStatus: SbscrPaymentStatus = SbscrPaymentStatus.NOT_PAYED
 )
