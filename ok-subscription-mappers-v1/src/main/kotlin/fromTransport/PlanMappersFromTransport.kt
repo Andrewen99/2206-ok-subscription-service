@@ -20,11 +20,11 @@ fun PlanContext.fromTransport(request: IRequest) {
         is PlanDeleteRequest -> fromTransport(request)
         else -> throw UnknownRequestClass(request.javaClass)
     }
-    requestId = request.requestId()
 }
 
 fun PlanContext.fromTransport(request: PlanCreateRequest) {
     command = PlanCommand.CREATE
+    requestId = request.requestId()
     planRequest = request.plan?.toInternal() ?: Plan()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -32,6 +32,7 @@ fun PlanContext.fromTransport(request: PlanCreateRequest) {
 
 fun PlanContext.fromTransport(request: PlanUpdateRequest) {
     command = PlanCommand.UPDATE
+    requestId = request.requestId()
     planRequest = request.plan?.toInternal() ?: Plan()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -39,6 +40,7 @@ fun PlanContext.fromTransport(request: PlanUpdateRequest) {
 
 fun PlanContext.fromTransport(request: PlanReadRequest) {
     command = PlanCommand.READ
+    requestId = request.requestId()
     planRequest = request.plan?.id.toPlanWithId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -46,12 +48,14 @@ fun PlanContext.fromTransport(request: PlanReadRequest) {
 
 fun PlanContext.fromTransport(request: PlanReadAllRequest) {
     command = PlanCommand.READ_ALL
+    requestId = request.requestId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
 
 fun PlanContext.fromTransport(request: PlanDeleteRequest) {
-    command = PlanCommand.READ_ALL
+    command = PlanCommand.DELETE
+    requestId = request.requestId()
     planRequest = request.plan?.id.toPlanWithId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()

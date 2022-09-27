@@ -20,12 +20,12 @@ fun SubscriptionContext.fromTransport(request: IRequest) {
         is SubscriptionPayRequest -> fromTransport(request)
         else -> throw UnknownRequestClass(request.javaClass)
     }
-    requestId = request.requestId()
 }
 
 
 fun SubscriptionContext.fromTransport(request: PlanBuyRequest) {
     command = SubscriptionCommand.BUY
+    requestId = request.requestId()
     planId = request.plan?.id.toPlanId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -33,6 +33,7 @@ fun SubscriptionContext.fromTransport(request: PlanBuyRequest) {
 
 fun SubscriptionContext.fromTransport(request: SubscriptionSearchRequest) {
     command = SubscriptionCommand.SEARCH
+    requestId = request.requestId()
     subscriptionFilter =  request.subscriptionFilter?.toInternal() ?: SubscriptionFilter()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -40,6 +41,7 @@ fun SubscriptionContext.fromTransport(request: SubscriptionSearchRequest) {
 
 fun SubscriptionContext.fromTransport(request: SubscriptionReadRequest) {
     command = SubscriptionCommand.READ
+    requestId = request.requestId()
     subscriptionRequest = request.subscription?.id.toSubscriptionWithId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -47,6 +49,7 @@ fun SubscriptionContext.fromTransport(request: SubscriptionReadRequest) {
 
 fun SubscriptionContext.fromTransport(request: SubscriptionPayRequest) {
     command = SubscriptionCommand.PAY
+    requestId = request.requestId()
     subscriptionRequest = request.subscription?.id.toSubscriptionWithId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()

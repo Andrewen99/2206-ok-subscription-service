@@ -5,6 +5,7 @@ import contexts.SubscriptionContext
 import exceptions.UnknownAcqSbscrCommand
 import models.*
 import models.plan.PlanId
+import models.subscription.SbscrPaymentStatus
 import models.subscription.Subscription
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionId
@@ -61,8 +62,15 @@ private fun List<Subscription>.toTransportSubscription() : List<SubscriptionResp
 private fun Subscription.toTransportSubscription(): SubscriptionResponseObject =
     SubscriptionResponseObject(
         id = id.takeIf { it != SubscriptionId.NONE }?.asString(),
-        planId = subscriptionId.takeIf { it != PlanId.NONE }?.asString(),
+        planId = planId.takeIf { it != PlanId.NONE }?.asString(),
         startDate = startDate.takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
         endDate = endDate.takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
-        isActive = isActive
+        isActive = isActive,
+        paymentStatus = paymentStatus.toTransportPaymentStatus()
     )
+
+private fun SbscrPaymentStatus.toTransportPaymentStatus(): SubscriptionResponseObject.PaymentStatus = when (this) {
+    SbscrPaymentStatus.NOT_PAYED -> SubscriptionResponseObject.PaymentStatus.NOT_PAID
+    SbscrPaymentStatus.PAYMENT_IN_PROGRESS -> SubscriptionResponseObject.PaymentStatus.PAYMENT_IN_PROGRESS
+    SbscrPaymentStatus.PAYED -> SubscriptionResponseObject.PaymentStatus.PAID
+}
