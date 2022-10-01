@@ -1,5 +1,6 @@
 import contexts.SubscriptionContext
 import exceptions.UnknownRequestClass
+import kotlinx.datetime.toKotlinLocalDate
 import models.*
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionFilter
@@ -65,8 +66,8 @@ private fun SubscriptionSearchFilter.toInternal(): SubscriptionFilter = Subscrip
 private fun FromToDateObject.toInternalOrNull(): SbscrDatePeriod? {
     if (!this.from.isNullOrBlank() && !this.to.isNullOrBlank()) {
         return SbscrDatePeriod(
-            LocalDate.parse(this.from, DATE_FORMATTER),
-            LocalDate.parse(this.to, DATE_FORMATTER)
+            LocalDate.parse(this.from, DATE_FORMATTER).toKotlinLocalDate(),
+            LocalDate.parse(this.to, DATE_FORMATTER).toKotlinLocalDate()
         )
     }
     return null

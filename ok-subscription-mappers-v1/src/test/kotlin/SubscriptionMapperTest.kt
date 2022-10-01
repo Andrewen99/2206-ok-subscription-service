@@ -1,4 +1,5 @@
 import contexts.SubscriptionContext
+import kotlinx.datetime.*
 import models.*
 import models.plan.PlanId
 import models.subscription.Subscription
@@ -33,8 +34,8 @@ class SubscriptionMapperTest {
 
     @Test
     fun toTransport() {
-        val startDate = LocalDate.now()
-        val endDate = LocalDate.now().plusMonths(5)
+        val startDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        val endDate = startDate.plus(5, DateTimeUnit.MONTH)
         val context = SubscriptionContext(
             requestId = SbscrRequestId("1234"),
             command = SubscriptionCommand.BUY,
@@ -62,8 +63,8 @@ class SubscriptionMapperTest {
 
         assertEquals("subscriptionId789", req.subscription?.id)
         assertEquals("planId123", req.subscription?.planId)
-        assertEquals(startDate.format(DATE_FORMATTER), req.subscription?.startDate)
-        assertEquals(endDate.format(DATE_FORMATTER), req.subscription?.endDate)
+        assertEquals(startDate.toJavaLocalDate().format(DATE_FORMATTER), req.subscription?.startDate)
+        assertEquals(endDate.toJavaLocalDate().format(DATE_FORMATTER), req.subscription?.endDate)
         assertEquals(true, req.subscription?.isActive)
 
         assertEquals(1, req.errors?.size)

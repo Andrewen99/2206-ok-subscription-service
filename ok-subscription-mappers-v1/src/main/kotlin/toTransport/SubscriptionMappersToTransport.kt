@@ -3,6 +3,7 @@ package toTransport
 import DATE_FORMATTER
 import contexts.SubscriptionContext
 import exceptions.UnknownAcqSbscrCommand
+import kotlinx.datetime.toJavaLocalDate
 import models.*
 import models.plan.PlanId
 import models.subscription.SbscrPaymentStatus
@@ -63,8 +64,8 @@ private fun Subscription.toTransportSubscription(): SubscriptionResponseObject =
     SubscriptionResponseObject(
         id = id.takeIf { it != SubscriptionId.NONE }?.asString(),
         planId = planId.takeIf { it != PlanId.NONE }?.asString(),
-        startDate = startDate.takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
-        endDate = endDate.takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
+        startDate = startDate.toJavaLocalDate().takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
+        endDate = endDate.toJavaLocalDate().takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
         isActive = isActive,
         paymentStatus = paymentStatus.toTransportPaymentStatus()
     )

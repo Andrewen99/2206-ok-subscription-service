@@ -8,14 +8,6 @@ import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-fun main() {
-    var k = 5;
-    while (k<10) {
-        k++
-        println(k)
-    }
-}
-
 class CorBaseTest {
     @Test
     fun `worker should execute handle`() = runBlocking {

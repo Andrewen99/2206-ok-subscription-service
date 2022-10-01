@@ -1,5 +1,7 @@
 package models.subscription
 
+import kotlin.jvm.JvmInline
+
 /**
  * Id приобретенной подписки
  */

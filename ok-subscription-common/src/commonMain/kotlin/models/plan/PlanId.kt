@@ -1,5 +1,7 @@
 package models.plan
 
+import kotlin.jvm.JvmInline
+
 /**
  * Id подписки
  */
