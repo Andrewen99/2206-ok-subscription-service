@@ -26,35 +26,35 @@ fun PlanContext.toTransportPlan(): IResponse = when (val cmd = command) {
 
 private fun PlanContext.toTransportCreate() = PlanCreateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     plan = planResponse.toTransportPlan()
 )
 
 private fun PlanContext.toTransportUpdate() = PlanUpdateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     plan = planResponse.toTransportPlan()
 )
 
 private fun PlanContext.toTransportRead() = PlanReadResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     plan = planResponse.toTransportPlan()
 )
 
 private fun PlanContext.toTransportReadAll() = PlanReadAllResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     plans = planResponses.toTransportPlan()
 )
 
 private fun PlanContext.toTransportDelete() = PlanDeleteResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     plan = planResponse.toTransportPlan()
 )

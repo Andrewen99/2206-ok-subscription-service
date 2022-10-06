@@ -6,6 +6,8 @@ class SubscriptionProcessor {
     suspend fun exec(ctx: SubscriptionContext) = SubscriptionChain.exec(ctx)
 
     companion object {
-        private val SubscriptionChain = rootChain<SubscriptionContext> {  }.build()
+        private val SubscriptionChain = rootChain<SubscriptionContext> {
+
+        }.build()
     }
 }

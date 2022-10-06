@@ -19,6 +19,7 @@ class CorChainDsl<T>(
         return CorChain(
             title = title,
             description = description,
+            blockOn = blockOn,
             execs = workers.map { it.build() },
             handler = handler
         )

@@ -35,4 +35,5 @@ dependencies {
     implementation(project(":ok-subscription-common"))
     implementation(project(":ok-subscription-mappers-v1"))
     implementation(project(":ok-subscription-stubs"))
+    implementation(project(":ok-subscription-biz"))
 }

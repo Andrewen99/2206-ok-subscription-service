@@ -9,8 +9,10 @@ enum class SbscrStubs {
     NOT_FOUND,
     BAD_ID,
     BAD_TITLE,
+    BAD_CONDITION,
     BAD_VISIBILITY,
     CANNOT_DELETE,
     BAD_SEARCH_STRING,
-    CANNOT_BUY
+    CANNOT_BUY,
+    DB_ERROR
 }

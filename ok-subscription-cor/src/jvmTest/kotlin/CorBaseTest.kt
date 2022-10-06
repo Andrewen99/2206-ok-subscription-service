@@ -159,6 +159,53 @@ class CorBaseTest {
         chain.exec(ctx)
         println("Complete: $ctx")
     }
+
+    @Test
+    fun `multiple chains with blockOn`() = runBlocking {
+        val x = 5;
+        val chain = rootChain<TestContext> {
+            chain {
+                on { x == 2 }
+
+                worker(title = "some is x * 2") {
+                    some = x*2
+                    historyList.add("x*2")
+                }
+            }
+
+            chain {
+                on { x == 4 }
+
+                worker(title = "some is x * 4") {
+                    some = x*4
+                    historyList.add("x*4")
+                }
+            }
+
+            chain {
+                on { x == 5 }
+
+                worker(title = "some is x * 5") {
+                    some = x*5
+                    historyList.add("x*5")
+                }
+            }
+
+            chain {
+                on { x == 7 }
+
+                worker(title = "some is x * 7") {
+                    some = x*7
+                    historyList.add("x*7")
+                }
+            }
+        }.build()
+        val ctx = TestContext()
+        chain.exec(ctx)
+        assertEquals(1, ctx.historyList.size)
+        assertEquals("x*5", ctx.historyList[0])
+        assertEquals(25, ctx.some)
+    }
 }
 
 
@@ -170,6 +217,7 @@ data class TestContext(
     var status: CorStatuses = CorStatuses.NONE,
     var some: Int = 0,
     var history: String = "",
+    var historyList: MutableList<String> = mutableListOf()
 )
 
 enum class CorStatuses {

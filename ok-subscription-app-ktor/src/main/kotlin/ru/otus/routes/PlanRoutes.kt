@@ -1,5 +1,6 @@
 package ru.otus.routes
 
+import PlanProcessor
 import SubscriptionStubs
 import contexts.PlanContext
 import contexts.SubscriptionContext
@@ -9,51 +10,28 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import models.SbscrState
+import models.plan.PlanCommand
+import ru.otus.utils.processPlanRq
 import ru.otuskotlin.subscription.api.v1.models.*
 import toTransport.toTransportPlan
 import toTransport.toTransportSubscription
 
-fun Route.planRouting() {
+fun Route.planRouting(processor: PlanProcessor) {
     route("/plan") {
         post("/create") {
-            val request = call.receive<PlanCreateRequest>()
-            val context = PlanContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.planResponse = PlanStubs.PLAN1
-            call.respond(context.toTransportPlan())
+            call.processPlanRq<PlanCreateRequest, PlanCreateResponse>(processor, PlanCommand.CREATE)
         }
         post("/update") {
-            val request = call.receive<PlanUpdateRequest>()
-            val context = PlanContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.planResponse = PlanStubs.PLAN1
-            call.respond(context.toTransportPlan())
+            call.processPlanRq<PlanUpdateRequest, PlanUpdateResponse>(processor, PlanCommand.UPDATE)
         }
         post("/read") {
-            val request = call.receive<PlanReadRequest>()
-            val context = PlanContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.planResponse = PlanStubs.PLAN1
-            call.respond(context.toTransportPlan())
+            call.processPlanRq<PlanReadRequest, PlanReadResponse>(processor, PlanCommand.READ)
         }
         post("/readAll") {
-            val request = call.receive<PlanReadAllRequest>()
-            val context = PlanContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.planResponses += PlanStubs.PLANS
-            call.respond(context.toTransportPlan())
+            call.processPlanRq<PlanReadAllRequest, PlanReadAllResponse>(processor, PlanCommand.READ_ALL)
         }
         post("/delete") {
-            val request = call.receive<PlanDeleteRequest>()
-            val context = PlanContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.planResponse = PlanStubs.PLAN1
-            call.respond(context.toTransportPlan())
+            call.processPlanRq<PlanDeleteRequest, PlanDeleteResponse>(processor, PlanCommand.DELETE)
         }
         post("/buy") {
             val request = call.receive<PlanBuyRequest>()
