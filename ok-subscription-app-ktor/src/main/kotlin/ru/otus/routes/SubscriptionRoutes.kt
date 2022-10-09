@@ -1,5 +1,6 @@
 package ru.otus.routes
 
+import SubscriptionProcessor
 import SubscriptionStubs
 import contexts.SubscriptionContext
 import fromTransport
@@ -8,36 +9,21 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import models.SbscrState
-import ru.otuskotlin.subscription.api.v1.models.SubscriptionPayRequest
-import ru.otuskotlin.subscription.api.v1.models.SubscriptionReadRequest
-import ru.otuskotlin.subscription.api.v1.models.SubscriptionSearchRequest
+import models.subscription.SubscriptionCommand
+import ru.otus.utils.processSubscriptionRq
+import ru.otuskotlin.subscription.api.v1.models.*
 import toTransport.toTransportSubscription
 
-fun Route.subscriptionRouting() {
+fun Route.subscriptionRouting(processor: SubscriptionProcessor) {
     route("/subscription") {
         post("/read") {
-            val request = call.receive<SubscriptionReadRequest>()
-            val context = SubscriptionContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.subscriptionResponse = SubscriptionStubs.SUBSCRIPTION1
-            call.respond(context.toTransportSubscription())
+            call.processSubscriptionRq<SubscriptionReadRequest, SubscriptionReadResponse>(processor, SubscriptionCommand.READ)
         }
         post("/search") {
-            val request = call.receive<SubscriptionSearchRequest>()
-            val context = SubscriptionContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.subscriptionResponses += SubscriptionStubs.SUBSCRIPTIONS
-            call.respond(context.toTransportSubscription())
+            call.processSubscriptionRq<SubscriptionSearchRequest, SubscriptionSearchResponse>(processor, SubscriptionCommand.SEARCH)
         }
         post("/pay") {
-            val request = call.receive<SubscriptionPayRequest>()
-            val context = SubscriptionContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.subscriptionResponse = SubscriptionStubs.SUBSCRIPTION1
-            call.respond(context.toTransportSubscription())
+            call.processSubscriptionRq<SubscriptionPayRequest, SubscriptionPayResponse>(processor, SubscriptionCommand.PAY)
         }
     }
 }

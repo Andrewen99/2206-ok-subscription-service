@@ -12,22 +12,17 @@ import models.subscription.SubscriptionFilter
 import stubs.TestConstants.BUY_SUBSCRIPTION_REQUEST
 import stubs.TestConstants.READ_PAY_SUBSCRIPTION_REQUEST
 import stubs.TestConstants.SEARCH_SUBSCRIPTION_REQUEST
+import stubs.TestConstants.SUBSCRIPTION_COMMAND_TO_REQUEST_LIST
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SubscriptionStubValidationTest {
-    private val commandToRequestList = listOf(
-        Pair(READ,READ_PAY_SUBSCRIPTION_REQUEST),
-        Pair(PAY,READ_PAY_SUBSCRIPTION_REQUEST),
-        Pair(BUY,BUY_SUBSCRIPTION_REQUEST),
-        Pair(SEARCH,SEARCH_SUBSCRIPTION_REQUEST)
-    )
 
     @Test
     fun badId() = runTest {
-        commandToRequestList.forEach { commandToRequest ->
+        SUBSCRIPTION_COMMAND_TO_REQUEST_LIST.forEach { commandToRequest ->
             val ctx = SubscriptionContext(
                 command = commandToRequest.first,
                 state = SbscrState.NONE,
@@ -52,7 +47,7 @@ class SubscriptionStubValidationTest {
 
     @Test
     fun dbError() = runTest {
-        commandToRequestList.forEach { commandToRequest ->
+        SUBSCRIPTION_COMMAND_TO_REQUEST_LIST.forEach { commandToRequest ->
             val ctx = SubscriptionContext(
                 command = commandToRequest.first,
                 state = SbscrState.NONE,

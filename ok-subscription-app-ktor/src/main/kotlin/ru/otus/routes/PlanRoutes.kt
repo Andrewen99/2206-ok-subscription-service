@@ -1,6 +1,7 @@
 package ru.otus.routes
 
 import PlanProcessor
+import SubscriptionProcessor
 import SubscriptionStubs
 import contexts.PlanContext
 import contexts.SubscriptionContext
@@ -11,12 +12,14 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import models.SbscrState
 import models.plan.PlanCommand
+import models.subscription.SubscriptionCommand
 import ru.otus.utils.processPlanRq
+import ru.otus.utils.processSubscriptionRq
 import ru.otuskotlin.subscription.api.v1.models.*
 import toTransport.toTransportPlan
 import toTransport.toTransportSubscription
 
-fun Route.planRouting(processor: PlanProcessor) {
+fun Route.planRouting(processor: PlanProcessor, subscriptionProcessor: SubscriptionProcessor) {
     route("/plan") {
         post("/create") {
             call.processPlanRq<PlanCreateRequest, PlanCreateResponse>(processor, PlanCommand.CREATE)
@@ -34,12 +37,7 @@ fun Route.planRouting(processor: PlanProcessor) {
             call.processPlanRq<PlanDeleteRequest, PlanDeleteResponse>(processor, PlanCommand.DELETE)
         }
         post("/buy") {
-            val request = call.receive<PlanBuyRequest>()
-            val context = SubscriptionContext(state = SbscrState.RUNNING)
-            context.fromTransport(request)
-            //business logic
-            context.subscriptionResponse = SubscriptionStubs.SUBSCRIPTION1
-            call.respond(context.toTransportSubscription())
+            call.processSubscriptionRq<PlanBuyRequest, PlanBuyResponse>(subscriptionProcessor, SubscriptionCommand.BUY)
         }
 
     }

@@ -5,6 +5,8 @@ import dsl.CorChainDsl
 import dsl.worker
 import models.SbscrState
 import models.SbscrStubs
+import models.plan.PlanId
+import models.subscription.SubscriptionId
 
 fun CorChainDsl<SubscriptionContext>.stubReadSuccess(title: String) = worker {
     this.title = title
@@ -12,7 +14,7 @@ fun CorChainDsl<SubscriptionContext>.stubReadSuccess(title: String) = worker {
     handle {
         state = SbscrState.FINISHING
         val stub = SubscriptionStubs.SUBSCRIPTION1.apply {
-            planId = subscriptionRequest.planId
+            subscriptionRequest.id.takeIf { it != SubscriptionId.NONE }?.also { this.id = it}
         }
         subscriptionResponse = stub
     }

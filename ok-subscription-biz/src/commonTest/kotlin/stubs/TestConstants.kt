@@ -7,6 +7,7 @@ import models.plan.Plan
 import models.plan.PlanId
 import models.plan.SbscrPlanVisibility
 import models.subscription.Subscription
+import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionFilter
 import models.subscription.SubscriptionId
 
@@ -46,5 +47,12 @@ object TestConstants {
         get() = SubscriptionFilter(
             planId = PLAN_ID
         )
+
+    val SUBSCRIPTION_COMMAND_TO_REQUEST_LIST = listOf(
+        Pair(SubscriptionCommand.READ,READ_PAY_SUBSCRIPTION_REQUEST),
+        Pair(SubscriptionCommand.PAY,READ_PAY_SUBSCRIPTION_REQUEST),
+        Pair(SubscriptionCommand.BUY,BUY_SUBSCRIPTION_REQUEST),
+        Pair(SubscriptionCommand.SEARCH,SEARCH_SUBSCRIPTION_REQUEST)
+    )
 
 }

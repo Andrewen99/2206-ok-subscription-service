@@ -23,7 +23,7 @@ class SubscriptionRouteTest {
         val responseBody = response.body<SubscriptionReadResponse>()
         println("\n\n$responseBody\n\n")
         assertEquals(200, response.status.value)
-        assertEquals(SubscriptionStubs.SUBSCRIPTION1.id.asString(), responseBody.subscription?.id)
+        assertEquals(SUBSCRIPTION_READ_REQ.subscription?.id, responseBody.subscription?.id)
         assertEquals("req123", responseBody.requestId)
         assertEquals(ResponseResult.SUCCESS, responseBody.result)
     }
@@ -57,7 +57,7 @@ class SubscriptionRouteTest {
         val responseBody = response.body<SubscriptionPayResponse>()
         println("\n\n$responseBody\n\n")
         assertEquals(200, response.status.value)
-        assertEquals(SubscriptionStubs.SUBSCRIPTION1.id.asString(), responseBody.subscription?.id)
+        assertEquals(SUBSCRIPTION_PAY_REQ.subscription?.id, responseBody.subscription?.id)
         assertEquals("req123", responseBody.requestId)
         assertEquals(ResponseResult.SUCCESS, responseBody.result)
     }

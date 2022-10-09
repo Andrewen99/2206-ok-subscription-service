@@ -1,6 +1,7 @@
 package ru.otus.plugins
 
 import PlanProcessor
+import SubscriptionProcessor
 import io.ktor.server.routing.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -16,7 +17,8 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
         val planProcessor = PlanProcessor()
-        planRouting(planProcessor)
-        subscriptionRouting()
+        val subscriptionProcessor = SubscriptionProcessor()
+        planRouting(planProcessor, subscriptionProcessor)
+        subscriptionRouting(subscriptionProcessor)
     }
 }

@@ -29,28 +29,28 @@ fun SubscriptionContext.toTransportSubscription(): IResponse = when (val cmd = c
 
 private fun SubscriptionContext.toTransportBuy(): PlanBuyResponse = PlanBuyResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     subscription = subscriptionResponse.toTransportSubscription()
 )
 
 private fun SubscriptionContext.toTransportSearch(): SubscriptionSearchResponse = SubscriptionSearchResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     subscriptions = subscriptionResponses.toTransportSubscription()
 )
 
 private fun SubscriptionContext.toTransportRead(): SubscriptionReadResponse = SubscriptionReadResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     subscription = subscriptionResponse.toTransportSubscription()
 )
 
 private fun SubscriptionContext.toTransportPay(): SubscriptionPayResponse = SubscriptionPayResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     subscription = subscriptionResponse.toTransportSubscription()
 )

@@ -66,7 +66,7 @@ class PlanRoutesTest {
         val responseBody = response.body<PlanReadResponse>()
         println("\n\n$responseBody\n\n")
         assertEquals(200, response.status.value)
-        assertEquals(PlanStubs.PLAN1.id.asString(), responseBody.plan?.id)
+        assertEquals(PLAN_READ_REQ.plan?.id, responseBody.plan?.id)
         assertEquals("req123", responseBody.requestId)
         assertEquals(ResponseResult.SUCCESS, responseBody.result)
     }
@@ -98,7 +98,7 @@ class PlanRoutesTest {
         val responseBody = response.body<PlanDeleteResponse>()
         println("\n\n$responseBody\n\n")
         assertEquals(200, response.status.value)
-        assertEquals(PlanStubs.PLAN1.id.asString(), responseBody.plan?.id)
+        assertEquals(PLAN_DELETE_REQ.plan?.id, responseBody.plan?.id)
         assertEquals("req123", responseBody.requestId)
         assertEquals(ResponseResult.SUCCESS, responseBody.result)
     }
@@ -114,7 +114,7 @@ class PlanRoutesTest {
         val responseBody = response.body<PlanBuyResponse>()
         println("\n\n$responseBody\n\n")
         assertEquals(200, response.status.value)
-        assertEquals(SubscriptionStubs.SUBSCRIPTION1.id.asString(), responseBody.subscription?.id)
+        assertEquals(PLAN_BUY_REQ.plan?.id, responseBody.subscription?.planId)
         assertEquals("req123", responseBody.requestId)
         assertEquals(ResponseResult.SUCCESS, responseBody.result)
     }
@@ -170,13 +170,10 @@ class PlanRoutesTest {
         )
 
         val PLAN_BUY_REQ = PlanBuyRequest(
-            requestType = "delete",
+            requestType = "buy",
             requestId = "req123",
             debug = DEBUG,
             plan = PlanBuyObject("plan1")
-
         )
-
-
     }
 }
