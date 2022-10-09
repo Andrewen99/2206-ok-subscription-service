@@ -1,6 +1,7 @@
 import PlanStubs.PLAN1
 import PlanStubs.PLAN2
 import kotlinx.datetime.*
+import models.SbscrUserId
 import models.subscription.SbscrPaymentStatus
 import models.subscription.Subscription
 import models.subscription.SubscriptionId
@@ -14,6 +15,7 @@ object SubscriptionStubs {
     val SUBSCRIPTION1
     get() = Subscription(
         id = SubscriptionId(id = "sub-id-11"),
+        ownerId = SbscrUserId("owner-id-1"),
         planId = PLAN1.id,
         startDate = startDate,
         endDate = startDate.plus(3, DateTimeUnit.MONTH),
@@ -23,6 +25,7 @@ object SubscriptionStubs {
     val SUBSCRIPTION2
         get() = Subscription(
         id = SubscriptionId(id = "sub-id-22"),
+        ownerId = SbscrUserId("owner-id-2"),
         planId = PLAN2.id,
         startDate = startDate,
         endDate = startDate.plus(6, DateTimeUnit.MONTH),

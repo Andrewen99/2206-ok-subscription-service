@@ -21,7 +21,6 @@ data class SubscriptionContext(
 
 
     var command: SubscriptionCommand = SubscriptionCommand.NONE,
-    var planId: PlanId = PlanId.NONE,
     var subscriptionRequest: Subscription = Subscription(),
     var subscriptionFilter: SubscriptionFilter = SubscriptionFilter(),
     var subscriptionResponse: Subscription = Subscription(),

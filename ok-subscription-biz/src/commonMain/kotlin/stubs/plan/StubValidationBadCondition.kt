@@ -1,4 +1,4 @@
-package stubs
+package stubs.plan
 
 import contexts.BaseContext
 import dsl.CorChainDsl

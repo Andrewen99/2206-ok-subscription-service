@@ -29,7 +29,7 @@ class SubscriptionMapperTest {
 
         assertEquals(SbscrStubs.SUCCESS, context.stubCase)
         assertEquals(SbscrWorkMode.STUB, context.workMode)
-        assertEquals(PlanId("subId123"), context.planId)
+        assertEquals(PlanId("subId123"), context.subscriptionRequest.planId)
     }
 
     @Test

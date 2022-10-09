@@ -1,4 +1,3 @@
-import kotlinx.datetime.LocalDate
 import models.*
 import models.plan.Plan
 import models.plan.PlanId
@@ -35,7 +34,9 @@ internal fun Debug?.transportToStubCase(): SbscrStubs = when (this?.stub) {
     RequestDebugStubs.BAD_VISIBILITY -> SbscrStubs.BAD_VISIBILITY
     RequestDebugStubs.CANNOT_DELETE -> SbscrStubs.CANNOT_DELETE
     RequestDebugStubs.CANNOT_BUY -> SbscrStubs.CANNOT_BUY
-    RequestDebugStubs.BAD_SEARCH_STRING -> SbscrStubs.BAD_SEARCH_STRING
+    RequestDebugStubs.PAYMENT_ERROR -> SbscrStubs.PAYMENT_ERROR
+    RequestDebugStubs.DB_ERROR -> SbscrStubs.DB_ERROR
+    RequestDebugStubs.BAD_SEARCH_PARAMETERS -> SbscrStubs.BAD_SEARCH_PARAMETERS
     null -> SbscrStubs.NONE
 }
 

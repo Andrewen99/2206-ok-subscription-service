@@ -10,14 +10,14 @@ import models.SbscrWorkMode
 import models.plan.Plan
 import models.plan.PlanCommand
 import models.plan.PlanId
-import stubs.TestConstants.CONDITIONS
-import stubs.TestConstants.DURATION
+import stubs.TestConstants.PLAN_CONDITIONS
+import stubs.TestConstants.PLAN_DURATION
 import stubs.TestConstants.PLAN_REQUEST
-import stubs.TestConstants.PRICE
-import stubs.TestConstants.PROCESSOR
+import stubs.TestConstants.PLAN_PRICE
+import stubs.TestConstants.PLAN_PROCESSOR
 import stubs.TestConstants.REQUEST_ID
-import stubs.TestConstants.TITLE
-import stubs.TestConstants.VISIBILITY
+import stubs.TestConstants.PLAN_TITLE
+import stubs.TestConstants.PLAN_VISIBILITY
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -34,13 +34,13 @@ class PlanSuccessStubTest {
             requestId = REQUEST_ID,
             planRequest = PLAN_REQUEST
         )
-        PROCESSOR.exec(ctx)
+        PLAN_PROCESSOR.exec(ctx)
         assertEquals(PlanStubs.PLAN1.id, ctx.planResponse.id)
-        assertEquals(TITLE, ctx.planResponse.title)
-        assertEquals(CONDITIONS, ctx.planResponse.conditions)
-        assertEquals(DURATION, ctx.planResponse.duration)
-        assertEquals(PRICE, ctx.planResponse.price)
-        assertEquals(VISIBILITY, ctx.planResponse.visibility)
+        assertEquals(PLAN_TITLE, ctx.planResponse.title)
+        assertEquals(PLAN_CONDITIONS, ctx.planResponse.conditions)
+        assertEquals(PLAN_DURATION, ctx.planResponse.duration)
+        assertEquals(PLAN_PRICE, ctx.planResponse.price)
+        assertEquals(PLAN_VISIBILITY, ctx.planResponse.visibility)
     }
 
     @Test
@@ -53,13 +53,13 @@ class PlanSuccessStubTest {
             requestId = REQUEST_ID,
             planRequest = PLAN_REQUEST
         )
-        PROCESSOR.exec(ctx)
+        PLAN_PROCESSOR.exec(ctx)
         assertEquals(PlanStubs.PLAN1.id, ctx.planResponse.id)
-        assertEquals(TITLE, ctx.planResponse.title)
-        assertEquals(CONDITIONS, ctx.planResponse.conditions)
-        assertEquals(DURATION, ctx.planResponse.duration)
-        assertEquals(PRICE, ctx.planResponse.price)
-        assertEquals(VISIBILITY, ctx.planResponse.visibility)
+        assertEquals(PLAN_TITLE, ctx.planResponse.title)
+        assertEquals(PLAN_CONDITIONS, ctx.planResponse.conditions)
+        assertEquals(PLAN_DURATION, ctx.planResponse.duration)
+        assertEquals(PLAN_PRICE, ctx.planResponse.price)
+        assertEquals(PLAN_VISIBILITY, ctx.planResponse.visibility)
     }
 
     @Test
@@ -75,7 +75,7 @@ class PlanSuccessStubTest {
                 id = planId
             )
         )
-        PROCESSOR.exec(ctx)
+        PLAN_PROCESSOR.exec(ctx)
         val expectedPlan = PlanStubs.PLAN1
         assertEquals(planId, ctx.planResponse.id)
         assertEquals(expectedPlan.title, ctx.planResponse.title)
@@ -94,7 +94,7 @@ class PlanSuccessStubTest {
             stubCase = SbscrStubs.SUCCESS,
             requestId = REQUEST_ID,
         )
-        PROCESSOR.exec(ctx)
+        PLAN_PROCESSOR.exec(ctx)
         val expectedPlan = PlanStubs.PLAN1
         assertEquals(PlanStubs.PLANS.size, ctx.planResponses.size)
         assertEquals(expectedPlan.title, ctx.planResponses[0].title)
@@ -117,7 +117,7 @@ class PlanSuccessStubTest {
                 id = planId
             )
         )
-        PROCESSOR.exec(ctx)
+        PLAN_PROCESSOR.exec(ctx)
         val expectedPlan = PlanStubs.PLAN1
         assertEquals(planId, ctx.planResponse.id)
         assertEquals(expectedPlan.title, ctx.planResponse.title)

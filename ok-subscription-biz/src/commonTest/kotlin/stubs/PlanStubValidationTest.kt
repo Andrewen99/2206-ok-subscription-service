@@ -25,7 +25,7 @@ class PlanStubValidationTest {
                 requestId = TestConstants.REQUEST_ID,
                 planRequest = TestConstants.PLAN_REQUEST
             )
-            TestConstants.PROCESSOR.exec(ctx)
+            TestConstants.PLAN_PROCESSOR.exec(ctx)
             assertEquals(Plan(), ctx.planResponse)
             assertEquals("validation", ctx.errors[0].group)
             assertEquals("title", ctx.errors[0].field)
@@ -44,7 +44,7 @@ class PlanStubValidationTest {
                 requestId = TestConstants.REQUEST_ID,
                 planRequest = TestConstants.PLAN_REQUEST
             )
-            TestConstants.PROCESSOR.exec(ctx)
+            TestConstants.PLAN_PROCESSOR.exec(ctx)
             assertEquals(Plan(), ctx.planResponse)
             assertEquals("validation", ctx.errors[0].group)
             assertEquals("condition", ctx.errors[0].field)
@@ -63,7 +63,7 @@ class PlanStubValidationTest {
                 requestId = TestConstants.REQUEST_ID,
                 planRequest = TestConstants.PLAN_REQUEST
             )
-            TestConstants.PROCESSOR.exec(ctx)
+            TestConstants.PLAN_PROCESSOR.exec(ctx)
             assertEquals(Plan(), ctx.planResponse)
             assertEquals("internal", ctx.errors[0].group)
             assertEquals("internal-db", ctx.errors[0].code)
@@ -81,7 +81,7 @@ class PlanStubValidationTest {
                 requestId = TestConstants.REQUEST_ID,
                 planRequest = TestConstants.PLAN_REQUEST
             )
-            TestConstants.PROCESSOR.exec(ctx)
+            TestConstants.PLAN_PROCESSOR.exec(ctx)
             assertEquals(Plan(), ctx.planResponse)
             assertEquals("validation", ctx.errors[0].group)
             assertEquals("id", ctx.errors[0].field)
