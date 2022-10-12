@@ -1,9 +1,20 @@
 import contexts.SubscriptionContext
 import dsl.rootChain
+import dsl.worker
 import general.operation
+import models.SbscrUserId
+import models.plan.PlanId
 import models.subscription.SubscriptionCommand
+import models.subscription.SubscriptionId
 import stubs.*
 import stubs.subscription.*
+import validation.finishSubscriptionFilterValidation
+import validation.finishSubscriptionValidation
+import validation.subscription.validateIdNotEmpty
+import validation.subscription.validateIdProperFormat
+import validation.subscription.validatePlanIdNotEmpty
+import validation.subscription.validatePlanIdProperFormat
+import validation.validation
 
 class SubscriptionProcessor {
     suspend fun exec(ctx: SubscriptionContext) = SubscriptionChain.exec(ctx)
@@ -20,6 +31,18 @@ class SubscriptionProcessor {
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
+
+                validation {
+                    worker("Копируем поля в SubscriptionValidating") { subscriptionValidating = subscriptionRequest.deepCopy() }
+                    worker("Очистка planId") {
+                        subscriptionValidating.planId = PlanId(subscriptionValidating.planId.asString().trim())
+                    }
+
+                    validatePlanIdNotEmpty("Проверка, что planId не пуст")
+                    validatePlanIdProperFormat("Проверка формата planId")
+
+                    finishSubscriptionValidation("Завершение валидации")
+                }
             }
 
             operation("Оплата подписки", SubscriptionCommand.PAY) {
@@ -30,6 +53,18 @@ class SubscriptionProcessor {
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
+
+                validation {
+                    worker("Копируем поля в SubscriptionValidating") { subscriptionValidating = subscriptionRequest.deepCopy() }
+                    worker("Очистка Id") {
+                        subscriptionValidating.id = SubscriptionId(subscriptionValidating.id.asString().trim())
+                    }
+
+                    validateIdNotEmpty("Проверка, что Id не пуст")
+                    validateIdProperFormat("Проверка формата Id")
+
+                    finishSubscriptionValidation("Завершение валидации")
+                }
             }
 
             operation("Чтение подписки", SubscriptionCommand.READ) {
@@ -38,6 +73,18 @@ class SubscriptionProcessor {
                     stubValidationBadId("Имитация ошибки валидации id подписки")
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
+                }
+
+                validation {
+                    worker("Копируем поля в SubscriptionValidating") { subscriptionValidating = subscriptionRequest.deepCopy() }
+                    worker("Очистка Id") {
+                        subscriptionValidating.id = SubscriptionId(subscriptionValidating.id.asString().trim())
+                    }
+
+                    validateIdNotEmpty("Проверка, что Id не пуст")
+                    validateIdProperFormat("Проверка формата Id")
+
+                    finishSubscriptionValidation("Завершение валидации")
                 }
             }
 
@@ -48,6 +95,16 @@ class SubscriptionProcessor {
                     stubValidationBadSearchParameters("Имитация ошибки валидации фильтра подписок")
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
+                }
+
+                validation {
+                    worker("Копируем поля в SubscriptionFilterValidating") { subscriptionFilterValidating = subscriptionFilter.deepCopy() }
+                    worker("Очистка ownerId и planId") {
+                        subscriptionValidating.ownerId = SbscrUserId(subscriptionValidating.ownerId.asString().trim())
+                        subscriptionValidating.planId = PlanId(subscriptionValidating.planId.asString().trim())
+                    }
+
+                    finishSubscriptionFilterValidation("Завершение валидации")
                 }
             }
         }.build()

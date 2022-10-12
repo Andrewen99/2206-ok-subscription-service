@@ -20,3 +20,20 @@ fun BaseContext.fail(vararg error: SbscrError) {
     errors.addAll(error)
     state = SbscrState.FAILING
 }
+
+fun errorValidation(
+    field: String,
+    /**
+     * Код, характеризующий ошибку. Не должен включать имя поля или указание на валидацию.
+     * Например: empty, badSymbols, tooLong, etc
+     */
+    violationCode: String,
+    description: String,
+    level: SbscrError.Levels = SbscrError.Levels.ERROR
+) = SbscrError(
+    code = "validation-$field-$violationCode",
+    field = field,
+    group = "validation",
+    message = "Validation error for field $field: $description",
+    level = level
+)

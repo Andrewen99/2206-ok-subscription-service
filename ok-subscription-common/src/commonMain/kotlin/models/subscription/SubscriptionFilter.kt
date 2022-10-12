@@ -14,4 +14,9 @@ data class SubscriptionFilter(
     var boughtPeriod: SbscrDatePeriod? = null,
     var expirationPeriod: SbscrDatePeriod? = null,
     var isActive: Boolean? = null
-)
+) {
+    fun deepCopy() = copy(
+        boughtPeriod = boughtPeriod?.copy(),
+        expirationPeriod = expirationPeriod?.copy()
+    )
+}

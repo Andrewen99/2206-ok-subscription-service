@@ -20,6 +20,10 @@ data class PlanContext(
 
     var command: PlanCommand = PlanCommand.NONE,
     var planRequest: Plan = Plan(),
+
+    var planValidating: Plan = Plan(),
+    var planValidated: Plan = Plan(),
+
     var planResponse: Plan = Plan(),
     val planResponses: MutableList<Plan> = mutableListOf(),
 ) : BaseContext
