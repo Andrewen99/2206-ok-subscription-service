@@ -32,7 +32,6 @@ class CorChainDsl<T>(
 
 /**
  * Создает рабочего
- * Метод подсвечивается как DSL (красиво и разноцветно), только если обьявлен как экстеншн, поэтому он вынесен наружу
  */
 fun <T> CorChainDsl<T>.worker(workerDsl: CorWorkerDsl<T>.() -> Unit) {
     add(CorWorkerDsl<T>().apply(workerDsl))

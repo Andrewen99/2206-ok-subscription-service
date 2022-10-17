@@ -1,4 +1,4 @@
-package stubs
+package stubs.subscription
 
 import SubscriptionStubs
 import contexts.SubscriptionContext

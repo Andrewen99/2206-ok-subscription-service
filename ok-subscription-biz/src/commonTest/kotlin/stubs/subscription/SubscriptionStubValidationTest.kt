@@ -1,4 +1,4 @@
-package stubs
+package stubs.subscription
 
 import contexts.SubscriptionContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -8,66 +8,25 @@ import models.SbscrStubs
 import models.SbscrWorkMode
 import models.subscription.Subscription
 import models.subscription.SubscriptionCommand.*
-import models.subscription.SubscriptionFilter
+import stubs.TestConstants
 import stubs.TestConstants.BUY_SUBSCRIPTION_REQUEST
 import stubs.TestConstants.READ_PAY_SUBSCRIPTION_REQUEST
 import stubs.TestConstants.SEARCH_SUBSCRIPTION_REQUEST
-import stubs.TestConstants.SUBSCRIPTION_COMMAND_TO_REQUEST_LIST
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SubscriptionStubValidationTest {
 
-    @Test
-    fun badId() = runTest {
-        SUBSCRIPTION_COMMAND_TO_REQUEST_LIST.forEach { commandToRequest ->
-            val ctx = SubscriptionContext(
-                command = commandToRequest.first,
-                state = SbscrState.NONE,
-                workMode = SbscrWorkMode.STUB,
-                stubCase = SbscrStubs.BAD_ID,
-                requestId = TestConstants.REQUEST_ID,
-            ).apply {
-                if (commandToRequest.first == SEARCH) {
-                    subscriptionFilter = commandToRequest.second as SubscriptionFilter
-                } else {
-                    subscriptionRequest = commandToRequest.second as Subscription
-                }
-            }
-            TestConstants.SUB_PROCESSOR.exec(ctx)
-            assertEquals(Subscription(), ctx.subscriptionResponse)
-            assertTrue(ctx.subscriptionResponses.isEmpty())
-            assertEquals("validation", ctx.errors[0].group)
-            assertEquals("id", ctx.errors[0].field)
-            assertEquals("validation-id", ctx.errors[0].code)
-        }
-    }
+    @Test fun readBadId() = subscriptionStubBadId(READ, READ_PAY_SUBSCRIPTION_REQUEST, null)
+    @Test fun payBadId() = subscriptionStubBadId(PAY, READ_PAY_SUBSCRIPTION_REQUEST, null)
+    @Test fun buyBadId() = subscriptionStubBadId(BUY, BUY_SUBSCRIPTION_REQUEST, null)
+    @Test fun searchBadId() = subscriptionStubBadId(SEARCH, null, SEARCH_SUBSCRIPTION_REQUEST)
 
-    @Test
-    fun dbError() = runTest {
-        SUBSCRIPTION_COMMAND_TO_REQUEST_LIST.forEach { commandToRequest ->
-            val ctx = SubscriptionContext(
-                command = commandToRequest.first,
-                state = SbscrState.NONE,
-                workMode = SbscrWorkMode.STUB,
-                stubCase = SbscrStubs.DB_ERROR,
-                requestId = TestConstants.REQUEST_ID,
-            ).apply {
-                if (commandToRequest.first == SEARCH) {
-                    subscriptionFilter = commandToRequest.second as SubscriptionFilter
-                } else {
-                    subscriptionRequest = commandToRequest.second as Subscription
-                }
-            }
-            TestConstants.SUB_PROCESSOR.exec(ctx)
-            assertEquals(Subscription(), ctx.subscriptionResponse)
-            assertTrue(ctx.subscriptionResponses.isEmpty())
-            assertEquals("internal", ctx.errors[0].group)
-            assertEquals("internal-db", ctx.errors[0].code)
-        }
-    }
+    @Test fun readDbError() = subscriptionStubDbError(READ, READ_PAY_SUBSCRIPTION_REQUEST, null)
+    @Test fun payDbError() = subscriptionStubDbError(PAY, READ_PAY_SUBSCRIPTION_REQUEST, null)
+    @Test fun buyDbError() = subscriptionStubDbError(BUY, BUY_SUBSCRIPTION_REQUEST, null)
+    @Test fun searchDbError() = subscriptionStubDbError(SEARCH, null, SEARCH_SUBSCRIPTION_REQUEST)
 
     @Test
     fun cannotBuy() = runTest {

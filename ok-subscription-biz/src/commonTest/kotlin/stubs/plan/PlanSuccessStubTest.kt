@@ -1,4 +1,4 @@
-package stubs
+package stubs.plan
 
 import PlanStubs
 import contexts.PlanContext
