@@ -3,6 +3,7 @@ package toTransport
 import DATE_FORMATTER
 import contexts.SubscriptionContext
 import exceptions.UnknownAcqSbscrCommand
+import kotlinx.datetime.toJavaLocalDate
 import models.*
 import models.plan.PlanId
 import models.subscription.SbscrPaymentStatus
@@ -28,28 +29,28 @@ fun SubscriptionContext.toTransportSubscription(): IResponse = when (val cmd = c
 
 private fun SubscriptionContext.toTransportBuy(): PlanBuyResponse = PlanBuyResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     subscription = subscriptionResponse.toTransportSubscription()
 )
 
 private fun SubscriptionContext.toTransportSearch(): SubscriptionSearchResponse = SubscriptionSearchResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     subscriptions = subscriptionResponses.toTransportSubscription()
 )
 
 private fun SubscriptionContext.toTransportRead(): SubscriptionReadResponse = SubscriptionReadResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     subscription = subscriptionResponse.toTransportSubscription()
 )
 
 private fun SubscriptionContext.toTransportPay(): SubscriptionPayResponse = SubscriptionPayResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == SbscrState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
     subscription = subscriptionResponse.toTransportSubscription()
 )
@@ -63,8 +64,8 @@ private fun Subscription.toTransportSubscription(): SubscriptionResponseObject =
     SubscriptionResponseObject(
         id = id.takeIf { it != SubscriptionId.NONE }?.asString(),
         planId = planId.takeIf { it != PlanId.NONE }?.asString(),
-        startDate = startDate.takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
-        endDate = endDate.takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
+        startDate = startDate.toJavaLocalDate().takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
+        endDate = endDate.toJavaLocalDate().takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
         isActive = isActive,
         paymentStatus = paymentStatus.toTransportPaymentStatus()
     )

@@ -399,6 +399,8 @@ components:
           properties:
             id:
               $ref: '#/components/schemas/PlanId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
 
     PlanBuyRequest:
       allOf:
@@ -449,6 +451,10 @@ components:
       properties:
         ownerId:
           $ref: '#/components/schemas/UserId'
+        planId:
+          $ref: '#/components/schemas/PlanId'
+        subscriptionId:
+          $ref: '#/components/schemas/SubscriptionId'
         boughtPeriod:
           $ref: '#/components/schemas/FromToDateObject'
         expirationPeriod:
@@ -487,6 +493,8 @@ components:
           $ref: '#/components/schemas/SubscriptionId'
         planId:
           $ref: '#/components/schemas/PlanId'
+        ownerId:
+          $ref: '#/components/schemas/UserId'
         startDate:
           description: Дата приобретения/включения подписки в формате дд.мм.гггг
           type: string
@@ -624,4 +632,6 @@ components:
         - badVisibility
         - cannotDelete
         - cannotBuy
-        - badSearchString
+        - badSearchParameters
+        - paymentError
+        - dbError

@@ -21,9 +21,15 @@ data class SubscriptionContext(
 
 
     var command: SubscriptionCommand = SubscriptionCommand.NONE,
-    var planId: PlanId = PlanId.NONE,
     var subscriptionRequest: Subscription = Subscription(),
     var subscriptionFilter: SubscriptionFilter = SubscriptionFilter(),
+
+    var subscriptionValidating: Subscription = Subscription(),
+    var subscriptionValidated: Subscription = Subscription(),
+
+    var subscriptionFilterValidating: SubscriptionFilter = SubscriptionFilter(),
+    var subscriptionFilterValidated: SubscriptionFilter = SubscriptionFilter(),
+
     var subscriptionResponse: Subscription = Subscription(),
     val subscriptionResponses: MutableList<Subscription> = mutableListOf()
 ) : BaseContext

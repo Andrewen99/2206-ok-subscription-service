@@ -1,5 +1,6 @@
 import contexts.SubscriptionContext
 import exceptions.UnknownRequestClass
+import kotlinx.datetime.toKotlinLocalDate
 import models.*
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionFilter
@@ -26,7 +27,7 @@ fun SubscriptionContext.fromTransport(request: IRequest) {
 fun SubscriptionContext.fromTransport(request: PlanBuyRequest) {
     command = SubscriptionCommand.BUY
     requestId = request.requestId()
-    planId = request.plan?.id.toPlanId()
+    subscriptionRequest.planId = request.plan?.id.toPlanId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
@@ -58,6 +59,8 @@ fun SubscriptionContext.fromTransport(request: SubscriptionPayRequest) {
 private fun SubscriptionSearchFilter.toInternal(): SubscriptionFilter = SubscriptionFilter(
     ownerId = this.ownerId.toSbscrUserId(),
     boughtPeriod = this.boughtPeriod?.toInternalOrNull(),
+    planId = this.planId.toPlanId(),
+    subscriptionId = this.subscriptionId.toSubscriptionId(),
     expirationPeriod = this.boughtPeriod?.toInternalOrNull(),
     isActive = this.isActive
 )
@@ -65,8 +68,8 @@ private fun SubscriptionSearchFilter.toInternal(): SubscriptionFilter = Subscrip
 private fun FromToDateObject.toInternalOrNull(): SbscrDatePeriod? {
     if (!this.from.isNullOrBlank() && !this.to.isNullOrBlank()) {
         return SbscrDatePeriod(
-            LocalDate.parse(this.from, DATE_FORMATTER),
-            LocalDate.parse(this.to, DATE_FORMATTER)
+            LocalDate.parse(this.from, DATE_FORMATTER).toKotlinLocalDate(),
+            LocalDate.parse(this.to, DATE_FORMATTER).toKotlinLocalDate()
         )
     }
     return null
