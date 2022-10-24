@@ -1,4 +1,4 @@
-package ru.otus
+package ru.otus.rest
 
 import PlanStubs
 import io.ktor.client.call.*
@@ -6,6 +6,13 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import org.junit.Test
+import ru.otus.ReqConstants.PLAN_BUY_REQ
+import ru.otus.ReqConstants.PLAN_CREATE_REQ
+import ru.otus.ReqConstants.PLAN_DELETE_REQ
+import ru.otus.ReqConstants.PLAN_READ_ALL_REQ
+import ru.otus.ReqConstants.PLAN_READ_REQ
+import ru.otus.ReqConstants.PLAN_UPDATE_REQ
+import ru.otus.myRestClient
 import ru.otuskotlin.subscription.api.v1.models.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -14,7 +21,7 @@ class PlanRoutesTest {
 
     @Test
     fun `create route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
 
         val response = client.post("/plan/create") {
             contentType(ContentType.Application.Json)
@@ -30,7 +37,7 @@ class PlanRoutesTest {
 
     @Test
     fun `update route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
         val response = client.post("/plan/update") {
             contentType(ContentType.Application.Json)
             setBody(PLAN_UPDATE_REQ)
@@ -46,7 +53,7 @@ class PlanRoutesTest {
 
     @Test
     fun `read route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
         val response = client.post("/plan/read") {
             contentType(ContentType.Application.Json)
             setBody(PLAN_READ_REQ)
@@ -62,7 +69,7 @@ class PlanRoutesTest {
 
     @Test
     fun `readAll route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
         val response = client.post("/plan/readAll") {
             contentType(ContentType.Application.Json)
             setBody(PLAN_READ_ALL_REQ)
@@ -78,7 +85,7 @@ class PlanRoutesTest {
 
     @Test
     fun `delete route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
         val response = client.post("/plan/delete") {
             contentType(ContentType.Application.Json)
             setBody(PLAN_DELETE_REQ)
@@ -94,7 +101,7 @@ class PlanRoutesTest {
 
     @Test
     fun `buy route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
         val response = client.post("/plan/buy") {
             contentType(ContentType.Application.Json)
             setBody(PLAN_BUY_REQ)
@@ -109,60 +116,4 @@ class PlanRoutesTest {
     }
 
     
-    companion object {
-
-        val PLAN_CREATE_REQ = PlanCreateRequest(
-            requestType = "create",
-            requestId = "req123",
-            debug = DEBUG,
-            plan = PlanCreateObject(
-                title = "1 month plan",
-                conditions = setOf("Surprises", "Good mood"),
-                duration = 1,
-                price = "500",
-                visibility = PlanVisibility.PUBLIC
-            )
-        )
-
-        val PLAN_UPDATE_REQ = PlanUpdateRequest(
-            requestType = "update",
-            requestId = "req123",
-            debug = DEBUG,
-            plan = PlanUpdateObject(
-                title = "1 month plan",
-                conditions =  setOf("Surprises", "Good mood"),
-                duration = 1,
-                price = "500",
-                visibility = PlanVisibility.PUBLIC,
-                id = "plan1"
-            )
-        )
-
-        val PLAN_READ_REQ = PlanReadRequest(
-            requestType = "read",
-            requestId = "req123",
-            debug = DEBUG,
-            plan = PlanReadObject("plan1")
-        )
-
-        val PLAN_READ_ALL_REQ = PlanReadAllRequest(
-            requestType = "readAll",
-            requestId = "req123",
-            debug = DEBUG
-        )
-
-        val PLAN_DELETE_REQ = PlanDeleteRequest(
-            requestType = "delete",
-            requestId = "req123",
-            debug = DEBUG,
-            plan = PlanDeleteObject("plan1")
-        )
-
-        val PLAN_BUY_REQ = PlanBuyRequest(
-            requestType = "buy",
-            requestId = "req123",
-            debug = DEBUG,
-            plan = PlanBuyObject("plan1")
-        )
-    }
 }
