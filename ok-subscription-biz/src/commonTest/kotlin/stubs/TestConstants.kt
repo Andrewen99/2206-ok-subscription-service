@@ -33,7 +33,7 @@ object TestConstants {
 
     val SUB_PROCESSOR: SubscriptionProcessor
         get() = SubscriptionProcessor()
-    val SUB_ID = SubscriptionId("sub111")
+    val SUB_ID = SubscriptionId("sub-111")
     val READ_PAY_SUBSCRIPTION_REQUEST: Subscription
         get() = Subscription(
             id = SUB_ID

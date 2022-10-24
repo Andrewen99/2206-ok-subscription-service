@@ -258,6 +258,7 @@ components:
           subscriptionRead: '#/components/schemas/SubscriptionReadResponse'
           subscriptionSearch: '#/components/schemas/SubscriptionSearchResponse'
           subscriptionPay: '#/components/schemas/SubscriptionPayResponse'
+          wsInitResponse: '#/components/schemas/WsInitResponse'
 
     UserId:
       type: string
@@ -550,6 +551,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/SubscriptionResponseObject'
+
+    WsInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
 
     PlanCreateResponse:
       allOf:

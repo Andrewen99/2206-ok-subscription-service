@@ -1,22 +1,11 @@
 package ru.otus
 
 import PlanStubs
-import SubscriptionStubs
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.serialization.jackson.*
-import io.ktor.server.application.*
 import io.ktor.server.testing.*
-import io.ktor.util.reflect.*
-import models.plan.Plan
 import org.junit.Test
-import ru.otus.plugins.configureRouting
-import ru.otus.plugins.configureSerialization
 import ru.otuskotlin.subscription.api.v1.models.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

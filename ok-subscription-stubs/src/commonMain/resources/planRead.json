@@ -1,0 +1,12 @@
+{
+  "requestType": "planRead",
+  "requestId": "id-123",
+  "stubCase": "SUCCESS",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "plan": {
+    "id": "plan-id-123"
+  }
+}

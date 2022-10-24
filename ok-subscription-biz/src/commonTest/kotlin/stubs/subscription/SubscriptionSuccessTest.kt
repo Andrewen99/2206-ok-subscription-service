@@ -13,6 +13,7 @@ import stubs.TestConstants.PLAN_ID
 import stubs.TestConstants.READ_PAY_SUBSCRIPTION_REQUEST
 import stubs.TestConstants.REQUEST_ID
 import stubs.TestConstants.SEARCH_SUBSCRIPTION_REQUEST
+import stubs.TestConstants.SUB_ID
 import stubs.TestConstants.SUB_PROCESSOR
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -52,7 +53,7 @@ class SubscriptionSuccessTest {
         )
         val expectedSub = SubscriptionStubs.SUBSCRIPTION1
         SUB_PROCESSOR.exec(ctx)
-        assertEquals(expectedSub.id, ctx.subscriptionResponse.id)
+        assertEquals(SUB_ID, ctx.subscriptionResponse.id)
         assertEquals(expectedSub.startDate, ctx.subscriptionResponse.startDate)
         assertEquals(expectedSub.endDate, ctx.subscriptionResponse.endDate)
         assertEquals(expectedSub.isActive, true)
@@ -71,7 +72,7 @@ class SubscriptionSuccessTest {
         )
         val expectedSub = SubscriptionStubs.SUBSCRIPTION1
         SUB_PROCESSOR.exec(ctx)
-        assertEquals(expectedSub.id, ctx.subscriptionResponse.id)
+        assertEquals(SUB_ID, ctx.subscriptionResponse.id)
         assertEquals(expectedSub.startDate, ctx.subscriptionResponse.startDate)
         assertEquals(expectedSub.endDate, ctx.subscriptionResponse.endDate)
         assertEquals(expectedSub.isActive, true)

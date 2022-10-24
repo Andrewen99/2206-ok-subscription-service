@@ -10,5 +10,4 @@ fun <T : BaseContext> CorChainDsl<T>.stubs(title: String, block: CorChainDsl<T>.
     this.title = title
     on { workMode == SbscrWorkMode.STUB && state == SbscrState.RUNNING }
     block()
-
 }
