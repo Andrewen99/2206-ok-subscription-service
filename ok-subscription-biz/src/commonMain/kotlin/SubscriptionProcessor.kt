@@ -4,8 +4,10 @@ import dsl.worker
 import general.operation
 import models.SbscrUserId
 import models.plan.PlanId
+import models.plan.PlanRepoSettings
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionId
+import models.subscription.SubscriptionRepoSettings
 import stubs.*
 import stubs.subscription.*
 import validation.finishSubscriptionFilterValidation
@@ -16,12 +18,14 @@ import validation.subscription.validatePlanIdNotEmpty
 import validation.subscription.validatePlanIdProperFormat
 import validation.validation
 
-class SubscriptionProcessor {
-    suspend fun exec(ctx: SubscriptionContext) = SubscriptionChain.exec(ctx)
+class SubscriptionProcessor(private val repoSettings: SubscriptionRepoSettings = SubscriptionRepoSettings()) {
+    suspend fun exec(ctx: SubscriptionContext) = SubscriptionChain.exec(ctx.apply { this.subscriptionRepoSettings = repoSettings })
 
     companion object {
+        @Suppress("DuplicatedCode")
         private val SubscriptionChain = rootChain<SubscriptionContext> {
             initStatus("Инициализация цепи")
+            initRepo("Инициализация репозитория")
 
             operation("Приобретение подписки", SubscriptionCommand.BUY) {
                 stubs("Обработка стабов"){

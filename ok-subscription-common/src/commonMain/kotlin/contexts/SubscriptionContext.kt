@@ -7,6 +7,8 @@ import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionFilter
 import models.subscription.Subscription
 import models.plan.PlanId
+import models.subscription.SubscriptionRepoSettings
+import repo.subscription.ISubscriptionRepository
 
 /**
  * Контекст для приобретенных/приобретаемых подписок
@@ -17,8 +19,10 @@ data class SubscriptionContext(
     override var workMode: SbscrWorkMode = SbscrWorkMode.PROD,
     override var stubCase: SbscrStubs = SbscrStubs.NONE,
     override var requestId: SbscrRequestId = SbscrRequestId.NONE,
-    override var timeStart: Instant = Instant.NONE, //пока нигде не используется
+    override var timeStart: Instant = Instant.NONE,
 
+    var subscriptionRepoSettings: SubscriptionRepoSettings = SubscriptionRepoSettings(),
+    var subscriptionRepo: ISubscriptionRepository = ISubscriptionRepository.NONE,
 
     var command: SubscriptionCommand = SubscriptionCommand.NONE,
     var subscriptionRequest: Subscription = Subscription(),

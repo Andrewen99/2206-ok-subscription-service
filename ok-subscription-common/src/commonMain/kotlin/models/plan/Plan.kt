@@ -9,6 +9,7 @@ data class Plan(
     val conditions: MutableSet<String> = mutableSetOf(),
     var duration: Int = 0,
     var price: String = "0",
+    var lock: PlanLock = PlanLock.NONE,
     var visibility: SbscrPlanVisibility = SbscrPlanVisibility.NONE
 ) {
     fun deepCopy() = copy(

@@ -4,18 +4,21 @@ import dsl.worker
 import general.operation
 import models.plan.PlanCommand
 import models.plan.PlanId
+import models.plan.PlanRepoSettings
 import stubs.*
 import stubs.plan.*
 import validation.finishPlanValidation
 import validation.plan.*
 import validation.validation
 
-class PlanProcessor {
-    suspend fun exec(ctx: PlanContext) = PlanChain.exec(ctx)
+class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSettings()) {
+    suspend fun exec(ctx: PlanContext) = PlanChain.exec(ctx.apply { this.planRepoSettings = repoSettings })
 
     companion object {
+        @Suppress("DuplicatedCode")
         private val PlanChain = rootChain<PlanContext> {
             initStatus("Инициализация цепи")
+            initRepo("Инициализация репозитория")
 
             operation("Создание плана", PlanCommand.CREATE) {
                 stubs("Обработка стабов") {
