@@ -6,7 +6,7 @@ import models.subscription.SubscriptionLock
 
 data class DbSubscriptionIdRequest(
     val id: SubscriptionId,
-    val lock: SubscriptionLock
+    val lock: SubscriptionLock = SubscriptionLock.NONE
 ) {
     constructor(subscription: Subscription): this(subscription.id, subscription.lock)
 }
