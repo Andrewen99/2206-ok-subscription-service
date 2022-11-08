@@ -18,7 +18,7 @@ class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSetting
         @Suppress("DuplicatedCode")
         private val PlanChain = rootChain<PlanContext> {
             initStatus("Инициализация цепи")
-            initRepo("Инициализация репозитория")
+//            initPlanRepo("Инициализация репозитория")
 
             operation("Создание плана", PlanCommand.CREATE) {
                 stubs("Обработка стабов") {

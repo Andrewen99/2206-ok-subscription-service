@@ -15,5 +15,7 @@ data class Plan(
     fun deepCopy() = copy(
         conditions = conditions.toMutableSet()
     )
+
+
 }
 

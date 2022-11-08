@@ -1,6 +1,6 @@
 package models.subscription
 
-import MIN_LOCAL_DATE
+import util.MIN_LOCAL_DATE
 import kotlinx.datetime.LocalDate
 import models.SbscrUserId
 import models.plan.PlanId

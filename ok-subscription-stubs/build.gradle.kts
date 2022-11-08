@@ -9,7 +9,7 @@ version = rootProject.version
 
 kotlin {
     jvm {}
-    macosX64 {}
+//    macosX64 {}
     linuxX64 {}
 
     sourceSets {

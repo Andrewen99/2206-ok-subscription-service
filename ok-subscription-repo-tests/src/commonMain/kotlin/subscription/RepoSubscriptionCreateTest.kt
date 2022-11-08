@@ -2,11 +2,9 @@ package subscription
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import models.SbscrUserId
-import models.plan.Plan
 import models.plan.PlanId
 import models.subscription.Subscription
 import models.subscription.SubscriptionId
-import models.subscription.SubscriptionLock
 import repo.subscription.DbSubscriptionRequest
 import repo.subscription.ISubscriptionRepository
 import runRepoTest
@@ -19,7 +17,6 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoSubscriptionCreateTest {
     abstract val repo: ISubscriptionRepository
-    protected open val lockNew = SubscriptionLock("200_000_001")
 
     protected open val createObj = Subscription(
         planId = PlanId("plan-id-123"),

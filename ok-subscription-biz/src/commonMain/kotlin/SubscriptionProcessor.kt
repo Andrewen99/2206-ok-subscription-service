@@ -4,7 +4,6 @@ import dsl.worker
 import general.operation
 import models.SbscrUserId
 import models.plan.PlanId
-import models.plan.PlanRepoSettings
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionId
 import models.subscription.SubscriptionRepoSettings
@@ -25,7 +24,7 @@ class SubscriptionProcessor(private val repoSettings: SubscriptionRepoSettings =
         @Suppress("DuplicatedCode")
         private val SubscriptionChain = rootChain<SubscriptionContext> {
             initStatus("Инициализация цепи")
-            initRepo("Инициализация репозитория")
+//            initSubscriptionRepo("Инициализация репозитория")
 
             operation("Приобретение подписки", SubscriptionCommand.BUY) {
                 stubs("Обработка стабов"){

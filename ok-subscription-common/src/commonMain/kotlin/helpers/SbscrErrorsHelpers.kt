@@ -1,8 +1,11 @@
 package helpers
 
 import contexts.BaseContext
+import exceptions.RepoConcurrencyException
 import models.SbscrError
 import models.SbscrState
+import models.plan.PlanLock
+import models.subscription.SubscriptionLock
 
 fun Throwable.asSbscrError(
     code: String = "unknown",
@@ -55,4 +58,16 @@ fun errorAdministration(
     message = "Microservice management error: $description",
     level = level,
     exception = exception,
+)
+
+fun errorRepoConcurrency(
+    expectedLock: String,
+    actualLock: String?,
+    exception: Exception? = null,
+) = SbscrError(
+    field = "lock",
+    code = "concurrency",
+    group = "repo",
+    message = "The object has been changed concurrently by another user or process",
+    exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )

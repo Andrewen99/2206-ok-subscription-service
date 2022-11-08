@@ -15,7 +15,6 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoPlanCreateTest {
     abstract val repo: IPlanRepository
-    protected open val lockNew = PlanLock("200_000_001")
 
     protected open val createObj = Plan(
         title = "create object",

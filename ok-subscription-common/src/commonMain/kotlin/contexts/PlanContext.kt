@@ -4,7 +4,7 @@ import kotlinx.datetime.Instant
 import models.*
 import models.plan.Plan
 import models.plan.PlanCommand
-import NONE
+import util.NONE
 import models.plan.PlanRepoSettings
 import repo.plan.IPlanRepository
 

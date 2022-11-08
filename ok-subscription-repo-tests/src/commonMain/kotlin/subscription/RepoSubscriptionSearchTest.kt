@@ -57,7 +57,7 @@ abstract class RepoSubscriptionSearchTest {
 
     @Test
     fun searchPlanId() = runRepoTest {
-        val result = repo.searchSubscription(DbSubscriptionFilterRequest(specialPlanId))
+        val result = repo.searchSubscription(DbSubscriptionFilterRequest(planId = specialPlanId))
         assertTrue(result.success)
         assertEquals(
             initializedObjects.filter { it.planId == specialPlanId },
@@ -68,7 +68,7 @@ abstract class RepoSubscriptionSearchTest {
 
     @Test
     fun searchOwnerId() = runRepoTest {
-        val result = repo.searchSubscription(DbSubscriptionFilterRequest(specialUserId))
+        val result = repo.searchSubscription(DbSubscriptionFilterRequest(ownerId = specialUserId))
         assertTrue(result.success)
         assertEquals(
             initializedObjects.filter { it.ownerId == specialUserId },

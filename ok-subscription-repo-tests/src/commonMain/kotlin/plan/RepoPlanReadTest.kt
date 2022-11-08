@@ -1,5 +1,6 @@
 package plan
 
+import createNotFoundAssertionErrorText
 import kotlinx.coroutines.runBlocking
 import models.SbscrError
 import models.plan.Plan
@@ -28,9 +29,9 @@ abstract class RepoPlanReadTest {
 
         assertFalse(result.success)
         assertEquals(null, result.data)
-        assertEquals(
-            listOf(SbscrError(field = "id", code = "Not Found")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "id" && it.group == "repo" && it.code == "not-found" },
+            createNotFoundAssertionErrorText(result.errors)
         )
     }
 

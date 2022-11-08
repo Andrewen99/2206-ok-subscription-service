@@ -1,6 +1,6 @@
 package models
 
-import MIN_LOCAL_DATE
+import util.MIN_LOCAL_DATE
 import kotlinx.datetime.LocalDate
 
 

@@ -1,6 +1,5 @@
 package validation.plan
 
-import PRICE_FORMAT_REGEX
 import PlanProcessor
 import contexts.PlanContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi

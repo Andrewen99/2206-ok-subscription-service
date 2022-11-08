@@ -1,12 +1,11 @@
 package contexts
 
-import NONE
+import util.NONE
 import kotlinx.datetime.Instant
 import models.*
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionFilter
 import models.subscription.Subscription
-import models.plan.PlanId
 import models.subscription.SubscriptionRepoSettings
 import repo.subscription.ISubscriptionRepository
 

@@ -1,5 +1,7 @@
 package subscription
 
+import createConcurrencyAssertionErrorText
+import createNotFoundAssertionErrorText
 import models.SbscrError
 import models.SbscrUserId
 import models.plan.PlanId
@@ -8,6 +10,7 @@ import models.subscription.SbscrPaymentStatus
 import models.subscription.Subscription
 import models.subscription.SubscriptionId
 import models.subscription.SubscriptionLock
+import plan.RepoPlanUpdateTest
 import repo.subscription.DbSubscriptionIdRequest
 import repo.subscription.DbSubscriptionRequest
 import repo.subscription.ISubscriptionRepository
@@ -21,9 +24,6 @@ abstract class RepoSubscriptionUpdateTest {
     abstract val repo: ISubscriptionRepository
     protected open val updateSucc = initObjects[0]
     protected open val updateConc = initObjects[1]
-
-    protected open val lockNew = SubscriptionLock("200_000_001")
-    protected open val lockBad = SubscriptionLock("200_000_009")
 
     private val reqUpdateSucc by lazy {
         Subscription(
@@ -40,7 +40,8 @@ abstract class RepoSubscriptionUpdateTest {
 
     private val reqUpdateNotFound by lazy {
         Subscription(
-            id = updateIdNotFound
+            id = updateIdNotFound,
+            lock = initObjects[0].lock
         )
     }
 
@@ -68,16 +69,16 @@ abstract class RepoSubscriptionUpdateTest {
         assertEquals(reqUpdateSucc.endDate, result.data?.endDate)
         assertEquals(reqUpdateSucc.paymentStatus, result.data?.paymentStatus)
         assertEquals(emptyList(), result.errors)
-        assertEquals(reqUpdateSucc.lock, result.data?.lock)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     @Test
     fun updateNotFound() = runRepoTest {
         val result = repo.updateSubscription(DbSubscriptionRequest(reqUpdateNotFound))
         assertFalse(result.success)
-        assertEquals(
-            listOf(SbscrError(field = "id", code = "notFound")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "id" && it.group == "repo" && it.code == "not-found" },
+            createNotFoundAssertionErrorText(result.errors)
         )
     }
 
@@ -85,9 +86,9 @@ abstract class RepoSubscriptionUpdateTest {
     fun updateConcurrencyError() = runRepoTest {
         val result = repo.updateSubscription(DbSubscriptionRequest(reqUpdateConc))
         assertFalse(result.success)
-        assertEquals(
-            listOf(SbscrError(field = "lock", code= "concurrency")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "lock" && it.group == "repo" && it.code == "concurrency" },
+            createConcurrencyAssertionErrorText(result.errors)
         )
     }
 

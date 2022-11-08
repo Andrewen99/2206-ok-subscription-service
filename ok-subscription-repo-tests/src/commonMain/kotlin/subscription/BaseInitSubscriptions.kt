@@ -12,7 +12,8 @@ import util.getNextMonthAsLocalDate
 import util.getYesterdayAsLocalDate
 
 abstract class BaseInitSubscriptions(val op: String): IInitObjects<Subscription> {
-    open val lockOld: SubscriptionLock = SubscriptionLock("200_000_001")
+    open val lockOld: SubscriptionLock = SubscriptionLock("200_000_000")
+    open val lockNew: SubscriptionLock = SubscriptionLock("200_000_001")
     open val lockBad: SubscriptionLock = SubscriptionLock("200_000_009")
 
     fun createInitTestModel(

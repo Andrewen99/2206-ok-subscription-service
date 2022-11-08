@@ -1,5 +1,8 @@
 package plan
 
+
+import createConcurrencyAssertionErrorText
+import createNotFoundAssertionErrorText
 import models.SbscrError
 import models.plan.Plan
 import models.plan.PlanId
@@ -17,9 +20,6 @@ abstract class RepoPlanUpdateTest {
     abstract val repo: IPlanRepository
     protected open val updateSucc = initObjects[0]
     protected open val updateConc = initObjects[1]
-
-    protected open val lockNew = PlanLock("200_000_001")
-    protected open val lockBad = PlanLock("200_000_009")
 
     private val reqUpdateSucc by lazy {
         Plan(
@@ -75,9 +75,9 @@ abstract class RepoPlanUpdateTest {
         val result = repo.updatePlan(DbPlanRequest(reqUpdateNotFound))
         assertFalse(result.success)
         assertEquals(null, result.data)
-        assertEquals(
-            listOf(SbscrError(field = "id", code = "Not Found")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "id" && it.group == "repo" && it.code == "not-found" },
+            createNotFoundAssertionErrorText(result.errors)
         )
     }
 
@@ -85,10 +85,9 @@ abstract class RepoPlanUpdateTest {
     fun updateConcurrencyError() = runRepoTest {
         val result = repo.updatePlan(DbPlanRequest(reqUpdateConc))
         assertFalse(result.success)
-        assertEquals(null, result.data)
-        assertEquals(
-            listOf(SbscrError(field = "lock", code = "concurrency")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "lock" && it.group == "repo" && it.code == "concurrency" },
+            createConcurrencyAssertionErrorText(result.errors)
         )
     }
 

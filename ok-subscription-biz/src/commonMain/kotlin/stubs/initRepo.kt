@@ -9,7 +9,7 @@ import helpers.fail
 import models.SbscrWorkMode
 import repo.plan.IPlanRepository
 
-fun CorChainDsl<PlanContext>.initRepo(title: String) = worker {
+fun CorChainDsl<PlanContext>.initPlanRepo(title: String) = worker {
     this.title = title
     description = """
         Вычисление основного рабочего репозитория в зависимости от зпрошенного режима работы        
@@ -31,7 +31,7 @@ fun CorChainDsl<PlanContext>.initRepo(title: String) = worker {
     }
 }
 
-fun CorChainDsl<SubscriptionContext>.initRepo(title: String) = worker {
+fun CorChainDsl<SubscriptionContext>.initSubscriptionRepo(title: String) = worker {
     this.title = title
     description = """
         Вычисление основного рабочего репозитория в зависимости от зпрошенного режима работы        

@@ -7,5 +7,5 @@ import repo.IDbResponse
 data class DbSubscriptionResponse(
     override val data: Subscription?,
     override val success: Boolean,
-    override val errors: List<SbscrError>
+    override val errors: List<SbscrError> = emptyList()
 ) : IDbResponse<Subscription>

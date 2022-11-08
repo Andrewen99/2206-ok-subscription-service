@@ -12,7 +12,8 @@ import models.subscription.SubscriptionId
  */
 abstract class BaseInitPlans(val op: String): IInitObjects<Plan> {
 
-    open val lockOld: PlanLock = PlanLock("200_000_001")
+    open val lockOld: PlanLock = PlanLock("200_000_000")
+    open val lockNew: PlanLock = PlanLock("200_000_001")
     open val lockBad: PlanLock = PlanLock("200_000_009")
 
     fun createInitTestModel(

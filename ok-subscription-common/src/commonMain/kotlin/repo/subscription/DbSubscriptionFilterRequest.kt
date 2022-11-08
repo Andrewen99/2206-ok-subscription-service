@@ -9,21 +9,19 @@ import models.subscription.SubscriptionFilter
 data class DbSubscriptionFilterRequest(
     val filter: SubscriptionFilter
 ) {
-    constructor(startPeriod: SbscrDatePeriod?, endPeriod: SbscrDatePeriod?) : this(
+    constructor(
+        planId: PlanId = PlanId.NONE,
+        ownerId: SbscrUserId = SbscrUserId.NONE,
+        isActive: Boolean? = null,
+        startPeriod: SbscrDatePeriod? = null,
+        endPeriod: SbscrDatePeriod? = null
+    ) : this(
         SubscriptionFilter(
-        boughtPeriod = startPeriod,
-        expirationPeriod = endPeriod
-    )
-    )
-    constructor(planId: PlanId) : this(
-        SubscriptionFilter(planId = planId)
-    )
-
-    constructor(ownerId: SbscrUserId) : this(
-        SubscriptionFilter(ownerId = ownerId)
-    )
-
-    constructor(isActive: Boolean) : this(
-        SubscriptionFilter(isActive = isActive)
+            planId = planId,
+            ownerId = ownerId,
+            isActive = isActive,
+            boughtPeriod = startPeriod,
+            expirationPeriod = endPeriod
+        )
     )
 }

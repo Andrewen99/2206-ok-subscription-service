@@ -1,8 +1,8 @@
 package validation.plan
 
-import ID_FORMAT_REGEX
-import PRICE_FORMAT_REGEX
-import HAS_CONTENT_REGEX
+import util.ID_FORMAT_REGEX
+import util.PRICE_FORMAT_REGEX
+import util.HAS_CONTENT_REGEX
 import contexts.PlanContext
 import dsl.CorChainDsl
 import dsl.worker

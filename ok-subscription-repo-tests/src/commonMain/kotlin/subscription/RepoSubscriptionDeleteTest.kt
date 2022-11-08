@@ -1,5 +1,7 @@
 package subscription
 
+import createConcurrencyAssertionErrorText
+import createNotFoundAssertionErrorText
 import models.SbscrError
 import models.SbscrUserId
 import models.plan.PlanId
@@ -7,6 +9,7 @@ import models.plan.PlanId
 import models.subscription.Subscription
 import models.subscription.SubscriptionId
 import models.subscription.SubscriptionLock
+import plan.RepoPlanDeleteTest
 import repo.subscription.DbSubscriptionIdRequest
 import repo.subscription.ISubscriptionRepository
 import runRepoTest
@@ -31,12 +34,12 @@ abstract class RepoSubscriptionDeleteTest {
 
     @Test
     fun deleteNotFound() = runRepoTest {
-        val result = repo.deleteSubscription(DbSubscriptionIdRequest(notFoundId))
+        val result = repo.deleteSubscription(DbSubscriptionIdRequest(notFoundId, lock = lockOld))
 
         assertFalse(result.success)
-        assertEquals(
-            listOf(SbscrError(code = "notFound", field = "id")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "id" && it.group == "repo" && it.code == "not-found" },
+            createNotFoundAssertionErrorText(result.errors)
         )
     }
 
@@ -45,9 +48,9 @@ abstract class RepoSubscriptionDeleteTest {
         val result = repo.deleteSubscription(DbSubscriptionIdRequest(deleteConc.id, lockBad))
 
         assertFalse(result.success)
-        assertEquals(
-            listOf(SbscrError(code = "concurrency", field = "lock")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "lock" && it.group == "repo" && it.code == "concurrency" },
+            createConcurrencyAssertionErrorText(result.errors)
         )
     }
 

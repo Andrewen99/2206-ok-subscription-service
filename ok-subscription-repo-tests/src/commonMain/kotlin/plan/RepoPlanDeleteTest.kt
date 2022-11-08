@@ -1,8 +1,11 @@
 package plan
 
+import createConcurrencyAssertionErrorText
+import createNotFoundAssertionErrorText
 import models.SbscrError
 import models.plan.Plan
 import models.plan.PlanId
+import models.plan.PlanLock
 import repo.plan.DbPlanIdRequest
 import repo.plan.IPlanRepository
 import runRepoTest
@@ -27,12 +30,12 @@ abstract class RepoPlanDeleteTest {
 
     @Test
     fun deleteNotFound() = runRepoTest {
-        val result = repo.deletePlan(DbPlanIdRequest(notFoundId))
+        val result = repo.deletePlan(DbPlanIdRequest(id = notFoundId, lock = lockOld))
 
         assertFalse(result.success)
-        assertEquals(
-            listOf(SbscrError(code = "notFound", field = "id")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "id" && it.group == "repo" && it.code == "not-found" },
+            createNotFoundAssertionErrorText(result.errors)
         )
     }
 
@@ -41,9 +44,9 @@ abstract class RepoPlanDeleteTest {
         val result = repo.deletePlan(DbPlanIdRequest(deleteConc.id, lockBad))
 
         assertFalse(result.success)
-        assertEquals(
-            listOf(SbscrError(code = "concurrency", field = "lock")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "lock" && it.group == "repo" && it.code == "concurrency" },
+            createConcurrencyAssertionErrorText(result.errors)
         )
     }
 

@@ -1,5 +1,6 @@
 package subscription
 
+import createNotFoundAssertionErrorText
 import models.SbscrError
 import models.SbscrUserId
 import models.plan.PlanId
@@ -35,9 +36,9 @@ abstract class RepoSubscriptionReadTest {
 
         assertFalse(result.success)
         assertEquals(null, result.data)
-        assertEquals(
-            listOf(SbscrError(field = "id", code= "notFound")),
-            result.errors
+        assertTrue(
+            result.errors.any { it.field == "id" && it.group == "repo" && it.code == "not-found" },
+            createNotFoundAssertionErrorText(result.errors)
         )
     }
 
