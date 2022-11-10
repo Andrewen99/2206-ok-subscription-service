@@ -29,7 +29,7 @@ fun Application.module(
         )
     }
 
-    val planProcessor = PlanProcessor(repoSettings.planRepoSettings)
+    val planProcessor = PlanProcessor(repoSettings)
     val subscriptionProcessor = SubscriptionProcessor(repoSettings)
 
     configureSerialization()

@@ -13,7 +13,7 @@ fun CorChainDsl<PlanContext>.repoDelete(title: String) = worker {
     handle {
         val request = DbPlanIdRequest(planRepoPrepare)
         val result = planRepo.deletePlan(request)
-        if (result.success) {
+        if (!result.success) {
             state = SbscrState.FAILING
             errors.addAll(result.errors)
         }

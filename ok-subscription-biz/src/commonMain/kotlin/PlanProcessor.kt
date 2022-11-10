@@ -4,6 +4,7 @@ import dsl.rootChain
 import dsl.worker
 import general.operation
 import general.plan.prepareResult
+import models.RepoSettings
 import models.SbscrState
 import models.plan.PlanCommand
 import models.plan.PlanId
@@ -15,8 +16,8 @@ import validation.finishPlanValidation
 import validation.plan.*
 import validation.validation
 
-class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSettings()) {
-    suspend fun exec(ctx: PlanContext) = PlanChain.exec(ctx.apply { this.planRepoSettings = repoSettings })
+class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
+    suspend fun exec(ctx: PlanContext) = PlanChain.exec(ctx.apply { this.planRepoSettings = repoSettings.planRepoSettings })
 
     companion object {
         @Suppress("DuplicatedCode")

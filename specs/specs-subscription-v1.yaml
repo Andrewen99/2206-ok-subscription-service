@@ -384,6 +384,8 @@ components:
           properties:
             id:
               $ref: '#/components/schemas/PlanId'
+            lock:
+              $ref: '#/components/schemas/PlanLock'
 
     PlanDeleteRequest:
       allOf:

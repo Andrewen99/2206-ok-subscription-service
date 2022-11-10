@@ -2,6 +2,7 @@ import kotlinx.datetime.toJavaLocalDate
 import models.*
 import models.plan.Plan
 import models.plan.PlanId
+import models.plan.PlanLock
 import models.subscription.Subscription
 import models.subscription.SubscriptionId
 import ru.otuskotlin.subscription.api.v1.models.*
@@ -12,6 +13,7 @@ import java.time.format.DateTimeFormatter
  * Общие методы для мапперов
  */
 internal fun String?.toPlanId() = this?.let { PlanId(it) } ?: PlanId.NONE
+internal fun String?.toPlanLock() = this?.let { PlanLock(it) } ?: PlanLock.NONE
 internal fun String?.toSbscrUserId() = this?.let { SbscrUserId(it) } ?: SbscrUserId.NONE
 internal fun String?.toSubscriptionId() = this?.let { SubscriptionId(it) } ?: SubscriptionId.NONE
 internal fun String?.toPlanWithId() = Plan(id = this.toPlanId())

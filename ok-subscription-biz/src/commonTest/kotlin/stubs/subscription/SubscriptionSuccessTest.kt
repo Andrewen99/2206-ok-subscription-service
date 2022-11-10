@@ -56,7 +56,7 @@ class SubscriptionSuccessTest {
         assertEquals(SUB_ID, ctx.subscriptionResponse.id)
         assertEquals(expectedSub.startDate, ctx.subscriptionResponse.startDate)
         assertEquals(expectedSub.endDate, ctx.subscriptionResponse.endDate)
-        assertEquals(expectedSub.isActive, true)
+        assertEquals(expectedSub.isActive, false)
         assertEquals(expectedSub.paymentStatus, ctx.subscriptionResponse.paymentStatus)
     }
 
@@ -75,7 +75,7 @@ class SubscriptionSuccessTest {
         assertEquals(SUB_ID, ctx.subscriptionResponse.id)
         assertEquals(expectedSub.startDate, ctx.subscriptionResponse.startDate)
         assertEquals(expectedSub.endDate, ctx.subscriptionResponse.endDate)
-        assertEquals(expectedSub.isActive, true)
+        assertEquals(expectedSub.isActive, false)
         assertEquals(expectedSub.paymentStatus, ctx.subscriptionResponse.paymentStatus)
     }
 
@@ -94,6 +94,6 @@ class SubscriptionSuccessTest {
         assertEquals(expectedSub.id, ctx.subscriptionResponses[0].id)
         assertEquals(expectedSub.startDate, ctx.subscriptionResponses[0].startDate)
         assertEquals(expectedSub.endDate, ctx.subscriptionResponses[0].endDate)
-        assertEquals(expectedSub.isActive, true)
+        assertEquals(expectedSub.isActive, false)
     }
 }

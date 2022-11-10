@@ -111,7 +111,7 @@ class PlanImMemoryApiTest {
     fun `delete route`() = testApplication {
         initInMemoryApp(initPlans = initPlans)
         val client = myRestClient()
-        val planRequest = getPlanDeleteReq(TEST_DEBUG, initPlan.id.asString())
+        val planRequest = getPlanDeleteReq(TEST_DEBUG, initPlan.id.asString(), initPlan.lock.asString())
         val response = client.post("/plan/delete") {
             contentType(ContentType.Application.Json)
             setBody(planRequest)

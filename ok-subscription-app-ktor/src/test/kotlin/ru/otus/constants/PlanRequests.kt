@@ -42,11 +42,11 @@ fun getPlanReadAllReq(debug: Debug) = PlanReadAllRequest(
     debug = debug
 )
 
-fun getPlanDeleteReq(debug: Debug = STUB_DEBUG, planId: String = "plan1") = PlanDeleteRequest(
+fun getPlanDeleteReq(debug: Debug = STUB_DEBUG, planId: String = "plan1", lock: String = "lock") = PlanDeleteRequest(
     requestType = "delete",
     requestId = "req123",
     debug = debug,
-    plan = PlanDeleteObject(planId)
+    plan = PlanDeleteObject(planId, lock)
 )
 
 fun getPlanBuyReq(debug: Debug = STUB_DEBUG, planId: String = "plan1") = PlanBuyRequest(
