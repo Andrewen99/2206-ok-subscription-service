@@ -8,6 +8,7 @@ import helpers.errorAdministration
 import helpers.fail
 import models.SbscrWorkMode
 import repo.plan.IPlanRepository
+import repo.subscription.ISubscriptionRepository
 
 fun CorChainDsl<PlanContext>.initPlanRepo(title: String) = worker {
     this.title = title
@@ -31,18 +32,27 @@ fun CorChainDsl<PlanContext>.initPlanRepo(title: String) = worker {
     }
 }
 
-fun CorChainDsl<SubscriptionContext>.initSubscriptionRepo(title: String) = worker {
+fun CorChainDsl<SubscriptionContext>.initRepo(title: String) = worker {
     this.title = title
     description = """
         Вычисление основного рабочего репозитория в зависимости от зпрошенного режима работы        
     """.trimIndent()
     handle {
-        subscriptionRepo = when (workMode) {
-            SbscrWorkMode.TEST -> subscriptionRepoSettings.repoTest
-            SbscrWorkMode.STUB -> subscriptionRepoSettings.repoStub
-            else -> subscriptionRepoSettings.repoProd
+        when (workMode) {
+            SbscrWorkMode.TEST ->  {
+                subscriptionRepo = repoSettings.subscriptionRepoSettings.repoTest
+                planRepo = repoSettings.planRepoSettings.repoTest
+            }
+            SbscrWorkMode.STUB -> {
+                subscriptionRepo = repoSettings.subscriptionRepoSettings.repoStub
+                planRepo = repoSettings.planRepoSettings.repoStub
+            }
+            else -> {
+                subscriptionRepo = repoSettings.subscriptionRepoSettings.repoProd
+                planRepo = repoSettings.planRepoSettings.repoProd
+            }
         }
-        if (workMode != SbscrWorkMode.STUB && subscriptionRepo == IPlanRepository.NONE) fail(
+        if (workMode != SbscrWorkMode.STUB && (subscriptionRepo == ISubscriptionRepository.NONE || planRepo == IPlanRepository.NONE)) fail(
             errorAdministration(
                 field = "plan-repo",
                 violationCode = "dbNotConfigured",

@@ -1,12 +1,16 @@
 import contexts.SubscriptionContext
+import dsl.chain
 import dsl.rootChain
 import dsl.worker
 import general.operation
+import general.subscription.prepareResult
+import models.RepoSettings
+import models.SbscrState
 import models.SbscrUserId
 import models.plan.PlanId
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionId
-import models.subscription.SubscriptionRepoSettings
+import repo.subscription.*
 import stubs.*
 import stubs.subscription.*
 import validation.finishSubscriptionFilterValidation
@@ -17,14 +21,16 @@ import validation.subscription.validatePlanIdNotEmpty
 import validation.subscription.validatePlanIdProperFormat
 import validation.validation
 
-class SubscriptionProcessor(private val repoSettings: SubscriptionRepoSettings = SubscriptionRepoSettings()) {
-    suspend fun exec(ctx: SubscriptionContext) = SubscriptionChain.exec(ctx.apply { this.subscriptionRepoSettings = repoSettings })
+class SubscriptionProcessor(private val processorRepoSettings: RepoSettings = RepoSettings()) {
+    suspend fun exec(ctx: SubscriptionContext) = SubscriptionChain.exec(ctx.apply {
+        this.repoSettings = processorRepoSettings
+    })
 
     companion object {
         @Suppress("DuplicatedCode")
         private val SubscriptionChain = rootChain<SubscriptionContext> {
             initStatus("Инициализация цепи")
-//            initSubscriptionRepo("Инициализация репозитория")
+            initRepo("Инициализация репозиториев")
 
             operation("Приобретение подписки", SubscriptionCommand.BUY) {
                 stubs("Обработка стабов"){
@@ -46,6 +52,13 @@ class SubscriptionProcessor(private val repoSettings: SubscriptionRepoSettings =
 
                     finishSubscriptionValidation("Завершение валидации")
                 }
+
+                chain {
+                    title = "Логика сохранения"
+                    repoPrepareCreate("Подготовка подписки для сохранения")
+                    repoCreate("Создание подписки в БД")
+                }
+                prepareResult("Подготовка результата")
             }
 
             operation("Оплата подписки", SubscriptionCommand.PAY) {
@@ -68,6 +81,15 @@ class SubscriptionProcessor(private val repoSettings: SubscriptionRepoSettings =
 
                     finishSubscriptionValidation("Завершение валидации")
                 }
+
+                chain {
+                    title = "Логика обновления"
+                    repoRead("Чтение подписки из БД")
+                    repoReadPlan("Чтение плана подписки")
+                    repoPreparePaymentAndDates("Подготовка объекта для обновления")
+                    repoUpdate("Обновление подписки в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
 
             operation("Чтение подписки", SubscriptionCommand.READ) {
@@ -89,6 +111,17 @@ class SubscriptionProcessor(private val repoSettings: SubscriptionRepoSettings =
 
                     finishSubscriptionValidation("Завершение валидации")
                 }
+
+                chain {
+                    title = "Логика чтения"
+                    repoRead("Чтение подписки из БД")
+                    worker {
+                        title = "Подготовка ответа для read"
+                        on { state == SbscrState.RUNNING }
+                        handle { subscriptionRepoDone = subscriptionRepoRead }
+                    }
+                }
+                prepareResult("Подготовка ответа")
             }
 
             operation("Поиск приобретенных подписок", SubscriptionCommand.SEARCH) {
@@ -109,6 +142,9 @@ class SubscriptionProcessor(private val repoSettings: SubscriptionRepoSettings =
 
                     finishSubscriptionFilterValidation("Завершение валидации")
                 }
+
+                repoSearch("Поиск подписок по фильру")
+                prepareResult("Подготовка ответа")
             }
         }.build()
     }

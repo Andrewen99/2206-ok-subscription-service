@@ -3,12 +3,18 @@ package validation.plan
 import PlanProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import models.plan.PlanCommand
+import models.plan.PlanRepoSettings
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationPlanCreateTest {
 
     private val command = PlanCommand.CREATE
+    private val settings by lazy {
+//        PlanRepoSettings(
+//            repoTest = PlanRepoTest
+//        )
+    }
     private val processor by lazy { PlanProcessor() }
 
     @Test fun correctTitle() = validationTitleCorrect(command, processor)

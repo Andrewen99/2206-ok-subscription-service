@@ -9,6 +9,11 @@ fun getYesterdayAsLocalDate(): LocalDate {
         .minus(1, DateTimeUnit.DAY)
 }
 
+fun getTodayAsLocalDate(): LocalDate {
+    return Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date
+}
+
 fun getLastMonthAsLocalDate(): LocalDate {
     return Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault()).date

@@ -3,10 +3,12 @@ package contexts
 import util.NONE
 import kotlinx.datetime.Instant
 import models.*
+import models.plan.Plan
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionFilter
 import models.subscription.Subscription
 import models.subscription.SubscriptionRepoSettings
+import repo.plan.IPlanRepository
 import repo.subscription.ISubscriptionRepository
 
 /**
@@ -20,8 +22,9 @@ data class SubscriptionContext(
     override var requestId: SbscrRequestId = SbscrRequestId.NONE,
     override var timeStart: Instant = Instant.NONE,
 
-    var subscriptionRepoSettings: SubscriptionRepoSettings = SubscriptionRepoSettings(),
+    var repoSettings: RepoSettings = RepoSettings(),
     var subscriptionRepo: ISubscriptionRepository = ISubscriptionRepository.NONE,
+    var planRepo: IPlanRepository = IPlanRepository.NONE,
 
     var command: SubscriptionCommand = SubscriptionCommand.NONE,
     var subscriptionRequest: Subscription = Subscription(),
@@ -33,6 +36,12 @@ data class SubscriptionContext(
     var subscriptionFilterValidating: SubscriptionFilter = SubscriptionFilter(),
     var subscriptionFilterValidated: SubscriptionFilter = SubscriptionFilter(),
 
+    var planRepoRead: Plan = Plan(),
+    var subscriptionRepoRead: Subscription = Subscription(),
+    var subscriptionRepoPrepare: Subscription = Subscription(),
+    var subscriptionRepoDone: Subscription = Subscription(),
+    var subscriptionsRepoDone: MutableList<Subscription> = mutableListOf(),
+
     var subscriptionResponse: Subscription = Subscription(),
-    val subscriptionResponses: MutableList<Subscription> = mutableListOf()
+    var subscriptionResponses: MutableList<Subscription> = mutableListOf()
 ) : BaseContext

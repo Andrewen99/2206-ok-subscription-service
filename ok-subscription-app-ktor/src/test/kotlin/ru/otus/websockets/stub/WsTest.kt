@@ -1,4 +1,4 @@
-package ru.otus.websockets
+package ru.otus.websockets.stub
 
 import apiV1Mapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -6,12 +6,14 @@ import io.ktor.client.plugins.websocket.*
 import io.ktor.server.testing.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.time.withTimeout
+import ru.otus.initStubApp
 import ru.otus.myWsClient
 import ru.otuskotlin.subscription.api.v1.models.*
 import java.time.Duration
 import kotlin.test.assertIs
 
 inline fun <reified R: IResponse> wsTest(endpoint: String, request: IRequest, crossinline assertions: (R) -> Unit) = testApplication {
+    initStubApp()
     val client = myWsClient()
 
     client.webSocket(endpoint) {

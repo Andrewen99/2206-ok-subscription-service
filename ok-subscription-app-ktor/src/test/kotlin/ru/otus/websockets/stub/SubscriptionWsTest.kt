@@ -1,7 +1,10 @@
-package ru.otus.websockets
+package ru.otus.websockets.stub
 
+import ru.otus.constants.STUB_DEBUG
+import ru.otus.constants.getSubscriptionPayReq
+import ru.otus.constants.getSubscriptionReadReq
+import ru.otus.constants.getSubscriptionSearchReq
 import org.junit.Test
-import ru.otus.ReqConstants
 import ru.otuskotlin.subscription.api.v1.models.ResponseResult
 import ru.otuskotlin.subscription.api.v1.models.SubscriptionPayResponse
 import ru.otuskotlin.subscription.api.v1.models.SubscriptionReadResponse
@@ -14,10 +17,10 @@ class SubscriptionWsTest {
     @Test
     fun read() = wsTest<SubscriptionReadResponse>(
         "/subscription",
-        ReqConstants.SUBSCRIPTION_READ_REQ
+        getSubscriptionReadReq()
     ) { response ->
         println("\n\n$response\n\n")
-        assertEquals(ReqConstants.SUBSCRIPTION_READ_REQ.subscription?.id, response.subscription?.id)
+        assertEquals(getSubscriptionReadReq().subscription?.id, response.subscription?.id)
         assertEquals("req123", response.requestId)
         assertEquals(ResponseResult.SUCCESS, response.result)
     }
@@ -25,7 +28,7 @@ class SubscriptionWsTest {
     @Test
     fun search() = wsTest<SubscriptionSearchResponse>(
         "/subscription",
-        ReqConstants.SUBSCRIPTION_SEARCH_REQ
+        getSubscriptionSearchReq(STUB_DEBUG)
     ) { response ->
         println("\n\n$response\n\n")
         assertEquals(SubscriptionStubs.SUBSCRIPTION1.id.asString(), response.subscriptions?.get(0)?.id)
@@ -37,10 +40,10 @@ class SubscriptionWsTest {
     @Test
     fun pay() = wsTest<SubscriptionPayResponse>(
         "/subscription",
-        ReqConstants.SUBSCRIPTION_PAY_REQ
+        getSubscriptionPayReq()
     ) { response ->
         println("\n\n$response\n\n")
-        assertEquals(ReqConstants.SUBSCRIPTION_PAY_REQ.subscription?.id, response.subscription?.id)
+        assertEquals(getSubscriptionPayReq().subscription?.id, response.subscription?.id)
         assertEquals("req123", response.requestId)
         assertEquals(ResponseResult.SUCCESS, response.result)
     }

@@ -28,6 +28,12 @@ data class PlanContext(
     var planValidating: Plan = Plan(),
     var planValidated: Plan = Plan(),
 
+    var planRepoRead: Plan = Plan(),
+    var planRepoReadAll: MutableList<Plan> = mutableListOf(),
+    var planRepoPrepare: Plan = Plan(),
+    var planRepoDone: Plan = Plan(),
+    var plansRepoDone: MutableList<Plan> = mutableListOf(),
+
     var planResponse: Plan = Plan(),
-    val planResponses: MutableList<Plan> = mutableListOf(),
+    var planResponses: MutableList<Plan> = mutableListOf(),
 ) : BaseContext

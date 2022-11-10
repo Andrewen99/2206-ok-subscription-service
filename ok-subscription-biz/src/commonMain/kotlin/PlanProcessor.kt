@@ -1,10 +1,14 @@
 import contexts.PlanContext
+import dsl.chain
 import dsl.rootChain
 import dsl.worker
 import general.operation
+import general.plan.prepareResult
+import models.SbscrState
 import models.plan.PlanCommand
 import models.plan.PlanId
 import models.plan.PlanRepoSettings
+import repo.plan.*
 import stubs.*
 import stubs.plan.*
 import validation.finishPlanValidation
@@ -18,7 +22,7 @@ class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSetting
         @Suppress("DuplicatedCode")
         private val PlanChain = rootChain<PlanContext> {
             initStatus("Инициализация цепи")
-//            initPlanRepo("Инициализация репозитория")
+            initPlanRepo("Инициализация репозитория")
 
             operation("Создание плана", PlanCommand.CREATE) {
                 stubs("Обработка стабов") {
@@ -51,6 +55,13 @@ class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSetting
 
                     finishPlanValidation("Завершение валидации")
                 }
+
+                chain {
+                    title = "Логика сохранения"
+                    repoPrepareCreate("Подготовка объекта для сохранения")
+                    repoCreate("Создание объявления в БД")
+                }
+                prepareResult("Подготовка результата")
             }
 
             operation("Обновление плана", PlanCommand.UPDATE) {
@@ -85,9 +96,15 @@ class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSetting
                     validatePriceProperFormat("Проверка формата цены подписки")
                     validateConditions("Проверка условий подписки")
 
-
                     finishPlanValidation("Завершение валидации")
                 }
+                chain {
+                    title = "Логика обновления"
+                    repoRead("Чтение плана из БД")
+                    repoPrepareUpdate("Подготовка объекта для обновления")
+                    repoUpdate("Обновление плана в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
 
             operation("Чтение плана", PlanCommand.READ) {
@@ -107,6 +124,17 @@ class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSetting
 
                     finishPlanValidation("Завершение валидации")
                 }
+
+                chain {
+                    title = "Логика чтения"
+                    repoRead("Чтение плана из БД")
+                    worker {
+                        title = "Подготовка ответа для read"
+                        on { state == SbscrState.RUNNING }
+                        handle { planRepoDone = planRepoRead }
+                    }
+                }
+                prepareResult("Подготовка ответа")
             }
 
             operation("Чтение всех планов", PlanCommand.READ_ALL) {
@@ -115,6 +143,16 @@ class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSetting
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
+                chain {
+                    title = "Логика чтения всех планов"
+                    repoReadAll("Чтение всех планов из БД")
+                    worker {
+                        title = "Подготовка ответа для readAll"
+                        on { state == SbscrState.RUNNING }
+                        handle { plansRepoDone = planRepoReadAll }
+                    }
+                }
+                prepareResult("Подготовка ответа")
             }
 
             operation("Удаление плана", PlanCommand.DELETE) {
@@ -134,6 +172,13 @@ class PlanProcessor(private val repoSettings: PlanRepoSettings = PlanRepoSetting
 
                     finishPlanValidation("Завершение валидации")
                 }
+                chain {
+                    title = "Логика удаления"
+                    repoRead("Чтение плана из БД")
+                    repoPrepareDelete("Подготовка объекта плана для удаления")
+                    repoDelete("Удаление плана из БД")
+                }
+                prepareResult("Подготовка ответа")
             }
         }.build()
     }

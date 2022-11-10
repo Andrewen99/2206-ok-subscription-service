@@ -496,6 +496,8 @@ components:
           $ref: '#/components/schemas/PlanId'
         ownerId:
           $ref: '#/components/schemas/UserId'
+        lock:
+          $ref: '#/components/schemas/SubscriptionLock'
         startDate:
           description: Дата приобретения/включения подписки в формате дд.мм.гггг
           type: string

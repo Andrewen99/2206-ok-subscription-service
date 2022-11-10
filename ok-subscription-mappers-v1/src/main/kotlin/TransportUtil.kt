@@ -1,9 +1,11 @@
+import kotlinx.datetime.toJavaLocalDate
 import models.*
 import models.plan.Plan
 import models.plan.PlanId
 import models.subscription.Subscription
 import models.subscription.SubscriptionId
 import ru.otuskotlin.subscription.api.v1.models.*
+import util.MIN_LOCAL_DATE
 import java.time.format.DateTimeFormatter
 
 /**
@@ -16,8 +18,8 @@ internal fun String?.toPlanWithId() = Plan(id = this.toPlanId())
 internal fun String?.toSubscriptionWithId() = Subscription(id =this.toSubscriptionId())
 internal fun IRequest?.requestId() = this?.requestId?.let { SbscrRequestId(it) } ?: SbscrRequestId.NONE
 
-internal const val DATE_FORMAT: String = "dd.MM.yyyy"
-internal val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
+const val DATE_FORMAT: String = "dd.MM.yyyy"
+val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
 
 internal fun Debug?.transportToWorkMode(): SbscrWorkMode = when (this?.mode) {
     RequestDebugMode.PROD -> SbscrWorkMode.PROD

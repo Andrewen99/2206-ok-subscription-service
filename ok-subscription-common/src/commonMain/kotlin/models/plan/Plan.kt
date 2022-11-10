@@ -6,7 +6,7 @@ package models.plan
 data class Plan(
     var id: PlanId = PlanId.NONE,
     var title: String = "",
-    val conditions: MutableSet<String> = mutableSetOf(),
+    var conditions: MutableSet<String> = mutableSetOf(),
     var duration: Int = 0,
     var price: String = "0",
     var lock: PlanLock = PlanLock.NONE,
