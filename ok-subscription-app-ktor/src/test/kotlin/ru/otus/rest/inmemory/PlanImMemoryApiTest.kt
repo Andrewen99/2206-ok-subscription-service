@@ -49,7 +49,7 @@ class PlanImMemoryApiTest {
     @Test
     fun `update route`() = testApplication {
         initInMemoryApp(initPlans = initPlans)
-        val planUpdateReq = getPlanUpdateReq(TEST_DEBUG, initPlan.id.asString())
+        val planUpdateReq = getPlanUpdateReq(TEST_DEBUG, initPlan.id.asString(), initPlan.lock.asString())
         val client = myRestClient()
         val response = client.post("/plan/update") {
             contentType(ContentType.Application.Json)
@@ -57,8 +57,10 @@ class PlanImMemoryApiTest {
         }
 
         val responseBody = response.body<PlanUpdateResponse>()
-
+        println("\n\n$responseBody\n\n")
         assertEquals(200, response.status.value)
+        assertEquals("req123", responseBody.requestId)
+        assertEquals(ResponseResult.SUCCESS, responseBody.result)
         planUpdateReq.run {
             assertEquals(plan?.id, responseBody.plan?.id)
             assertEquals(plan?.conditions, responseBody.plan?.conditions)
@@ -67,8 +69,6 @@ class PlanImMemoryApiTest {
             assertEquals(plan?.visibility, responseBody.plan?.visibility)
             assertEquals(UUID_NEW, responseBody.plan?.lock)
         }
-        assertEquals("req123", responseBody.requestId)
-        assertEquals(ResponseResult.SUCCESS, responseBody.result)
     }
 
     @Test

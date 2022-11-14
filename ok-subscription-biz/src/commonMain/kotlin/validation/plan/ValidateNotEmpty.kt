@@ -20,6 +20,20 @@ fun CorChainDsl<PlanContext>.validateIdNotEmpty(title: String) = worker {
     }
 }
 
+fun CorChainDsl<PlanContext>.validateLockNotEmpty(title: String) = worker {
+    this.title = title
+    on { planValidating.lock.asString().isEmpty() }
+    handle {
+        fail(
+            errorValidation(
+                field = "lock",
+                violationCode = "empty",
+                description = "field must not be empty"
+            )
+        )
+    }
+}
+
 fun CorChainDsl<PlanContext>.validateTitleNotEmpty(title: String) = worker {
     this.title = title
     on { planValidating.title.isEmpty() }

@@ -17,6 +17,7 @@ fun CorChainDsl<PlanContext>.repoPrepareUpdate(title: String) = worker {
             price = planValidated.price
             duration = planValidated.duration
             visibility = planValidated.visibility
+            lock = planValidated.lock
         }
     }
 }

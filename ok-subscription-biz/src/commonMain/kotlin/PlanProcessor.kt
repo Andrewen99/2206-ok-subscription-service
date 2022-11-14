@@ -8,6 +8,7 @@ import models.RepoSettings
 import models.SbscrState
 import models.plan.PlanCommand
 import models.plan.PlanId
+import models.plan.PlanLock
 import models.plan.PlanRepoSettings
 import repo.plan.*
 import stubs.*
@@ -78,6 +79,7 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
                 validation {
                     worker("Копируем поля в PlanValidating") { planValidating = planRequest.deepCopy() }
                     worker("Очистка id") { planValidating.id = PlanId(planValidating.id.asString().trim()) }
+                    worker("Очистка lock") { planValidating.lock = PlanLock(planValidating.lock.asString().trim()) }
                     worker("Очистка названия плана") { planValidating.title = planValidating.title.trim() }
                     worker("Очистка цены") { planValidating.price = planValidating.price.trim() }
                     worker("Очистка условий подписки") {
@@ -87,11 +89,13 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
                     }
 
                     validateIdNotEmpty("Проверка, что заголовок не пуст")
+                    validateLockNotEmpty("Проверка, что замок не пуст")
                     validateTitleNotEmpty("Проверка, что заголовок не пуст")
                     validatePriceNotEmpty("Проверка, что цена не пуста")
                     validateConditionsNotEmpty("Проверка, что условия не пусты")
 
                     validateIdProperFormat("Проверка формата id")
+                    validateLockProperFormat("Проверка формата замка")
                     validateTitleHasContent("Проверка присутствия текста в заголовке")
                     validateDurationIsPositive("Проверка позитивного значения длительности плана")
                     validatePriceProperFormat("Проверка формата цены подписки")
@@ -167,9 +171,12 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
                 validation {
                     worker("Копируем поля в PlanValidating") { planValidating = planRequest.deepCopy() }
                     worker("Очистка id") { planValidating.id = PlanId(planValidating.id.asString().trim()) }
+                    worker("Очистка lock") { planValidating.lock = PlanLock(planValidating.lock.asString().trim()) }
 
                     validateIdNotEmpty("Проверка, что заголовок не пуст")
+                    validateLockNotEmpty("Проверка, что замок не пуст")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockProperFormat("Проверка формата замка")
 
                     finishPlanValidation("Завершение валидации")
                 }

@@ -15,7 +15,7 @@ fun getPlanCreateReq(debug: Debug) = PlanCreateRequest(
     )
 )
 
-fun getPlanUpdateReq(debug: Debug, planId: String = "plan1") = PlanUpdateRequest(
+fun getPlanUpdateReq(debug: Debug, planId: String = "plan1", lock: String = "lock1") = PlanUpdateRequest(
     requestType = "update",
     requestId = "req123",
     debug = debug,
@@ -25,7 +25,8 @@ fun getPlanUpdateReq(debug: Debug, planId: String = "plan1") = PlanUpdateRequest
         duration = 1,
         price = "500",
         visibility = PlanVisibility.PUBLIC,
-        id = planId
+        id = planId,
+        lock = lock
     )
 )
 
