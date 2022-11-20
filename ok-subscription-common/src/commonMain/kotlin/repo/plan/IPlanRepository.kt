@@ -1,5 +1,7 @@
 package repo.plan
 
+import models.SbscrError
+
 interface IPlanRepository {
 
     suspend fun createPlan(rq: DbPlanRequest) : DbPlanResponse
@@ -35,5 +37,44 @@ interface IPlanRepository {
             }
 
         }
+
+        val resultErrorEmptyId = DbPlanResponse(
+            data = null,
+            success = false,
+            errors = listOf(
+                SbscrError(
+                    code = "id-empty",
+                    group = "validation",
+                    field = "id",
+                    message = "Id must not be null or blank",
+                )
+            )
+        )
+
+        val resultErrorEmptyLock = DbPlanResponse(
+            data = null,
+            success = false,
+            errors = listOf(
+                SbscrError(
+                    code = "lock-empty",
+                    group = "validation",
+                    field = "lock",
+                    message = "Lock must not be null or blank",
+                )
+            )
+        )
+
+        fun resultErrorNotFound(key: String) = DbPlanResponse(
+            data = null,
+            success = false,
+            errors = listOf(
+                SbscrError(
+                    code = "not-found",
+                    field = "id",
+                    group = "repo",
+                    message = "Not Found object with id $key",
+                )
+            )
+        )
     }
 }
