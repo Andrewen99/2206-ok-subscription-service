@@ -232,16 +232,5 @@ class PlanRepoGremlin(
     }
 
     companion object {
-        fun errorDuplication(key: String) = DbPlanResponse(
-            data = null,
-            success = false,
-            errors = listOf(
-                errorAdministration(
-                    violationCode = "duplicateObjects",
-                    description = "Database consistency failure",
-                    exception = DbDuplicatedElementsException("Db contains multiple elements for id = '$key'")
-                )
-            )
-        )
     }
 }

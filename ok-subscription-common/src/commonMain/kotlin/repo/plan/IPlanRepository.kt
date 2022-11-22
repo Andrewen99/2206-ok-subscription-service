@@ -1,6 +1,10 @@
 package repo.plan
 
+import exceptions.DbDuplicatedElementsException
+import helpers.errorAdministration
+import helpers.errorRepoConcurrency
 import models.SbscrError
+import models.plan.Plan
 
 interface IPlanRepository {
 
@@ -76,5 +80,25 @@ interface IPlanRepository {
                 )
             )
         )
+
+        fun errorDuplication(key: String) = DbPlanResponse(
+            data = null,
+            success = false,
+            errors = listOf(
+                errorAdministration(
+                    violationCode = "duplicateObjects",
+                    description = "Database consistency failure",
+                    exception = DbDuplicatedElementsException("Db contains multiple elements with id = '$key'")
+                )
+            )
+        )
+
+        fun resultErrorConcurrent(lock: String, plan: Plan?) = DbPlanResponse(
+            data = plan,
+            success = false,
+            errors = listOf(
+                errorRepoConcurrency(lock, plan?.lock?.asString())
+                )
+            )
     }
 }
