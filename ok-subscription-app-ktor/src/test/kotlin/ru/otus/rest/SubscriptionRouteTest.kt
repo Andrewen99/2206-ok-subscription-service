@@ -1,4 +1,4 @@
-package ru.otus
+package ru.otus.rest
 
 import SubscriptionStubs
 import io.ktor.client.call.*
@@ -6,6 +6,11 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import org.junit.Test
+import ru.otus.DEBUG
+import ru.otus.ReqConstants.SUBSCRIPTION_PAY_REQ
+import ru.otus.ReqConstants.SUBSCRIPTION_READ_REQ
+import ru.otus.ReqConstants.SUBSCRIPTION_SEARCH_REQ
+import ru.otus.myRestClient
 import ru.otuskotlin.subscription.api.v1.models.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -14,7 +19,7 @@ class SubscriptionRouteTest {
 
     @Test
     fun `read route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
 
         val response = client.post("/subscription/read") {
             contentType(ContentType.Application.Json)
@@ -30,7 +35,7 @@ class SubscriptionRouteTest {
 
     @Test
     fun `search route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
 
         val response = client.post("/subscription/search") {
             contentType(ContentType.Application.Json)
@@ -47,7 +52,7 @@ class SubscriptionRouteTest {
     
     @Test
     fun `pay route`() = testApplication {
-        val client = myClient()
+        val client = myRestClient()
 
         val response = client.post("/subscription/pay") {
             contentType(ContentType.Application.Json)
@@ -60,34 +65,5 @@ class SubscriptionRouteTest {
         assertEquals(SUBSCRIPTION_PAY_REQ.subscription?.id, responseBody.subscription?.id)
         assertEquals("req123", responseBody.requestId)
         assertEquals(ResponseResult.SUCCESS, responseBody.result)
-    }
-
-
-
-    companion object {
-        val SUBSCRIPTION_READ_REQ = SubscriptionReadRequest(
-            requestType = "read",
-            requestId = "req123",
-            debug = DEBUG,
-            subscription = SubscriptionReadObject("sub1")
-        )
-
-        val SUBSCRIPTION_SEARCH_REQ = SubscriptionSearchRequest(
-            requestType = "search",
-            requestId = "req123",
-            debug = DEBUG,
-            subscriptionFilter = SubscriptionSearchFilter(
-                ownerId = "owner1",
-                boughtPeriod = FromToDateObject("01.01.2022", "01.01.2023"),
-                isActive = true
-            )
-        )
-
-        val SUBSCRIPTION_PAY_REQ = SubscriptionPayRequest(
-            requestType = "pay",
-            requestId = "req123",
-            debug = DEBUG,
-            subscription = SubscriptionPayObject("sub1")
-        )
     }
 }
