@@ -10,9 +10,9 @@ services:
     expose:
       - "5432"
     environment:
-      POSTGRES_PASSWORD: marketplace
+      POSTGRES_PASSWORD: sbscr-pass
       POSTGRES_USER: postgres
-      POSTGRES_DB: marketplacedb
+      POSTGRES_DB: sbscr
 
 volumes:
   postgres_data:

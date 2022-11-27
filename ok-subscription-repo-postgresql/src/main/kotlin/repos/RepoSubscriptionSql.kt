@@ -15,6 +15,7 @@ import repo.subscription.ISubscriptionRepository.Companion.resultErrorConcurrent
 import repo.subscription.ISubscriptionRepository.Companion.resultErrorNotFound
 import tables.PlansTable
 import tables.SubscriptionsTable
+import tables.UsersTable
 import util.MIN_LOCAL_DATE
 import java.lang.IllegalArgumentException
 import java.util.NoSuchElementException
@@ -38,7 +39,7 @@ class RepoSubscriptionSql(
         schema: String = "sbscr",
         initObjects: Collection<Subscription> = emptyList(),
         randomUuid: () -> String = { uuid4().toString() }
-    ) : this(SqlConnector(url, user, password, schema).connect(PlansTable), initObjects, randomUuid)
+    ) : this(SqlConnector(url, user, password, schema).connect(tables = arrayOf(PlansTable, SubscriptionsTable, UsersTable)), initObjects, randomUuid)
 
     private fun save(item: Subscription): DbSubscriptionResponse {
         return safeTransaction(db, {

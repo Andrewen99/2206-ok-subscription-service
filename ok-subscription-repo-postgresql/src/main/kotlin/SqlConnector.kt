@@ -1,7 +1,4 @@
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.DatabaseConfig
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.DEFAULT_ISOLATION_LEVEL
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -31,7 +28,10 @@ class SqlConnector(
     private val globalConnection = Database.connect(url, dbType.driver, user, password, databaseConfig = databaseConfig)
 
     // Ensure creation of new connection with options to migrate/pre-drop database
-    fun connect(vararg tables: Table): Database {
+    fun connect(
+        vararg tables: Table,
+        defaultDbAction: DefaultDbAction = DefaultDbAction.CREATE_MISSING_TABLES
+    ): Database {
         // Create schema if such not exists
         transaction(globalConnection) {
             when (dbType) {
@@ -72,16 +72,27 @@ class SqlConnector(
         //   - exec migrations if needed;
         //   - otherwise unsure to create tables
         transaction(connect) {
-            if (System.getenv("ok.mp.sql_drop_db")?.toBoolean() == true) {
+            if (System.getenv("ok.mp.sql_drop_db")?.toBoolean() == true || defaultDbAction == DefaultDbAction.DROP_AND_RECREATE) {
                 SchemaUtils.drop(*tables, inBatch = true)
                 SchemaUtils.create(*tables, inBatch = true)
-            } else if (System.getenv("ok.mp.sql_fast_migration").toBoolean()) {
+            } else if (System.getenv("ok.mp.sql_fast_migration").toBoolean() || defaultDbAction == DefaultDbAction.FAST_MIGRATION) {
                 // TODO: Place to exec migration: create and ensure tables
-            } else {
-                SchemaUtils.createMissingTablesAndColumns(*tables, inBatch = true)
+            } else if (defaultDbAction == DefaultDbAction.CREATE_MISSING_TABLES) {
+                try {
+                    val nonExistingTables = tables.filter { !it.exists() }.toTypedArray()
+                    SchemaUtils.createMissingTablesAndColumns(*nonExistingTables, inBatch = true)
+                } catch (e: Exception) {
+                    println("Error while creating missing Tables: " + e.stackTrace)
+                }
+
             }
         }
 
         return connect
+    }
+    enum class DefaultDbAction {
+        DROP_AND_RECREATE,
+        FAST_MIGRATION,
+        CREATE_MISSING_TABLES
     }
 }

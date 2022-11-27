@@ -1,5 +1,6 @@
 package ru.otus
 
+import SqlTestCompanion.planAndSubscriptionRepoUnderTestContainer
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.client.plugins.contentnegotiation.*
@@ -47,6 +48,24 @@ internal fun TestApplicationBuilder.initInMemoryApp(
             subscriptionRepoSettings = subscriptionRepoSettings
         )
 
+    module(repoSettings)
+}
+
+internal fun TestApplicationBuilder.initPostgresApp(
+    initPlans: List<Plan> = emptyList(),
+    initSubscriptions: List<Subscription> = emptyList()
+) = application {
+    val planAndSubscriptionRepos = planAndSubscriptionRepoUnderTestContainer(
+        initPlans,
+        initSubscriptions,
+        { UUID_NEW }
+    )
+    val planRepoSettings = PlanRepoSettings(repoTest = planAndSubscriptionRepos.first)
+    val subscriptionRepoSettings = SubscriptionRepoSettings(repoTest = planAndSubscriptionRepos.second)
+    val repoSettings = RepoSettings(
+        planRepoSettings = planRepoSettings,
+        subscriptionRepoSettings = subscriptionRepoSettings
+    )
     module(repoSettings)
 }
 

@@ -1,14 +1,14 @@
-package ru.otus.rest.inmemory
+package ru.otus.rest.postgres
 
 import io.ktor.server.testing.*
 import models.plan.Plan
 import models.subscription.Subscription
-import ru.otus.initInMemoryApp
+import ru.otus.initPostgresApp
 import ru.otus.rest.SubscriptionApiTest
 
+class SubscriptionPostgresApiTest: SubscriptionApiTest() {
 
-class SubscriptionInMemoryApiTest : SubscriptionApiTest() {
     override fun TestApplicationBuilder.initApp(initPlans: List<Plan>, initSubscriptions: List<Subscription>) {
-        initInMemoryApp(initPlans, initSubscriptions)
+        initPostgresApp(initPlans, initSubscriptions)
     }
 }

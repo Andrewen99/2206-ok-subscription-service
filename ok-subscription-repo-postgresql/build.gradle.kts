@@ -26,8 +26,8 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
     implementation("com.benasher44:uuid:$kmpUUIDVersion")
+    implementation("org.testcontainers:postgresql:$testContainersVersion")
 
 
-    testImplementation("org.testcontainers:postgresql:$testContainersVersion")
     testImplementation(project(":ok-subscription-repo-tests"))
 }

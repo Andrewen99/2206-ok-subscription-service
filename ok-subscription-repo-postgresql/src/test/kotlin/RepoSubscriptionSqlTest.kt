@@ -40,16 +40,6 @@ class RepoSubscriptionSqlSearchTest : RepoSubscriptionSearchTest() {
     )
 }
 
-fun PlansTable.insertStub(planId: String) {
-    insert {
-        it[id] = planId
-        it[title] = "title"
-        it[conditions] = "cond1~~cond2"
-        it[duration] = 0
-        it[price] = "0"
-        it[lock] = "lock-1"
-        it[visibility] = SbscrPlanVisibility.PUBLIC
-    }
-}
+
 
 

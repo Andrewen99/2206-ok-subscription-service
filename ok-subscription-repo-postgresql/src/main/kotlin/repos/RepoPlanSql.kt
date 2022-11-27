@@ -18,15 +18,19 @@ import java.lang.IllegalArgumentException
 import java.util.NoSuchElementException
 
 class RepoPlanSql(
-    url: String = "jdbc:postgresql://localhost:5432/sbscrdevdb",
-    user: String = "postgres",
-    password: String = "sbscr-pass",
-    schema: String = "sbscr",
+    private val db: Database,
     initObjects: Collection<Plan> = emptyList(),
     val randomUuid: () -> String = { uuid4().toString() },
 ) : IPlanRepository {
 
-    private val db by lazy { SqlConnector(url, user, password, schema).connect(PlansTable) }
+    constructor(
+        url: String = "jdbc:postgresql://localhost:5432/sbscrdevdb",
+        user: String = "postgres",
+        password: String = "sbscr-pass",
+        schema: String = "sbscr",
+        initObjects: Collection<Plan> = emptyList(),
+        randomUuid: () -> String = { uuid4().toString() }
+    ) : this(SqlConnector(url, user, password, schema).connect(PlansTable), initObjects, randomUuid)
 
     init {
         initObjects.forEach {
