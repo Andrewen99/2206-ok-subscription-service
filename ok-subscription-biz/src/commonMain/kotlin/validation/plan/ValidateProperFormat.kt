@@ -1,14 +1,15 @@
 package validation.plan
 
-import ID_FORMAT_REGEX
-import PRICE_FORMAT_REGEX
-import HAS_CONTENT_REGEX
+import util.ID_FORMAT_REGEX
+import util.PRICE_FORMAT_REGEX
+import util.HAS_CONTENT_REGEX
 import contexts.PlanContext
 import dsl.CorChainDsl
 import dsl.worker
 import helpers.errorValidation
 import helpers.fail
 import models.plan.PlanId
+import models.plan.PlanLock
 import validation.handleBadFormat
 
 fun CorChainDsl<PlanContext>.validateIdProperFormat(title: String) = worker {
@@ -16,6 +17,14 @@ fun CorChainDsl<PlanContext>.validateIdProperFormat(title: String) = worker {
     on {planValidating.id != PlanId.NONE && !planValidating.id.asString().matches(ID_FORMAT_REGEX)}
     handle {
         handleBadFormat(planValidating.id.asString(), "id")
+    }
+}
+
+fun CorChainDsl<PlanContext>.validateLockProperFormat(title: String) = worker {
+    this.title = title
+    on {planValidating.lock != PlanLock.NONE && !planValidating.lock.asString().matches(ID_FORMAT_REGEX)}
+    handle {
+        handleBadFormat(planValidating.id.asString(), "lock")
     }
 }
 

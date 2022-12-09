@@ -23,6 +23,7 @@ kotlin {
                 implementation(project(":ok-subscription-common"))
                 implementation(project(":ok-subscription-stubs"))
                 implementation(project(":ok-subscription-cor"))
+                implementation(project(":ok-subscription-repo-stub"))
             }
         }
         @Suppress("UNUSED_VARIABLE")

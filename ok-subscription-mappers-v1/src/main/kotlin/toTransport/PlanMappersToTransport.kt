@@ -3,10 +3,7 @@ package toTransport
 import contexts.PlanContext
 import exceptions.UnknownSbscrCommand
 import models.*
-import models.plan.Plan
-import models.plan.PlanCommand
-import models.plan.PlanId
-import models.plan.SbscrPlanVisibility
+import models.plan.*
 import ru.otuskotlin.subscription.api.v1.models.*
 import toTrasportErrors
 
@@ -64,6 +61,7 @@ private fun Plan.toTransportPlan(): PlanResponseObject = PlanResponseObject(
     title = title.takeIf { it.isNotBlank() },
     duration = duration,
     price = price,
+    lock = lock.takeIf { it != PlanLock.NONE }?.asString(),
     conditions = conditions.takeIf { it.isNotEmpty() },
     visibility = visibility.toTransportVisibility(),
 )

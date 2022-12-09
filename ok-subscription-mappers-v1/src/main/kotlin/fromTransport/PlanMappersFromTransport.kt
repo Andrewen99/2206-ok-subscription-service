@@ -56,7 +56,7 @@ fun PlanContext.fromTransport(request: PlanReadAllRequest) {
 fun PlanContext.fromTransport(request: PlanDeleteRequest) {
     command = PlanCommand.DELETE
     requestId = request.requestId()
-    planRequest = request.plan?.id.toPlanWithId()
+    planRequest = request.plan?.toInternal() ?: Plan()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
@@ -75,7 +75,13 @@ private fun PlanUpdateObject.toInternal(): Plan = Plan(
     conditions = this.conditions?.toMutableSet() ?: mutableSetOf(),
     duration = this.duration ?: 0,
     price = this.price ?: "0",
-    visibility = this.visibility.fromTransport()
+    visibility = this.visibility.fromTransport(),
+    lock = this.lock.toPlanLock()
+)
+
+private fun PlanDeleteObject.toInternal(): Plan = Plan(
+    id = this.id.toPlanId(),
+    lock = this.lock.toPlanLock()
 )
 
 private fun PlanVisibility?.fromTransport(): SbscrPlanVisibility = when (this) {

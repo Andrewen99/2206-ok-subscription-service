@@ -1,6 +1,7 @@
 val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
+val testContainersVersion: String by project
 
 plugins {
     kotlin("jvm")
@@ -34,10 +35,13 @@ dependencies {
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     testImplementation("io.ktor:ktor-client-websockets:$ktorVersion")
+    testImplementation("org.testcontainers:postgresql:$testContainersVersion")
 
     implementation(project(":ok-subscription-api-v1-jackson"))
     implementation(project(":ok-subscription-common"))
     implementation(project(":ok-subscription-mappers-v1"))
     implementation(project(":ok-subscription-stubs"))
     implementation(project(":ok-subscription-biz"))
+    implementation(project(":ok-subscription-repo-inmemory"))
+    implementation(project(":ok-subscription-repo-postgresql"))
 }

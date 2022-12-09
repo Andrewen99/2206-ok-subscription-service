@@ -14,14 +14,15 @@ import ru.otus.websocket.KtorSubWsSessions
 import ru.otus.websocket.planWsHandler
 import ru.otus.websocket.subscriptionWsHandler
 
-fun Application.configureWebSocketsAndRestRouting() {
+fun Application.configureWebSocketsAndRestRouting(
+    planProcessor: PlanProcessor,
+    subscriptionProcessor: SubscriptionProcessor
+) {
     install(WebSockets)
     routing {
         get("/") {
             call.respondText("Hello World!")
         }
-        val planProcessor = PlanProcessor()
-        val subscriptionProcessor = SubscriptionProcessor()
         planRouting(planProcessor, subscriptionProcessor)
         subscriptionRouting(subscriptionProcessor)
 

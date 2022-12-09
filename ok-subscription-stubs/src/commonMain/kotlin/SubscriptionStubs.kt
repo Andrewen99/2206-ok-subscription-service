@@ -17,10 +17,8 @@ object SubscriptionStubs {
         id = SubscriptionId(id = "sub-id-11"),
         ownerId = SbscrUserId("owner-id-1"),
         planId = PLAN1.id,
-        startDate = startDate,
-        endDate = startDate.plus(3, DateTimeUnit.MONTH),
-        isActive = true,
-        paymentStatus = SbscrPaymentStatus.PAYED
+        isActive = false,
+        paymentStatus = SbscrPaymentStatus.NOT_PAYED
     )
     val SUBSCRIPTION2
         get() = Subscription(
@@ -30,7 +28,7 @@ object SubscriptionStubs {
         startDate = startDate,
         endDate = startDate.plus(6, DateTimeUnit.MONTH),
         isActive = true,
-        paymentStatus = SbscrPaymentStatus.NOT_PAYED
+        paymentStatus = SbscrPaymentStatus.PAYED
     )
 
     val SUBSCRIPTIONS

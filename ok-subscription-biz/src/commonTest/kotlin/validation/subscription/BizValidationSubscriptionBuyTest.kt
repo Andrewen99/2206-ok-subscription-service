@@ -1,8 +1,14 @@
 package validation.subscription
 
+import PlanProcessor
+import PlanRepoStub
 import SubscriptionProcessor
+import SubscriptionRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import models.RepoSettings
+import models.plan.PlanRepoSettings
 import models.subscription.SubscriptionCommand
+import models.subscription.SubscriptionRepoSettings
 
 import kotlin.test.Test
 
@@ -10,7 +16,13 @@ import kotlin.test.Test
 class BizValidationSubscriptionBuyTest {
 
     private val command = SubscriptionCommand.BUY
-    private val processor by lazy { SubscriptionProcessor() }
+    private val settings by lazy {
+        RepoSettings(
+           PlanRepoSettings(repoTest = PlanRepoStub()),
+            SubscriptionRepoSettings(repoTest = SubscriptionRepoStub())
+        )
+    }
+    private val processor by lazy { SubscriptionProcessor(settings) }
 
     @Test
     fun correctPlanId() = validationPlanIdCorrect(command, processor)

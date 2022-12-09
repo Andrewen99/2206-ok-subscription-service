@@ -1,16 +1,12 @@
 package validation.plan
 
-import PRICE_FORMAT_REGEX
 import PlanProcessor
 import contexts.PlanContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import models.SbscrState
 import models.SbscrWorkMode
-import models.plan.Plan
-import models.plan.PlanCommand
-import models.plan.PlanId
-import models.plan.SbscrPlanVisibility
+import models.plan.*
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -23,6 +19,7 @@ fun validationTitleCorrect(command: PlanCommand, processor: PlanProcessor) = run
         workMode =  SbscrWorkMode.TEST,
         planRequest = Plan(
             id = PlanId("123"),
+            lock = PlanLock("123-abc-456-XYZ"),
             title = "abc",
             conditions = mutableSetOf("condition#1","condition#2","condition#3"),
             duration = 5,
@@ -45,6 +42,7 @@ fun validationTitleTrim(command: PlanCommand, processor: PlanProcessor) = runTes
         workMode =  SbscrWorkMode.TEST,
         planRequest = Plan(
             id = PlanId("123"),
+            lock = PlanLock("123-abc-456-XYZ"),
             title = "\n\t abc \n\t",
             conditions = mutableSetOf("condition#1","condition#2","condition#3"),
             duration = 5,
@@ -66,6 +64,7 @@ fun validationTitleEmpty(command: PlanCommand, processor: PlanProcessor) = runTe
         workMode =  SbscrWorkMode.TEST,
         planRequest = Plan(
             id = PlanId("123"),
+            lock = PlanLock("123-abc-456-XYZ"),
             title = "",
             conditions = mutableSetOf("condition#1","condition#2","condition#3"),
             duration = 5,
@@ -90,6 +89,7 @@ fun validationTitleSymbols(command: PlanCommand, processor: PlanProcessor) = run
         workMode =  SbscrWorkMode.TEST,
         planRequest = Plan(
             id = PlanId("123"),
+            lock = PlanLock("123-abc-456-XYZ"),
             title = "!@#$%^&*(),.{}",
             conditions = mutableSetOf("condition#1","condition#2","condition#3"),
             duration = 5,

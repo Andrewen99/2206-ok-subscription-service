@@ -1,6 +1,6 @@
 package models.subscription
 
-import MIN_LOCAL_DATE
+import util.MIN_LOCAL_DATE
 import kotlinx.datetime.LocalDate
 import models.SbscrUserId
 import models.plan.PlanId
@@ -15,6 +15,7 @@ data class Subscription(
     var startDate: LocalDate = MIN_LOCAL_DATE,
     var endDate: LocalDate = MIN_LOCAL_DATE,
     var isActive: Boolean = false,
+    var lock: SubscriptionLock = SubscriptionLock.NONE,
     var paymentStatus: SbscrPaymentStatus = SbscrPaymentStatus.NOT_PAYED
 ) {
     fun deepCopy() = copy()

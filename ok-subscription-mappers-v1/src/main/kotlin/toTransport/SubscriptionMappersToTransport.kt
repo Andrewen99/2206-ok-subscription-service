@@ -6,12 +6,10 @@ import exceptions.UnknownAcqSbscrCommand
 import kotlinx.datetime.toJavaLocalDate
 import models.*
 import models.plan.PlanId
-import models.subscription.SbscrPaymentStatus
-import models.subscription.Subscription
-import models.subscription.SubscriptionCommand
-import models.subscription.SubscriptionId
+import models.subscription.*
 import ru.otuskotlin.subscription.api.v1.models.*
 import toTrasportErrors
+import util.MIN_LOCAL_DATE
 import java.time.LocalDate
 /**
  * Маппер из внутренних моделей в транспортные
@@ -64,9 +62,10 @@ private fun Subscription.toTransportSubscription(): SubscriptionResponseObject =
     SubscriptionResponseObject(
         id = id.takeIf { it != SubscriptionId.NONE }?.asString(),
         planId = planId.takeIf { it != PlanId.NONE }?.asString(),
-        startDate = startDate.toJavaLocalDate().takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
-        endDate = endDate.toJavaLocalDate().takeIf { it != LocalDate.MIN }?.format(DATE_FORMATTER),
+        startDate = startDate.takeIf { it != MIN_LOCAL_DATE }?.toJavaLocalDate()?.format(DATE_FORMATTER),
+        endDate = endDate.takeIf { it != MIN_LOCAL_DATE }?.toJavaLocalDate()?.format(DATE_FORMATTER),
         isActive = isActive,
+        lock = lock.takeIf { it != SubscriptionLock.NONE}?.asString(),
         paymentStatus = paymentStatus.toTransportPaymentStatus()
     )
 

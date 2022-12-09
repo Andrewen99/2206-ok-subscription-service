@@ -4,7 +4,7 @@ info:
   description: Subscription-api
   version: 1.0.0
 servers:
-  - url: 'http://localhost/v1'
+  - url: 'http://0.0.0.0:8080'
 tags:
   - name: plan
     description: Тариф
@@ -384,6 +384,8 @@ components:
           properties:
             id:
               $ref: '#/components/schemas/PlanId'
+            lock:
+              $ref: '#/components/schemas/PlanLock'
 
     PlanDeleteRequest:
       allOf:
@@ -496,6 +498,8 @@ components:
           $ref: '#/components/schemas/PlanId'
         ownerId:
           $ref: '#/components/schemas/UserId'
+        lock:
+          $ref: '#/components/schemas/SubscriptionLock'
         startDate:
           description: Дата приобретения/включения подписки в формате дд.мм.гггг
           type: string

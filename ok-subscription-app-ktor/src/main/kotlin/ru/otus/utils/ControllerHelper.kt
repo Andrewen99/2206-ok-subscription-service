@@ -31,6 +31,7 @@ suspend inline fun <reified Q: IRequest, @Suppress("unused") reified R : IRespon
         processor.exec(ctx)
         respond(ctx.toTransportPlan())
     } catch (e: Throwable) {
+        e.printStackTrace()
         command?.also { ctx.command = it }
         ctx.state = SbscrState.FAILING
         ctx.errors.add(e.asSbscrError())
