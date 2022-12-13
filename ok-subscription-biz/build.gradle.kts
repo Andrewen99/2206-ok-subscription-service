@@ -21,6 +21,7 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
 
                 implementation(project(":ok-subscription-common"))
+                implementation(project(":ok-subscription-auth"))
                 implementation(project(":ok-subscription-stubs"))
                 implementation(project(":ok-subscription-cor"))
                 implementation(project(":ok-subscription-repo-stub"))

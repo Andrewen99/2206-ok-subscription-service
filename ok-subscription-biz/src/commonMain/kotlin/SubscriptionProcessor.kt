@@ -10,6 +10,9 @@ import models.SbscrUserId
 import models.plan.PlanId
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionId
+import permissions.accessValidation
+import permissions.chainPermissions
+import permissions.searchTypes
 import repo.subscription.*
 import stubs.*
 import stubs.subscription.*
@@ -53,9 +56,11 @@ class SubscriptionProcessor(private val processorRepoSettings: RepoSettings = Re
                     finishSubscriptionValidation("Завершение валидации")
                 }
 
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoPrepareCreate("Подготовка подписки для сохранения")
+                    accessValidation("Проверка прав доступа")
                     repoCreate("Создание подписки в БД")
                 }
                 prepareResult("Подготовка результата")
@@ -82,10 +87,12 @@ class SubscriptionProcessor(private val processorRepoSettings: RepoSettings = Re
                     finishSubscriptionValidation("Завершение валидации")
                 }
 
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика обновления"
                     repoRead("Чтение подписки из БД")
                     repoReadPlan("Чтение плана подписки")
+                    accessValidation("Проверка прав доступа")
                     repoPreparePaymentAndDates("Подготовка объекта для обновления")
                     repoUpdate("Обновление подписки в БД")
                 }
@@ -112,9 +119,11 @@ class SubscriptionProcessor(private val processorRepoSettings: RepoSettings = Re
                     finishSubscriptionValidation("Завершение валидации")
                 }
 
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения"
                     repoRead("Чтение подписки из БД")
+                    accessValidation("Проверка прав доступа")
                     worker {
                         title = "Подготовка ответа для read"
                         on { state == SbscrState.RUNNING }
@@ -133,6 +142,7 @@ class SubscriptionProcessor(private val processorRepoSettings: RepoSettings = Re
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
 
+
                 validation {
                     worker("Копируем поля в SubscriptionFilterValidating") { subscriptionFilterValidating = subscriptionFilter.deepCopy() }
                     worker("Очистка ownerId и planId") {
@@ -143,7 +153,10 @@ class SubscriptionProcessor(private val processorRepoSettings: RepoSettings = Re
                     finishSubscriptionFilterValidation("Завершение валидации")
                 }
 
-                repoSearch("Поиск подписок по фильру")
+                chainPermissions("Вычисление разрешений для пользователя")
+                searchTypes("Подготовка поискового запроса")
+
+                repoSearch("Поиск подписок по фильтру")
                 prepareResult("Подготовка ответа")
             }
         }.build()

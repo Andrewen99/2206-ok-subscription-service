@@ -6,6 +6,7 @@ import models.plan.Plan
 import models.plan.PlanCommand
 import util.NONE
 import models.plan.PlanRepoSettings
+import permissions.UserPlanPermissions
 import repo.plan.IPlanRepository
 
 /**
@@ -18,6 +19,10 @@ data class PlanContext(
     override var stubCase: SbscrStubs = SbscrStubs.NONE,
     override var requestId: SbscrRequestId = SbscrRequestId.NONE,
     override var timeStart: Instant = Instant.NONE,
+
+    override var principal: SbscrPrincipalModel = SbscrPrincipalModel.NONE,
+    override var permitted: Boolean = false,
+    val permissionsChain: MutableSet<UserPlanPermissions> = mutableSetOf(),
 
     var planRepoSettings: PlanRepoSettings = PlanRepoSettings(),
     var planRepo: IPlanRepository = IPlanRepository.NONE,

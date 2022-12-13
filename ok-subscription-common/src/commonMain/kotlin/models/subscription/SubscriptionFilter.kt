@@ -13,7 +13,8 @@ data class SubscriptionFilter(
     var subscriptionId: SubscriptionId = SubscriptionId.NONE,
     var boughtPeriod: SbscrDatePeriod? = null,
     var expirationPeriod: SbscrDatePeriod? = null,
-    var isActive: Boolean? = null
+    var isActive: Boolean? = null,
+    var searchPermissions: MutableSet<SearchPermissions> = mutableSetOf()
 ) {
     fun deepCopy() = copy(
         boughtPeriod = boughtPeriod?.copy(),
