@@ -4,10 +4,10 @@ import contexts.PlanContext
 import contexts.SubscriptionContext
 import dsl.CorChainDsl
 import dsl.worker
-import resolvePlanChainPermissions
-import resolveSubscriptionChainPermissions
+import plan.resolvePlanChainPermissions
+import subscription.resolveSubscriptionChainPermissions
 
-fun CorChainDsl<PlanContext>.chainPermissions(title: String) = worker {
+fun CorChainDsl<PlanContext>.chainPlanPermissions(title: String) = worker {
     this.title = title
     description = "Вычисление прав доступа к планам для групп пользователей"
 
@@ -18,7 +18,7 @@ fun CorChainDsl<PlanContext>.chainPermissions(title: String) = worker {
     }
 }
 
-fun CorChainDsl<SubscriptionContext>.chainPermissions(title: String) = worker {
+fun CorChainDsl<SubscriptionContext>.chainSubscriptionPermissions(title: String) = worker {
     this.title = title
     description = "Вычисление прав доступа к планам для групп пользователей"
 

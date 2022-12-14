@@ -9,9 +9,9 @@ import models.SbscrState
 import models.plan.PlanCommand
 import models.plan.PlanId
 import models.plan.PlanLock
-import models.plan.PlanRepoSettings
-import permissions.accessValidation
-import permissions.chainPermissions
+import permissions.accessPlanValidation
+import permissions.chainPlanPermissions
+import permissions.frontPlanPermissions
 import repo.plan.*
 import stubs.*
 import stubs.plan.*
@@ -59,13 +59,14 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
 
                     finishPlanValidation("Завершение валидации")
                 }
-                chainPermissions("Вычисление разрешений для пользователя")
+                chainPlanPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoPrepareCreate("Подготовка объекта для сохранения")
-                    accessValidation("Вычисление прав доступа")
+                    accessPlanValidation("Вычисление прав доступа")
                     repoCreate("Создание объявления в БД")
                 }
+                frontPlanPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка результата")
             }
 
@@ -107,14 +108,15 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
                     finishPlanValidation("Завершение валидации")
                 }
 
-                chainPermissions("Вычисление разрешений для пользователя")
+                chainPlanPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика обновления"
                     repoRead("Чтение плана из БД")
-                    accessValidation("Вычисление прав доступа")
+                    accessPlanValidation("Вычисление прав доступа")
                     repoPrepareUpdate("Подготовка объекта для обновления")
                     repoUpdate("Обновление плана в БД")
                 }
+                frontPlanPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
 
@@ -136,17 +138,18 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
                     finishPlanValidation("Завершение валидации")
                 }
 
-                chainPermissions("Вычисление разрешений для пользователя")
+                chainPlanPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения"
                     repoRead("Чтение плана из БД")
-                    accessValidation("Вычисление прав доступа")
+                    accessPlanValidation("Вычисление прав доступа")
                     worker {
                         title = "Подготовка ответа для read"
                         on { state == SbscrState.RUNNING }
                         handle { planRepoDone = planRepoRead }
                     }
                 }
+                frontPlanPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
 
@@ -157,7 +160,7 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
 
-                chainPermissions("Вычисление разрешений для пользователя")
+                chainPlanPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения всех планов"
                     repoReadAll("Чтение всех планов из БД")
@@ -167,6 +170,7 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
                         handle { plansRepoDone = planRepoReadAll }
                     }
                 }
+                frontPlanPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
 
@@ -190,14 +194,15 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
 
                     finishPlanValidation("Завершение валидации")
                 }
-                chainPermissions("Вычисление разрешений для пользователя")
+                chainPlanPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика удаления"
                     repoRead("Чтение плана из БД")
-                    accessValidation("Вычисление прав доступа")
+                    accessPlanValidation("Вычисление прав доступа")
                     repoPrepareDelete("Подготовка объекта плана для удаления")
                     repoDelete("Удаление плана из БД")
                 }
+                frontPlanPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
         }.build()

@@ -1,7 +1,7 @@
 package permissions
 
-import checkPlanPermitted
-import checkSubscriptionPermitted
+import plan.checkPlanPermitted
+import subscription.checkSubscriptionPermitted
 import contexts.PlanContext
 import contexts.SubscriptionContext
 import dsl.CorChainDsl
@@ -12,7 +12,7 @@ import models.SbscrError
 import models.SbscrState
 import resolveRelationsTo
 
-fun CorChainDsl<PlanContext>.accessValidation(title: String) = chain {
+fun CorChainDsl<PlanContext>.accessPlanValidation(title: String) = chain {
     this.title = title
     description = "Вычисление прав доступа по группе принципала и таблице прав доступа"
     on { state == SbscrState.RUNNING }
@@ -32,7 +32,7 @@ fun CorChainDsl<PlanContext>.accessValidation(title: String) = chain {
     }
 }
 
-fun CorChainDsl<SubscriptionContext>.accessValidation(title: String) = chain {
+fun CorChainDsl<SubscriptionContext>.accessSubscriptionValidation(title: String) = chain {
     this.title = title
     description = "Вычисление прав доступа по группе принципала и таблице прав доступа"
     on { state == SbscrState.RUNNING }

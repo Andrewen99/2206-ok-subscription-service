@@ -6,5 +6,5 @@ enum class SbscrPrincipalRelations {
     OWN,
     FOR_ADMINS,
     PUBLIC,
-    MODERATABLE
+    MODERATABLE,
 }

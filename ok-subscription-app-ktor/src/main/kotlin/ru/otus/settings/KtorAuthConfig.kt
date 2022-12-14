@@ -14,5 +14,13 @@ data class KtorAuthConfig(
         const val F_NAME_CLAIM = "fname"
         const val M_NAME_CLAIM = "mname"
         const val L_NAME_CLAIM = "lname"
+
+        val TEST = KtorAuthConfig(
+            secret = "secret",
+            issuer = "OtusKotlin",
+            audience= "plans-subs",
+            realm = "subscriptions",
+            clientId = "subscription-service",
+        )
     }
 }

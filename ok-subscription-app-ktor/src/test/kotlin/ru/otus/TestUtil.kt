@@ -13,6 +13,7 @@ import models.plan.PlanRepoSettings
 import models.subscription.Subscription
 import models.subscription.SubscriptionRepoSettings
 import plan.PlanRepoInMemory
+import ru.otus.settings.KtorAuthConfig
 import subscription.SubscriptionRepoInMemory
 
 const val UUID_OLD: String = "200_000_000"
@@ -28,7 +29,10 @@ fun ApplicationTestBuilder.myRestClient() = createClient {
 }
 
 fun ApplicationTestBuilder.initStubApp() = application {
-    module()
+    module(
+        repoSettings = RepoSettings(),
+        authConfig = KtorAuthConfig.TEST
+    )
 }
 
 internal fun TestApplicationBuilder.initInMemoryApp(
@@ -48,7 +52,7 @@ internal fun TestApplicationBuilder.initInMemoryApp(
             subscriptionRepoSettings = subscriptionRepoSettings
         )
 
-    module(repoSettings)
+    module(repoSettings = repoSettings, authConfig = KtorAuthConfig.TEST)
 }
 
 internal fun TestApplicationBuilder.initPostgresApp(
@@ -66,7 +70,7 @@ internal fun TestApplicationBuilder.initPostgresApp(
         planRepoSettings = planRepoSettings,
         subscriptionRepoSettings = subscriptionRepoSettings
     )
-    module(repoSettings)
+    module(repoSettings = repoSettings, authConfig = KtorAuthConfig.TEST)
 }
 
 fun ApplicationTestBuilder.myWsClient() = createClient {

@@ -1,3 +1,5 @@
+package plan
+
 import models.plan.PlanCommand
 import permissions.SbscrPrincipalRelations
 import permissions.UserPlanPermissions
@@ -30,7 +32,7 @@ private val accessTable = mapOf(
     PlanTableConditions(
         command = PlanCommand.CREATE,
         permission = UserPlanPermissions.CREATE,
-        relation = SbscrPrincipalRelations.MODERATABLE
+        relation = SbscrPrincipalRelations.NONE
     ) to true,
 
     //read

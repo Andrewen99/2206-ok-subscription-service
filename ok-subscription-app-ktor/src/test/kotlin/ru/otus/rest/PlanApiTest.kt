@@ -16,6 +16,8 @@ import ru.otus.UUID_OLD
 import ru.otus.constants.*
 import ru.otus.initInMemoryApp
 import ru.otus.myRestClient
+import ru.otus.rest.auth.addAuth
+import ru.otus.settings.KtorAuthConfig
 import ru.otuskotlin.subscription.api.v1.models.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -40,6 +42,9 @@ abstract class PlanApiTest {
         val response = client.post("/plan/create") {
             contentType(ContentType.Application.Json)
             setBody(getPlanCreateReq(TEST_DEBUG))
+            addAuth(
+                id = "123", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
         val responseBody = response.body<PlanCreateResponse>()
         println("\n\n$responseBody\n\n")
@@ -57,6 +62,9 @@ abstract class PlanApiTest {
         val response = client.post("/plan/update") {
             contentType(ContentType.Application.Json)
             setBody(planUpdateReq)
+            addAuth(
+                id = "123", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
 
         val responseBody = response.body<PlanUpdateResponse>()
@@ -83,6 +91,9 @@ abstract class PlanApiTest {
         val response = client.post("/plan/read") {
             contentType(ContentType.Application.Json)
             setBody(planRequest)
+            addAuth(
+                id = "123", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
 
         val responseBody = response.body<PlanReadResponse>()
@@ -100,6 +111,9 @@ abstract class PlanApiTest {
         val response = client.post("/plan/readAll") {
             contentType(ContentType.Application.Json)
             setBody(getPlanReadAllReq(TEST_DEBUG))
+            addAuth(
+                id = "123", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
 
         val responseBody = response.body<PlanReadAllResponse>()
@@ -118,6 +132,9 @@ abstract class PlanApiTest {
         val response = client.post("/plan/delete") {
             contentType(ContentType.Application.Json)
             setBody(planRequest)
+            addAuth(
+                id = "123", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
 
         val responseBody = response.body<PlanDeleteResponse>()
@@ -137,6 +154,9 @@ abstract class PlanApiTest {
         val response = client.post("/plan/buy") {
             contentType(ContentType.Application.Json)
             setBody(planReq)
+            addAuth(
+                id = "123", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
 
         val responseBody = response.body<PlanBuyResponse>()

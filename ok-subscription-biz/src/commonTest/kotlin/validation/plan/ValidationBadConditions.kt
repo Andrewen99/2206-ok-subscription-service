@@ -4,9 +4,12 @@ import PlanProcessor
 import contexts.PlanContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import models.SbscrPrincipalModel
 import models.SbscrState
+import models.SbscrUserId
 import models.SbscrWorkMode
 import models.plan.*
+import permissions.SbscrUserGroups
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -16,12 +19,13 @@ fun validationConditionsCorrect(command: PlanCommand, processor: PlanProcessor) 
     val ctx = PlanContext(
         command = command,
         state = SbscrState.NONE,
-        workMode =  SbscrWorkMode.TEST,
+        workMode = SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),
             title = "abc",
-            conditions = mutableSetOf("condition#1","condition#2","condition#3"),
+            conditions = mutableSetOf("condition#1", "condition#2", "condition#3"),
             duration = 5,
             price = "10",
             visibility = SbscrPlanVisibility.PUBLIC
@@ -31,7 +35,7 @@ fun validationConditionsCorrect(command: PlanCommand, processor: PlanProcessor) 
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(SbscrState.FAILING, ctx.state)
-    assertEquals(mutableSetOf("condition#1","condition#2","condition#3"), ctx.planValidated.conditions)
+    assertEquals(mutableSetOf("condition#1", "condition#2", "condition#3"), ctx.planValidated.conditions)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -39,7 +43,8 @@ fun validationConditionsTrim(command: PlanCommand, processor: PlanProcessor) = r
     val ctx = PlanContext(
         command = command,
         state = SbscrState.NONE,
-        workMode =  SbscrWorkMode.TEST,
+        workMode = SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),
@@ -53,7 +58,7 @@ fun validationConditionsTrim(command: PlanCommand, processor: PlanProcessor) = r
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(SbscrState.FAILING, ctx.state)
-    assertEquals(mutableSetOf("condition#1","condition#2","condition#3"), ctx.planValidated.conditions)
+    assertEquals(mutableSetOf("condition#1", "condition#2", "condition#3"), ctx.planValidated.conditions)
 }
 
 
@@ -62,7 +67,8 @@ fun validationConditionsEmpty(command: PlanCommand, processor: PlanProcessor) = 
     val ctx = PlanContext(
         command = command,
         state = SbscrState.NONE,
-        workMode =  SbscrWorkMode.TEST,
+        workMode = SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),
@@ -87,12 +93,13 @@ fun validationConditionsSymbols(command: PlanCommand, processor: PlanProcessor) 
     val ctx = PlanContext(
         command = command,
         state = SbscrState.NONE,
-        workMode =  SbscrWorkMode.TEST,
+        workMode = SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),
             title = "abc",
-            conditions = mutableSetOf("!@#\$%^&*(),.{}","condition#2","condition#3"),
+            conditions = mutableSetOf("!@#\$%^&*(),.{}", "condition#2", "condition#3"),
             duration = 5,
             price = "10",
             visibility = SbscrPlanVisibility.PUBLIC

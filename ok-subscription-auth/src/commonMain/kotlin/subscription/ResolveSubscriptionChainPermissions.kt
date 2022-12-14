@@ -1,5 +1,6 @@
+package subscription
+
 import permissions.SbscrUserGroups
-import permissions.UserPlanPermissions
 import permissions.UserSubscriptionPermissions
 
 fun resolveSubscriptionChainPermissions(

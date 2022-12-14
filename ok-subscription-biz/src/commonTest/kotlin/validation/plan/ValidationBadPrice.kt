@@ -4,9 +4,12 @@ import PlanProcessor
 import contexts.PlanContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import models.SbscrPrincipalModel
 import models.SbscrState
+import models.SbscrUserId
 import models.SbscrWorkMode
 import models.plan.*
+import permissions.SbscrUserGroups
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -17,6 +20,7 @@ fun validationPriceCorrect(command: PlanCommand, processor: PlanProcessor) = run
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),
@@ -25,7 +29,7 @@ fun validationPriceCorrect(command: PlanCommand, processor: PlanProcessor) = run
             duration = 5,
             price = "10",
             visibility = SbscrPlanVisibility.PUBLIC
-        )
+        ),
     )
 
     processor.exec(ctx)
@@ -40,6 +44,7 @@ fun validationPriceTrim(command: PlanCommand, processor: PlanProcessor) = runTes
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),
@@ -62,6 +67,7 @@ fun validationPriceEmpty(command: PlanCommand, processor: PlanProcessor) = runTe
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),
@@ -87,6 +93,7 @@ fun validationPriceSymbols(command: PlanCommand, processor: PlanProcessor) = run
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),
@@ -112,6 +119,7 @@ fun validationPriceNegative(command: PlanCommand, processor: PlanProcessor) = ru
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId("123"), groups = setOf(SbscrUserGroups.ADMIN)),
         planRequest = Plan(
             id = PlanId("123"),
             lock = PlanLock("123-abc-456-XYZ"),

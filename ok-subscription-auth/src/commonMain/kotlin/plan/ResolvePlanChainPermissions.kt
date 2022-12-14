@@ -1,3 +1,5 @@
+package plan
+
 import permissions.SbscrUserGroups
 import permissions.UserPlanPermissions
 

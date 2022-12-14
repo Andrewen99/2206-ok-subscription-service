@@ -1,4 +1,5 @@
-import models.plan.PlanCommand
+package subscription
+
 import models.subscription.SubscriptionCommand
 import permissions.SbscrPrincipalRelations
 import permissions.UserSubscriptionPermissions
@@ -37,7 +38,7 @@ private val accessTable = mapOf(
     SubscriptionTableConditions(
         command = SubscriptionCommand.PAY,
         permission = UserSubscriptionPermissions.UPDATE_OWN,
-        relation = SbscrPrincipalRelations.NEW
+        relation = SbscrPrincipalRelations.OWN
     ) to true,
 
     //read
