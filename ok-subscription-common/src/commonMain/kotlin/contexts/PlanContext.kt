@@ -4,8 +4,10 @@ import kotlinx.datetime.Instant
 import models.*
 import models.plan.Plan
 import models.plan.PlanCommand
+import models.plan.PlanFilter
 import util.NONE
 import models.plan.PlanRepoSettings
+import models.subscription.SubscriptionFilter
 import permissions.UserPlanPermissions
 import repo.plan.IPlanRepository
 
@@ -32,6 +34,7 @@ data class PlanContext(
 
     var planValidating: Plan = Plan(),
     var planValidated: Plan = Plan(),
+    var planFilterValidated: PlanFilter = PlanFilter(),
 
     var planRepoRead: Plan = Plan(),
     var planRepoReadAll: MutableList<Plan> = mutableListOf(),

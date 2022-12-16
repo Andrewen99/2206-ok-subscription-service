@@ -18,7 +18,8 @@ abstract class BaseInitPlans(val op: String): IInitObjects<Plan> {
 
     fun createInitTestModel(
         suf: String,
-        lock: PlanLock = lockOld
+        lock: PlanLock = lockOld,
+        visibility: SbscrPlanVisibility = SbscrPlanVisibility.PUBLIC
     ) = Plan(
         id = PlanId("plan-repo-$op-$suf"),
         title = "$suf stub",
@@ -26,6 +27,6 @@ abstract class BaseInitPlans(val op: String): IInitObjects<Plan> {
         duration = 0,
         price = "99999999",
         lock = lock,
-        visibility = SbscrPlanVisibility.PUBLIC
+        visibility = visibility
     )
 }

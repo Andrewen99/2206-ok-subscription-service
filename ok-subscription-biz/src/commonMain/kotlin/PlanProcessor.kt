@@ -12,6 +12,7 @@ import models.plan.PlanLock
 import permissions.accessPlanValidation
 import permissions.chainPlanPermissions
 import permissions.frontPlanPermissions
+import permissions.searchPlanTypes
 import repo.plan.*
 import stubs.*
 import stubs.plan.*
@@ -163,7 +164,8 @@ class PlanProcessor(private val repoSettings: RepoSettings = RepoSettings()) {
                 chainPlanPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения всех планов"
-                    repoReadAll("Чтение всех планов из БД")
+                    searchPlanTypes("Добавление фильтра групп доступа")
+                    repoPlanSearch("Чтение всех планов из БД")
                     worker {
                         title = "Подготовка ответа для readAll"
                         on { state == SbscrState.RUNNING }

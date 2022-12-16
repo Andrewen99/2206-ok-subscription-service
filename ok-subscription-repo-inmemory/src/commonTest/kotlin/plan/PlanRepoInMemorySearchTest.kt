@@ -1,6 +1,6 @@
 package plan
 
-class PlanRepoInMemoryReadAllTest: RepoPlanReadAllTest() {
+class PlanRepoInMemorySearchTest: RepoPlanSearchTest() {
     override val repo = PlanRepoInMemory(
         initObjects = initObjects
     )

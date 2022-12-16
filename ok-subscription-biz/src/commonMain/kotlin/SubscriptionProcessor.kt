@@ -13,7 +13,7 @@ import models.subscription.SubscriptionId
 import permissions.accessSubscriptionValidation
 import permissions.chainSubscriptionPermissions
 import permissions.frontSubscriptionPermissions
-import permissions.searchTypes
+import permissions.searchSubscriptionTypes
 import repo.subscription.*
 import stubs.*
 import stubs.subscription.*
@@ -158,7 +158,7 @@ class SubscriptionProcessor(private val processorRepoSettings: RepoSettings = Re
                 }
 
                 chainSubscriptionPermissions("Вычисление разрешений для пользователя")
-                searchTypes("Подготовка поискового запроса")
+                searchSubscriptionTypes("Подготовка поискового запроса")
 
                 repoSearch("Поиск подписок по фильтру")
                 frontSubscriptionPermissions("Вычисление пользовательских разрешений для фронтенда")

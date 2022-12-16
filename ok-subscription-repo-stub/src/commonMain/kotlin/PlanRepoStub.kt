@@ -1,4 +1,3 @@
-import models.plan.Plan
 import models.plan.SbscrPlanVisibility
 import repo.plan.*
 
@@ -31,7 +30,7 @@ class PlanRepoStub(val visibility: SbscrPlanVisibility = SbscrPlanVisibility.PUB
         )
     }
 
-    override suspend fun readAllPlans(): DbPlansResponse {
+    override suspend fun searchPlans(rq: DbPlanFilterRequest): DbPlansResponse {
         return DbPlansResponse(
             data = PlanStubs.PLANS,
             success = true

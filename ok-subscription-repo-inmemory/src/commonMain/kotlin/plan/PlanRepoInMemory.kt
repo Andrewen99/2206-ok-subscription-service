@@ -61,9 +61,14 @@ class PlanRepoInMemory(
             } ?: resultErrorNotFound
     }
 
-    override suspend fun readAllPlans(): DbPlansResponse {
+    override suspend fun searchPlans(rq: DbPlanFilterRequest): DbPlansResponse {
         return DbPlansResponse (
-            data = cache.asMap().values.toList().map { it.toInternal() },
+            data = cache
+                .asMap()
+                .values
+                .filter { dbVal -> rq.filter.visibilitySet.any { filterVisibility -> dbVal.visibility == filterVisibility.name } }
+                .toList()
+                .map { it.toInternal() },
             success = true)
     }
 

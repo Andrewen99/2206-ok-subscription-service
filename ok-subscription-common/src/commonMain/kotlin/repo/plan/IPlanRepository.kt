@@ -16,7 +16,7 @@ interface IPlanRepository {
 
     suspend fun deletePlan(rq: DbPlanIdRequest) : DbPlanResponse
 
-    suspend fun readAllPlans() : DbPlansResponse
+    suspend fun searchPlans(rq: DbPlanFilterRequest): DbPlansResponse
 
     companion object {
         val NONE = object : IPlanRepository {
@@ -36,7 +36,7 @@ interface IPlanRepository {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun readAllPlans(): DbPlansResponse {
+            override suspend fun searchPlans(rq: DbPlanFilterRequest): DbPlansResponse {
                 TODO("Not yet implemented")
             }
 
