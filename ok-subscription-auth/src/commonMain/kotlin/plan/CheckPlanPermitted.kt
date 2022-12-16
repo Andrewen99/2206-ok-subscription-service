@@ -32,16 +32,11 @@ private val accessTable = mapOf(
     PlanTableConditions(
         command = PlanCommand.CREATE,
         permission = UserPlanPermissions.CREATE,
-        relation = SbscrPrincipalRelations.NONE
+        relation = SbscrPrincipalRelations.MODERATABLE
     ) to true,
 
     //read
     //public
-    PlanTableConditions(
-        command = PlanCommand.READ,
-        permission = UserPlanPermissions.READ_PUBLIC,
-        relation = SbscrPrincipalRelations.NONE
-    ) to true,
 
     PlanTableConditions(
         command = PlanCommand.READ,

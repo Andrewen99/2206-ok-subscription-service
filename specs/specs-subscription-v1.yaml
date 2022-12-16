@@ -487,6 +487,19 @@ components:
               $ref: '#/components/schemas/PlanId'
             lock:
               $ref: '#/components/schemas/PlanLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/PlanPermissions'
+
+    PlanPermissions:
+      type: string
+      description: Доступы для клиента для операций
+      enum:
+        - read
+        - update
+        - delete
 
     SubscriptionResponseObject:
       type: object
@@ -518,7 +531,20 @@ components:
             - notPaid
             - paymentInProgress
             - Paid
+        permissions:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/SubscriptionPermissions'
 
+    SubscriptionPermissions:
+      type: string
+      description: Доступы для клиента для операций
+      enum:
+        - read
+        - update
+        - delete
+        - search
 
     PlanResponseSingle:
       allOf:

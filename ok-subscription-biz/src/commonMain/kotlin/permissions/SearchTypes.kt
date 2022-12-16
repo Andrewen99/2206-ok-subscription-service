@@ -13,8 +13,11 @@ fun CorChainDsl<SubscriptionContext>.searchTypes(title: String) = chain {
     on { state == SbscrState.RUNNING }
     worker("Определение типа поиска") {
         subscriptionFilterValidated.searchPermissions = setOfNotNull(
-            SearchPermissions.OWN.takeIf { permissionsChain.contains(UserSubscriptionPermissions.SEARCH_OWN) },
             SearchPermissions.ALL.takeIf { permissionsChain.contains(UserSubscriptionPermissions.SEARCH) }
         ).toMutableSet()
+        if (permissionsChain.contains(UserSubscriptionPermissions.SEARCH_OWN) && !permissionsChain.contains(UserSubscriptionPermissions.SEARCH)) {
+            subscriptionFilterValidated.ownerId = principal.id
+            subscriptionFilterValidated.searchPermissions.add(SearchPermissions.OWN)
+        }
     }
 }

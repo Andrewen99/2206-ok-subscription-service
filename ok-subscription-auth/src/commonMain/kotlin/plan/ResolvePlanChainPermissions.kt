@@ -28,7 +28,6 @@ private val groupPermissionAdmits = mapOf(
         UserPlanPermissions.READ_PUBLIC,
         UserPlanPermissions.READ_CANDIDATE,
         UserPlanPermissions.UPDATE_CANDIDATE,
-        UserPlanPermissions.DELETE_CANDIDATE,
     ),
     SbscrUserGroups.TEST to setOf(),
     SbscrUserGroups.BAN to setOf()
@@ -43,5 +42,6 @@ private val groupPermissionsDenies = mapOf<SbscrUserGroups, Set<UserPlanPermissi
         UserPlanPermissions.CREATE,
         UserPlanPermissions.UPDATE_CANDIDATE,
         UserPlanPermissions.DELETE_CANDIDATE,
+        UserPlanPermissions.READ_ADMIN_ONLY,
     )
 )

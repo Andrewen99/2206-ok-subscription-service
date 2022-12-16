@@ -1,7 +1,8 @@
 import models.plan.Plan
+import models.plan.SbscrPlanVisibility
 import repo.plan.*
 
-class PlanRepoStub : IPlanRepository {
+class PlanRepoStub(val visibility: SbscrPlanVisibility = SbscrPlanVisibility.PUBLIC) : IPlanRepository {
     override suspend fun createPlan(rq: DbPlanRequest): DbPlanResponse {
         return DbPlanResponse(
             data = PlanStubs.PLAN1,
@@ -11,7 +12,7 @@ class PlanRepoStub : IPlanRepository {
 
     override suspend fun readPlan(rq: DbPlanIdRequest): DbPlanResponse {
         return DbPlanResponse(
-            data = PlanStubs.PLAN1,
+            data = PlanStubs.PLAN1.also { it.visibility = visibility },
             success = true
         )
     }

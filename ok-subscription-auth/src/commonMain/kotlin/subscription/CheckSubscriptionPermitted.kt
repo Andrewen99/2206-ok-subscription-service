@@ -32,7 +32,7 @@ private val accessTable = mapOf(
     SubscriptionTableConditions(
         command = SubscriptionCommand.BUY,
         permission = UserSubscriptionPermissions.CREATE_OWN,
-        relation = SbscrPrincipalRelations.NEW
+        relation = SbscrPrincipalRelations.OWN
     ) to true,
 
     SubscriptionTableConditions(

@@ -28,9 +28,6 @@ private val accessTable = mapOf(
     ),
 
     //update
-    UserSubscriptionPermissions.UPDATE_OWN to mapOf(
-        SbscrPrincipalRelations.OWN to SubscriptionPermissionsClient.UPDATE
-    ),
     UserSubscriptionPermissions.UPDATE_CANDIDATE to mapOf(
         SbscrPrincipalRelations.MODERATABLE to SubscriptionPermissionsClient.UPDATE
     ),

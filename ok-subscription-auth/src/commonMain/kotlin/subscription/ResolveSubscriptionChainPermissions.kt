@@ -32,6 +32,7 @@ private val groupPermissionAdmits = mapOf(
     SbscrUserGroups.MODERATOR to setOf(
         UserSubscriptionPermissions.CREATE_OWN,
         UserSubscriptionPermissions.READ_OWN,
+        UserSubscriptionPermissions.UPDATE_OWN,
         UserSubscriptionPermissions.READ_CANDIDATE,
         UserSubscriptionPermissions.UPDATE_CANDIDATE,
         UserSubscriptionPermissions.SEARCH,

@@ -7,6 +7,8 @@ import kotlinx.datetime.toJavaLocalDate
 import models.*
 import models.plan.PlanId
 import models.subscription.*
+import permissions.PlanPermissionsClient
+import permissions.SubscriptionPermissionsClient
 import ru.otuskotlin.subscription.api.v1.models.*
 import toTrasportErrors
 import util.MIN_LOCAL_DATE
@@ -66,8 +68,21 @@ private fun Subscription.toTransportSubscription(): SubscriptionResponseObject =
         endDate = endDate.takeIf { it != MIN_LOCAL_DATE }?.toJavaLocalDate()?.format(DATE_FORMATTER),
         isActive = isActive,
         lock = lock.takeIf { it != SubscriptionLock.NONE}?.asString(),
-        paymentStatus = paymentStatus.toTransportPaymentStatus()
+        paymentStatus = paymentStatus.toTransportPaymentStatus(),
+        permissions = permissionsClient.toTransportPermissions()
     )
+
+private fun Set<SubscriptionPermissionsClient>.toTransportPermissions() : Set<SubscriptionPermissions>? = this
+    .map { it.toTransportPermission() }
+    .toSet()
+    .takeIf {  it.isNotEmpty() }
+
+private fun SubscriptionPermissionsClient.toTransportPermission() : SubscriptionPermissions = when (this) {
+    SubscriptionPermissionsClient.READ -> SubscriptionPermissions.READ
+    SubscriptionPermissionsClient.UPDATE -> SubscriptionPermissions.UPDATE
+    SubscriptionPermissionsClient.DELETE -> SubscriptionPermissions.DELETE
+    SubscriptionPermissionsClient.SEARCH -> SubscriptionPermissions.SEARCH
+}
 
 private fun SbscrPaymentStatus.toTransportPaymentStatus(): SubscriptionResponseObject.PaymentStatus = when (this) {
     SbscrPaymentStatus.NOT_PAYED -> SubscriptionResponseObject.PaymentStatus.NOT_PAID
