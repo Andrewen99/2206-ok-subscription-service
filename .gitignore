@@ -2,3 +2,7 @@
 /.idea/
 **/build/
 *.DS_store
+
+/dockers/elk-stack/volumes/kfdata/*
+/dockers/elk-stack/volumes/esdata/*
+/dockers/elk-stack/tmp
