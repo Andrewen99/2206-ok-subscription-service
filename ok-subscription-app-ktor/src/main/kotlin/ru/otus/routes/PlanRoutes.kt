@@ -13,31 +13,31 @@ import io.ktor.server.routing.*
 import models.SbscrState
 import models.plan.PlanCommand
 import models.subscription.SubscriptionCommand
+import ru.otus.otuskotlin.subscription.logging.common.mpLogger
 import ru.otus.utils.processPlanRq
 import ru.otus.utils.processSubscriptionRq
 import ru.otuskotlin.subscription.api.v1.models.*
-import toTransport.toTransportPlan
-import toTransport.toTransportSubscription
 
+private val loggerPlan = mpLogger("plans")
 fun Route.planRouting(processor: PlanProcessor, subscriptionProcessor: SubscriptionProcessor) {
     route("/plan") {
         post("/create") {
-            call.processPlanRq<PlanCreateRequest, PlanCreateResponse>(processor, PlanCommand.CREATE)
+            call.processPlanRq<PlanCreateRequest, PlanCreateResponse>(processor, loggerPlan, "plan-create", PlanCommand.CREATE)
         }
         post("/update") {
-            call.processPlanRq<PlanUpdateRequest, PlanUpdateResponse>(processor, PlanCommand.UPDATE)
+            call.processPlanRq<PlanUpdateRequest, PlanUpdateResponse>(processor, loggerPlan, "plan-update", PlanCommand.UPDATE)
         }
         post("/read") {
-            call.processPlanRq<PlanReadRequest, PlanReadResponse>(processor, PlanCommand.READ)
+            call.processPlanRq<PlanReadRequest, PlanReadResponse>(processor, loggerPlan, "plan-read", PlanCommand.READ)
         }
         post("/readAll") {
-            call.processPlanRq<PlanReadAllRequest, PlanReadAllResponse>(processor, PlanCommand.READ_ALL)
+            call.processPlanRq<PlanReadAllRequest, PlanReadAllResponse>(processor, loggerPlan, "plan-read-all", PlanCommand.READ_ALL)
         }
         post("/delete") {
-            call.processPlanRq<PlanDeleteRequest, PlanDeleteResponse>(processor, PlanCommand.DELETE)
+            call.processPlanRq<PlanDeleteRequest, PlanDeleteResponse>(processor, loggerPlan, "plan-delete", PlanCommand.DELETE)
         }
         post("/buy") {
-            call.processSubscriptionRq<PlanBuyRequest, PlanBuyResponse>(subscriptionProcessor, SubscriptionCommand.BUY)
+            call.processSubscriptionRq<PlanBuyRequest, PlanBuyResponse>(subscriptionProcessor, loggerPlan, "plan-buy", SubscriptionCommand.BUY)
         }
 
     }
