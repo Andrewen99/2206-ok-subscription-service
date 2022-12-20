@@ -9,6 +9,8 @@ import models.*
 interface BaseContext{
     var state: SbscrState
     var errors: MutableList<SbscrError>
+    var principal: SbscrPrincipalModel
+    var permitted: Boolean
 
     var workMode: SbscrWorkMode
     var stubCase: SbscrStubs

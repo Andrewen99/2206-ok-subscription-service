@@ -8,6 +8,8 @@ import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionFilter
 import models.subscription.Subscription
 import models.subscription.SubscriptionRepoSettings
+import permissions.UserPlanPermissions
+import permissions.UserSubscriptionPermissions
 import repo.plan.IPlanRepository
 import repo.subscription.ISubscriptionRepository
 
@@ -21,6 +23,10 @@ data class SubscriptionContext(
     override var stubCase: SbscrStubs = SbscrStubs.NONE,
     override var requestId: SbscrRequestId = SbscrRequestId.NONE,
     override var timeStart: Instant = Instant.NONE,
+
+    override var principal: SbscrPrincipalModel = SbscrPrincipalModel.NONE,
+    override var permitted: Boolean = false,
+    val permissionsChain: MutableSet<UserSubscriptionPermissions> = mutableSetOf(),
 
     var repoSettings: RepoSettings = RepoSettings(),
     var subscriptionRepo: ISubscriptionRepository = ISubscriptionRepository.NONE,

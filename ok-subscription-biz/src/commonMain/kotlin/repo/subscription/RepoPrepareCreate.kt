@@ -12,6 +12,8 @@ fun CorChainDsl<SubscriptionContext>.repoPrepareCreate(title: String) = worker {
     description = "Подготовка объекта к сохранению в БД"
     on { state == SbscrState.RUNNING }
     handle {
-        subscriptionRepoPrepare = subscriptionValidated.deepCopy()
+        subscriptionRepoRead = subscriptionValidated.deepCopy()
+        subscriptionRepoRead.ownerId = principal.id
+        subscriptionRepoPrepare = subscriptionRepoRead
     }
 }

@@ -18,6 +18,8 @@ import ru.otus.constants.getSubscriptionPayReq
 import ru.otus.constants.getSubscriptionReadReq
 import ru.otus.constants.getSubscriptionSearchReq
 import ru.otus.myRestClient
+import ru.otus.rest.auth.addAuth
+import ru.otus.settings.KtorAuthConfig
 import ru.otuskotlin.subscription.api.v1.models.*
 import java.time.LocalDate
 import kotlin.test.assertEquals
@@ -45,6 +47,9 @@ abstract class SubscriptionApiTest {
         val response = client.post("/subscription/read") {
             contentType(ContentType.Application.Json)
             setBody(subscriptionReq)
+            addAuth(
+                id = "123", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
         val responseBody = response.body<SubscriptionReadResponse>()
         println("\n\n$responseBody\n\n")
@@ -64,6 +69,9 @@ abstract class SubscriptionApiTest {
         val response = client.post("/subscription/search") {
             contentType(ContentType.Application.Json)
             setBody(request)
+            addAuth(
+                id = "123", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
         val responseBody = response.body<SubscriptionSearchResponse>()
         println("\n\n$responseBody\n\n")
@@ -87,6 +95,9 @@ abstract class SubscriptionApiTest {
         val response = client.post("/subscription/pay") {
             contentType(ContentType.Application.Json)
             setBody(subscriptionReq)
+            addAuth(
+                id = "owner-id-1", groups = listOf("ADMIN"), config = KtorAuthConfig.TEST
+            )
         }
 
         val responseBody = response.body<SubscriptionPayResponse>()

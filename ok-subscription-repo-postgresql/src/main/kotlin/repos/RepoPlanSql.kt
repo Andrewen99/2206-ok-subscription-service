@@ -6,6 +6,7 @@ import models.SbscrError
 import models.plan.Plan
 import models.plan.PlanId
 import models.plan.PlanLock
+import models.plan.SbscrPlanVisibility
 import org.jetbrains.exposed.sql.*
 import repo.plan.*
 import repo.plan.IPlanRepository.Companion.errorDuplication
@@ -14,6 +15,7 @@ import repo.plan.IPlanRepository.Companion.resultErrorEmptyId
 import repo.plan.IPlanRepository.Companion.resultErrorEmptyLock
 import repo.plan.IPlanRepository.Companion.resultErrorNotFound
 import tables.PlansTable
+import tables.SubscriptionsTable
 import java.lang.IllegalArgumentException
 import java.util.NoSuchElementException
 
@@ -144,9 +146,12 @@ class RepoPlanSql(
         })
     }
 
-    override suspend fun readAllPlans(): DbPlansResponse {
+    override suspend fun searchPlans(rq: DbPlanFilterRequest): DbPlansResponse {
+        val filter = rq.filter
         return safeTransaction(db, {
-            val result = PlansTable.selectAll()
+            val result = PlansTable.select {
+                PlansTable.visibility inList filter.visibilitySet
+            }
             DbPlansResponse(result.map { PlansTable.fromTransport(it) }, true)
         }, {
             val error =  SbscrError(message = localizedMessage)

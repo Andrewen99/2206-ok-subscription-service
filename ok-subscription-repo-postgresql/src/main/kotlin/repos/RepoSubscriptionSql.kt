@@ -5,6 +5,7 @@ import com.benasher44.uuid.uuid4
 import models.SbscrError
 import models.SbscrUserId
 import models.plan.PlanId
+import models.subscription.SearchPermissions
 import models.subscription.Subscription
 import models.subscription.SubscriptionId
 import models.subscription.SubscriptionLock
@@ -159,6 +160,7 @@ class RepoSubscriptionSql(
                 (if (filter.boughtPeriod == null) Op.TRUE else ((SubscriptionsTable.startDate greaterEq filter.boughtPeriod!!.startDate) and (SubscriptionsTable.startDate lessEq filter!!.boughtPeriod!!.endDate)) ) and
                 (if (filter.expirationPeriod == null) Op.TRUE else ((SubscriptionsTable.endDate greaterEq filter.expirationPeriod!!.startDate) and (SubscriptionsTable.endDate lessEq filter!!.expirationPeriod!!.endDate)) ) and
                 (if (filter.isActive == null) Op.TRUE else (SubscriptionsTable.isActive eq filter.isActive!! ))
+
             }
             DbSubscriptionsResponse(data = results.map { SubscriptionsTable.fromTransport(it) }, success = true)
             }, {
@@ -166,4 +168,6 @@ class RepoSubscriptionSql(
         }
         )
     }
+
+
 }

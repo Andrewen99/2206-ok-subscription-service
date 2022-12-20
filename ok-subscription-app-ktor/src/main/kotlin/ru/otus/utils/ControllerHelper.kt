@@ -7,6 +7,8 @@ import contexts.SubscriptionContext
 import fromTransport
 import helpers.asSbscrError
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import models.plan.PlanCommand
@@ -26,6 +28,7 @@ suspend inline fun <reified Q: IRequest, @Suppress("unused") reified R : IRespon
         timeStart = Clock.System.now()
     )
     try {
+        ctx.principal = principal<JWTPrincipal>().toModel()
         val request = receive<Q>()
         ctx.fromTransport(request)
         processor.exec(ctx)
@@ -48,6 +51,7 @@ suspend inline fun <reified Q: IRequest, @Suppress("unused") reified R:IResponse
         timeStart = Clock.System.now()
     )
     try {
+        ctx.principal = principal<JWTPrincipal>().toModel()
         val request = receive<Q>()
         ctx.fromTransport(request)
         processor.exec(ctx)

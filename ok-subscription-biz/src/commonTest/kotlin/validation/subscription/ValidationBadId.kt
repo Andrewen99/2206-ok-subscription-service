@@ -6,6 +6,7 @@ import contexts.SubscriptionContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
+import models.SbscrPrincipalModel
 import models.SbscrState
 import models.SbscrUserId
 import models.SbscrWorkMode
@@ -17,6 +18,7 @@ import models.subscription.SbscrPaymentStatus
 import models.subscription.Subscription
 import models.subscription.SubscriptionCommand
 import models.subscription.SubscriptionId
+import permissions.SbscrUserGroups
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -27,6 +29,7 @@ fun validationIdCorrect(command: SubscriptionCommand, processor: SubscriptionPro
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId(id = "owner-id-1"), groups = setOf(SbscrUserGroups.ADMIN)),
         subscriptionRequest = Subscription(
             id = SubscriptionId(id = "123-subscription-456-XYZ"),
             ownerId = SbscrUserId(id = "123-USER-123"),
@@ -50,6 +53,7 @@ fun validationIdTrim(command: SubscriptionCommand, processor: SubscriptionProces
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId(id = "owner-id-1"), groups = setOf(SbscrUserGroups.ADMIN)),
         subscriptionRequest = Subscription(
             id = SubscriptionId(id = "\n\t 123-subscription-456-XYZ \n\t"),
             ownerId = SbscrUserId(id = "123-USER-123"),
@@ -73,6 +77,7 @@ fun validationIdEmpty(command: SubscriptionCommand, processor: SubscriptionProce
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId(id = "owner-id-1"), groups = setOf(SbscrUserGroups.ADMIN)),
         subscriptionRequest = Subscription(
             id = SubscriptionId(id = ""),
             ownerId = SbscrUserId(id = "123-USER-123"),
@@ -99,6 +104,7 @@ fun validationIdFormat(command: SubscriptionCommand, processor: SubscriptionProc
         command = command,
         state = SbscrState.NONE,
         workMode =  SbscrWorkMode.TEST,
+        principal = SbscrPrincipalModel(id = SbscrUserId(id = "owner-id-1"), groups = setOf(SbscrUserGroups.ADMIN)),
         subscriptionRequest = Subscription(
             id = SubscriptionId(id = "!@#\$%^&*(),.{}"),
             ownerId = SbscrUserId(id = "123-USER-123"),

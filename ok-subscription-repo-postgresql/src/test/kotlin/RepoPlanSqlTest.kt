@@ -19,7 +19,7 @@ class RepoPlanSqlReadTest : RepoPlanReadTest() {
     override val repo: IPlanRepository = SqlTestCompanion.planRepoUnderTestContainer(initObjects)
 }
 
-class RepoPlanSqlReadAllTest : RepoPlanReadAllTest() {
+class RepoPlanSqlSearchTest : RepoPlanSearchTest() {
     override val repo: IPlanRepository = SqlTestCompanion.planRepoUnderTestContainer(initObjects)
 }
 

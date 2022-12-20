@@ -4,6 +4,7 @@ import contexts.PlanContext
 import exceptions.UnknownSbscrCommand
 import models.*
 import models.plan.*
+import permissions.PlanPermissionsClient
 import ru.otuskotlin.subscription.api.v1.models.*
 import toTrasportErrors
 
@@ -25,7 +26,7 @@ private fun PlanContext.toTransportCreate() = PlanCreateResponse(
     requestId = requestId.asString().takeIf { it.isNotBlank() },
     result = if (state in listOf(SbscrState.RUNNING, SbscrState.FINISHING)) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTrasportErrors(),
-    plan = planResponse.toTransportPlan()
+    plan = planResponse.toTransportPlan(),
 )
 
 private fun PlanContext.toTransportUpdate() = PlanUpdateResponse(
@@ -64,7 +65,19 @@ private fun Plan.toTransportPlan(): PlanResponseObject = PlanResponseObject(
     lock = lock.takeIf { it != PlanLock.NONE }?.asString(),
     conditions = conditions.takeIf { it.isNotEmpty() },
     visibility = visibility.toTransportVisibility(),
+    permissions = permissionsClient.toTransportPermissions()
 )
+
+private fun Set<PlanPermissionsClient>.toTransportPermissions() : Set<PlanPermissions>? = this
+    .map { it.toTransportPermission() }
+    .toSet()
+    .takeIf {  it.isNotEmpty() }
+
+private fun PlanPermissionsClient.toTransportPermission() : PlanPermissions = when (this) {
+    PlanPermissionsClient.READ -> PlanPermissions.READ
+    PlanPermissionsClient.UPDATE -> PlanPermissions.UPDATE
+    PlanPermissionsClient.DELETE -> PlanPermissions.DELETE
+}
 
 
 

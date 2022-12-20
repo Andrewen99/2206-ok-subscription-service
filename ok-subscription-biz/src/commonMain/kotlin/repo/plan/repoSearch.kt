@@ -5,12 +5,12 @@ import dsl.CorChainDsl
 import dsl.worker
 import models.SbscrState
 
-fun CorChainDsl<PlanContext>.repoReadAll(title: String) = worker {
+fun CorChainDsl<PlanContext>.repoPlanSearch(title: String) = worker {
     this.title = title
     description = "Чтение всех планов из БД"
     on { state == SbscrState.RUNNING }
     handle {
-        val result = planRepo.readAllPlans()
+        val result = planRepo.searchPlans(DbPlanFilterRequest(planFilterValidated))
         val resultPlans = result.data
         if (result.success) {
             planRepoReadAll = resultPlans?.toMutableList() ?: mutableListOf()

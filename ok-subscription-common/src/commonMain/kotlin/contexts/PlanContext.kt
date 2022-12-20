@@ -4,8 +4,11 @@ import kotlinx.datetime.Instant
 import models.*
 import models.plan.Plan
 import models.plan.PlanCommand
+import models.plan.PlanFilter
 import util.NONE
 import models.plan.PlanRepoSettings
+import models.subscription.SubscriptionFilter
+import permissions.UserPlanPermissions
 import repo.plan.IPlanRepository
 
 /**
@@ -19,6 +22,10 @@ data class PlanContext(
     override var requestId: SbscrRequestId = SbscrRequestId.NONE,
     override var timeStart: Instant = Instant.NONE,
 
+    override var principal: SbscrPrincipalModel = SbscrPrincipalModel.NONE,
+    override var permitted: Boolean = false,
+    val permissionsChain: MutableSet<UserPlanPermissions> = mutableSetOf(),
+
     var planRepoSettings: PlanRepoSettings = PlanRepoSettings(),
     var planRepo: IPlanRepository = IPlanRepository.NONE,
 
@@ -27,6 +34,7 @@ data class PlanContext(
 
     var planValidating: Plan = Plan(),
     var planValidated: Plan = Plan(),
+    var planFilterValidated: PlanFilter = PlanFilter(),
 
     var planRepoRead: Plan = Plan(),
     var planRepoReadAll: MutableList<Plan> = mutableListOf(),

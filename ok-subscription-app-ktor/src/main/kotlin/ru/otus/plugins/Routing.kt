@@ -4,6 +4,7 @@ import PlanProcessor
 import SubscriptionProcessor
 import io.ktor.server.routing.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
@@ -23,8 +24,10 @@ fun Application.configureWebSocketsAndRestRouting(
         get("/") {
             call.respondText("Hello World!")
         }
-        planRouting(planProcessor, subscriptionProcessor)
-        subscriptionRouting(subscriptionProcessor)
+        authenticate("auth-jwt") {
+            planRouting(planProcessor, subscriptionProcessor)
+            subscriptionRouting(subscriptionProcessor)
+        }
 
         webSocket("/plan") {
             planWsHandler(planProcessor, KtorPlanWsSessions.sessions)
