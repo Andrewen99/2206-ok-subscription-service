@@ -1,0 +1,144 @@
+openapi: 3.0.4
+info:
+  title: Subscription service log models
+  description: Log models for logging services of subscription
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+paths:
+  /log:
+    get:
+      responses:
+        200:
+          description: logs
+          content: {}
+
+components:
+  schemas:
+    CommonLogModel:
+      title: Общая модель лога
+      description: Общая модель лога для всех микросервисов системы
+      type: object
+      properties:
+        messageTime:
+          type: string
+        logId:
+          type: string
+        source:
+          type: string
+        subscriptionService:
+          $ref: '#/components/schemas/SbscrLogModel'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorLogModel'
+
+    SbscrLogModel:
+      title: Модель лога для микросервиса подписок
+      type: object
+      properties:
+        requestId:
+          type: string
+        requestSubscription:
+          $ref: '#/components/schemas/SubscriptionLog'
+        requestSubscriptionFilter:
+          $ref: '#/components/schemas/SubscriptionFilterLog'
+        requestPlan:
+          $ref: '#/components/schemas/PlanLog'
+        responseSubscription:
+          $ref: '#/components/schemas/SubscriptionLog'
+        responseSubscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionLog'
+        responsePlan:
+          $ref: '#/components/schemas/PlanLog'
+        responsePlans:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlanLog'
+
+    ErrorLogModel:
+      title: Модель лога для ошибки
+      type: object
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+        code:
+          type: string
+        level:
+          type: string
+
+    PlanLog:
+      title: Модель лога для плана подписки
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        conditions:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        duration:
+          type: integer
+        price:
+          type: string
+        visibility:
+          type: string
+
+    SubscriptionLog:
+      title: Модель лога для оформленной подписки
+      type: object
+      properties:
+        id:
+          type: string
+        ownerId:
+          type: string
+        planId:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        isActive:
+          type: boolean
+        paymentStatus:
+          type: string
+
+    SubscriptionFilterLog:
+      title: Модель лога фильтра оформленной подписки
+      type: object
+      properties:
+        subscriptionId:
+          type: string
+        ownerId:
+          type: string
+        planId:
+          type: string
+        boughtPeriod:
+          $ref: '#/components/schemas/FromToDateObject'
+        expirationPeriod:
+          $ref: '#/components/schemas/FromToDateObject'
+        isActive:
+          type: boolean
+
+
+    FromToDateObject:
+      type: object
+      description: Объект хранящий 2 даты from и to
+      properties:
+        from:
+          description: Дата начала периода в формате дд.мм.гггг
+          #pattern: '^((0[1-9])|([1-2]\d)|(3[0-1]))\.((0[1-9])|(1[0-2]))\.2\d{3}$'
+          type: string
+        to:
+          description: Дата окончания периода в формате дд.мм.гггг
+          #pattern: '^((0[1-9])|([1-2]\d)|(3[0-1]))\.((0[1-9])|(1[0-2]))\.2\d{3}$'
+          type: string
+

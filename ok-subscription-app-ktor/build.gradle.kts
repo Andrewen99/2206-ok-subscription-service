@@ -28,13 +28,13 @@ dependencies {
     implementation("io.ktor:ktor-server-websockets:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+//    implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
-    testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     testImplementation("io.ktor:ktor-client-websockets:$ktorVersion")
     testImplementation("org.testcontainers:postgresql:$testContainersVersion")
@@ -47,4 +47,7 @@ dependencies {
     implementation(project(":ok-subscription-biz"))
     implementation(project(":ok-subscription-repo-inmemory"))
     implementation(project(":ok-subscription-repo-postgresql"))
+    implementation(project(":ok-subscription-logging"))
+    implementation(project(":ok-subscription-logs-mapper"))
+    implementation(project(":ok-subscription-api-logs"))
 }
