@@ -11,9 +11,11 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.config.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.callloging.*
 import models.RepoSettings
 import models.plan.PlanRepoSettings
 import models.subscription.SubscriptionRepoSettings
+import org.slf4j.event.Level
 import plan.PlanRepoInMemory
 import ru.otus.plugins.*
 import ru.otus.settings.*
@@ -43,6 +45,9 @@ fun Application.module(
     authConfig: KtorAuthConfig = createAuthConfigFromEnvironment(environment)
 ) {
 
+    install(CallLogging) {
+        level = Level.INFO
+    }
     val repoSettings by lazy {
         if (repoSettings != null) {
             repoSettings

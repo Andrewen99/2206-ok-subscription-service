@@ -18,8 +18,8 @@ data class KtorAuthConfig(
         val TEST = KtorAuthConfig(
             secret = "secret",
             issuer = "OtusKotlin",
-            audience= "plans-subs",
-            realm = "subscriptions",
+            audience= "sbscr-users",
+            realm = "plans-subscriptions",
             clientId = "subscription-service",
         )
     }

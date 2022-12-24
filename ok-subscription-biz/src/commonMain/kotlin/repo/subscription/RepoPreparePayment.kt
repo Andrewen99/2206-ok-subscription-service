@@ -17,6 +17,7 @@ fun CorChainDsl<SubscriptionContext>.repoPreparePaymentAndDates(title: String) =
     handle {
         subscriptionRepoPrepare = subscriptionRepoRead.deepCopy().apply {
             this.paymentStatus = SbscrPaymentStatus.PAYED
+            this.isActive = true
             this.startDate = getTodayAsLocalDate()
             this.endDate = this.startDate.plus(planRepoRead.duration, DateTimeUnit.MONTH)
         }
